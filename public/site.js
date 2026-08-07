@@ -42,6 +42,7 @@
 
   const mobileToggle = header.querySelector('[data-mobile-toggle]');
   const mobileNav = header.querySelector('[data-mobile-nav]');
+  const responsiveFocusTarget = header.querySelector('[data-responsive-focus-target]');
   let previousMobileFocus = null;
 
   const setMobileOpen = (open, restoreFocus = false) => {
@@ -97,7 +98,9 @@
   });
 
   const desktopMedia = window.matchMedia('(min-width: 64rem)');
-  desktopMedia.addEventListener?.('change', () => {
+  desktopMedia.addEventListener?.('change', (event) => {
+    const mobileWasOpen = event.matches && mobileToggle?.getAttribute('aria-expanded') === 'true';
+    if (mobileWasOpen) (responsiveFocusTarget ?? mobileToggle)?.focus();
     setMegaOpen(false);
     setMobileOpen(false);
   });

@@ -48,6 +48,7 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
   };
 
   const mobileToggle = makeElement();
+  const responsiveFocusTarget = makeElement();
   const firstLink = makeElement();
   const lastLink = makeElement();
   const mobileNav = makeElement();
@@ -60,11 +61,29 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
   header.querySelector = (selector) => ({
     '[data-mobile-toggle]': mobileToggle,
     '[data-mobile-nav]': mobileNav,
+    '[data-responsive-focus-target]': responsiveFocusTarget,
   })[selector] ?? null;
   header.querySelectorAll = () => [];
 
-  const mediaQuery = { matches: false, addEventListener() {} };
-  const window = { matchMedia: () => mediaQuery, IntersectionObserver: Observer };
+  const mediaQueries = new Map();
+  const window = {
+    IntersectionObserver: Observer,
+    matchMedia(query) {
+      const mediaQuery = {
+        matches: false,
+        changeListener: null,
+        addEventListener(type, listener) {
+          if (type === 'change') this.changeListener = listener;
+        },
+        dispatch(matches) {
+          this.matches = matches;
+          this.changeListener?.({ matches });
+        },
+      };
+      mediaQueries.set(query, mediaQuery);
+      return mediaQuery;
+    },
+  };
   vm.runInNewContext(siteScript, { document, window, IntersectionObserver: Observer });
 
   return {
@@ -73,6 +92,10 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
     lastLink,
     mobileNav,
     mobileToggle,
+    responsiveFocusTarget,
+    dispatchDesktopChange(matches = true) {
+      mediaQueries.get('(min-width: 64rem)')?.dispatch(matches);
+    },
     dispatchDocument(type, event) {
       for (const listener of documentListeners.get(type) ?? []) listener(event);
     },
@@ -111,6 +134,19 @@ test('closing the mobile menu restores the focus held before it opened', () => {
   shell.mobileToggle.dispatch('click');
   shell.dispatchDocument('keydown', { key: 'Escape' });
   assert.equal(shell.document.activeElement, previousControl);
+});
+
+test('switching to the desktop breakpoint restores focus before hiding the mobile menu', () => {
+  const shell = bootSiteScript();
+  shell.document.activeElement = shell.mobileToggle;
+  shell.mobileToggle.dispatch('click');
+  shell.document.activeElement = shell.lastLink;
+
+  shell.dispatchDesktopChange();
+
+  assert.equal(shell.mobileNav.hidden, true);
+  assert.equal(shell.mobileToggle.getAttribute('aria-expanded'), 'false');
+  assert.equal(shell.document.activeElement, shell.responsiveFocusTarget);
 });
 
 test('reveal content remains visible until JavaScript enables enhancement', () => {
