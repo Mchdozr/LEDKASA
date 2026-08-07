@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import { applicationAreas, type ApplicationArea } from '../../data/articles';
+import { siteUrl } from '../../data/site';
+
+export function getStaticPaths() {
+  return applicationAreas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
+}
+
+interface Props { area: ApplicationArea }
+const { area } = Astro.props;
+const canonical = `/uygulama-alanlari/${area.slug}/`;
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${siteUrl}${canonical}#webpage`,
+  url: `${siteUrl}${canonical}`,
+  name: area.title,
+  description: area.seoDescription,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={area.seoTitle} description={area.seoDescription} canonical={canonical} image={area.image} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Uygulama Alanları', url: '/uygulama-alanlari/' }, { label: area.title }]} />
+
+  <header class="application-detail-hero shell">
+    <div>
+      <span class="eyebrow">{area.eyebrow}</span>
+      <h1>{area.title}</h1>
+      <p>{area.summary}</p>
+      <a class="button" href="/teklif-al/">Projeniz için teklif alın <span aria-hidden="true">→</span></a>
+    </div>
+    <figure>
+      <img src={area.image} alt={area.imageAlt} width="800" height="800" loading="eager" fetchpriority="high" decoding="async" />
+    </figure>
+  </header>
+
+  <div class="content-layout shell">
+    <article class="prose-content">
+      {area.sections.map((section) => (
+        <section data-reveal>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          {section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
+        </section>
+      ))}
+    </article>
+    <aside class="context-panel" aria-labelledby="products-for-area">
+      <span class="eyebrow">İlgili ürünler</span>
+      <h2 id="products-for-area">Bu alan için değerlendirin</h2>
+      <div class="context-links">
+        {area.productLinks.map((product) => (
+          <a href={product.url}><strong>{product.name}</strong><span>{product.note}</span><i aria-hidden="true">→</i></a>
+        ))}
+      </div>
+    </aside>
+  </div>
+  <QuoteCta title={`${area.title} projenizi birlikte netleştirelim.`} />
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteCta from '../components/QuoteCta.astro';
+import { faqItems } from '../data/articles';
+import { businessContact } from '../data/site';
+
+const title = 'Sık Sorulan Sorular | LEDKASA';
+const description = 'LED ekran kasaları, rental kabinetler, bağlantı ekipmanları, teklif ve ürün seçimi hakkında sık sorulan soruların yanıtları.';
+---
+
+<BaseLayout title={title} description={description} canonical="/sss/">
+  <Breadcrumbs items={[{ label: 'Sık Sorulan Sorular' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Yardım merkezi</span>
+    <h1>Sık Sorulan Sorular</h1>
+    <p>Ürün seçimi ve teklif sürecine ilişkin temel soruları yanıtladık. Projenize özel bir konu için bize yazabilirsiniz.</p>
+  </header>
+
+  <section class="faq-page-layout shell" aria-labelledby="faq-list-heading">
+    <div>
+      <span class="eyebrow">Ürün ve teklif</span>
+      <h2 id="faq-list-heading">Merak ettikleriniz</h2>
+      <p>Yanıtını bulamadığınız bir konu varsa <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a> adresine proje özetinizi iletin.</p>
+    </div>
+    <div class="faq-list">
+      {faqItems.map((item) => (
+        <details>
+          <summary>{item.question}<span aria-hidden="true">+</span></summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+  <QuoteCta />
+</BaseLayout>

@@ -1,5 +1,9 @@
 export const siteUrl = 'https://ledkasa.com.tr';
 
+export const businessContact = {
+  email: 'info@ledkasa.com.tr',
+} as const;
+
 export interface ProductCategory {
   slug: 'led-ekran-kasalari' | 'guc-ve-baglanti-ekipmanlari';
   name: string;

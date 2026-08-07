@@ -105,6 +105,78 @@
     setMobileOpen(false);
   });
 
+  const hero = document.querySelector('[data-hero]');
+  if (hero?.matches?.('[data-hero]')) {
+    const slides = [...hero.querySelectorAll('[data-hero-slide]')];
+    const previousButton = hero.querySelector('[data-hero-previous]');
+    const nextButton = hero.querySelector('[data-hero-next]');
+    const pauseButton = hero.querySelector('[data-hero-pause]');
+    const status = hero.querySelector('[data-hero-status]');
+    let activeIndex = 0;
+    let paused = prefersReducedMotion.matches;
+    let timer;
+
+    const updatePauseButton = () => {
+      if (!pauseButton) return;
+      pauseButton.setAttribute('aria-pressed', String(paused));
+      pauseButton.textContent = paused ? 'Devam ettir' : 'Duraklat';
+    };
+
+    const showSlide = (nextIndex) => {
+      activeIndex = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, index) => {
+        const isActive = index === activeIndex;
+        slide.hidden = !isActive;
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+      if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+    };
+
+    const stopAutoplay = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (paused || prefersReducedMotion.matches || document.hidden) return;
+      timer = window.setInterval(() => showSlide(activeIndex + 1), 7000);
+    };
+
+    const selectSlide = (nextIndex) => {
+      showSlide(nextIndex);
+      startAutoplay();
+    };
+
+    previousButton?.addEventListener('click', () => selectSlide(activeIndex - 1));
+    nextButton?.addEventListener('click', () => selectSlide(activeIndex + 1));
+    pauseButton?.addEventListener('click', () => {
+      if (prefersReducedMotion.matches) {
+        paused = true;
+      } else {
+        paused = !paused;
+      }
+      updatePauseButton();
+      startAutoplay();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
+
+    prefersReducedMotion.addEventListener?.('change', (event) => {
+      paused = event.matches;
+      updatePauseButton();
+      startAutoplay();
+    });
+
+    hero.classList.add('hero-ready');
+    showSlide(0);
+    updatePauseButton();
+    startAutoplay();
+  }
+
   const revealItems = document.querySelectorAll('[data-reveal]');
   if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));

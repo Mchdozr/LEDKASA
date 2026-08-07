@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import { articleCanonical, articles, type Article } from '../../data/articles';
+import { siteUrl } from '../../data/site';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+interface Props { article: Article }
+const { article } = Astro.props;
+const canonical = `/bilgi-merkezi/${article.slug}/`;
+const schema = {
+  '@type': 'Article',
+  '@id': `${articleCanonical(article)}#article`,
+  mainEntityOfPage: { '@id': `${articleCanonical(article)}#webpage` },
+  headline: article.title,
+  description: article.seoDescription,
+  image: new URL(article.image, siteUrl).toString(),
+  inLanguage: 'tr-TR',
+  publisher: { '@id': `${siteUrl}/#organization` },
+};
+---
+
+<BaseLayout title={article.seoTitle} description={article.seoDescription} canonical={canonical} image={article.image} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Bilgi Merkezi', url: '/bilgi-merkezi/' }, { label: article.title }]} />
+
+  <article class="knowledge-article">
+    <header class="article-hero shell">
+      <div>
+        <span class="eyebrow">LED ekran rehberi</span>
+        <h1>{article.title}</h1>
+        <p>{article.excerpt}</p>
+      </div>
+      <figure><img src={article.image} alt={article.imageAlt} width="800" height="800" loading="eager" fetchpriority="high" decoding="async" /></figure>
+    </header>
+
+    <div class="article-layout shell">
+      <div class="prose-content article-prose">
+        {article.sections.map((section) => (
+          <section data-reveal>
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
+          </section>
+        ))}
+      </div>
+      <aside class="article-aside" aria-labelledby="article-products">
+        <span class="eyebrow">Katalog bağlantıları</span>
+        <h2 id="article-products">İlgili ürünleri inceleyin</h2>
+        <nav>
+          {article.productLinks.map((product) => <a href={product.url}>{product.name}<span aria-hidden="true">→</span></a>)}
+        </nav>
+        <a class="button" href="/teklif-al/">Teklif alın</a>
+      </aside>
+    </div>
+  </article>
+  <QuoteCta />
+</BaseLayout>
