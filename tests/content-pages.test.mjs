@@ -66,6 +66,13 @@ test('desktop hero reserves one stable frame height for every slide image', () =
   assert.match(css, /\.hero-media\s*\{[^}]*height:\s*100%/s);
 });
 
+test('desktop header centers the primary navigation between the brand and quote action', () => {
+  const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
+
+  assert.match(css, /\.header-bar\s*\{[^}]*position:\s*relative/s);
+  assert.match(css, /\.desktop-nav\s*\{[^}]*left:\s*50%[^}]*transform:\s*translateX\(-50%\)/s);
+});
+
 test('build emits all three application routes with unique canonical URLs and useful catalog links', () => {
   const titles = new Set();
 
