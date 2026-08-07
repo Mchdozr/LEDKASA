@@ -21,6 +21,8 @@ const articleRoutes = [
   ['poster-led-ekran-kullanim-alanlari', 'Poster LED Ekran Kullanım Alanları'],
   ['led-ekran-kablolama-rehberi', 'LED Ekran Kablolama Rehberi'],
   ['kasa-secimi-cnc-kapaksiz-rental-kabinet', 'CNC, Kapaksız ve Rental Kabinet Karşılaştırması'],
+  ['modul-pitch-ve-kasa-uyumu', 'Modül Pitch ve LED Kasa Uyumu'],
+  ['led-ekran-guc-ve-veri-planlama', 'LED Ekran Güç ve Veri Planlama'],
 ];
 
 const builtHtml = (route = '') =>
@@ -91,7 +93,7 @@ test('build emits all three application routes with unique canonical URLs and us
   assert.equal(titles.size, 3);
 });
 
-test('build emits five evergreen articles with unique metadata, breadcrumbs and contextual links', () => {
+test('build emits evergreen articles with unique metadata, breadcrumbs and contextual links', () => {
   const titles = new Set();
   const descriptions = new Set();
 
@@ -118,8 +120,8 @@ test('build emits five evergreen articles with unique metadata, breadcrumbs and 
     assert.match(html, /href="\/teklif-al\/"/);
   }
 
-  assert.equal(titles.size, 5);
-  assert.equal(descriptions.size, 5);
+  assert.equal(titles.size, articleRoutes.length);
+  assert.equal(descriptions.size, articleRoutes.length);
 });
 
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {

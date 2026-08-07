@@ -165,6 +165,29 @@ p, h1, h2, h3 { margin-top: 0; }
 .feature-list li span { width: 1.55rem; height: 1.55rem; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--green); font-size: .75rem; }
 .product-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; }
 .product-note { margin: 1.1rem 0 0; color: var(--muted); font-size: .76rem; }
+.product-datasheet { margin: .9rem 0 0; }
+.product-specs, .product-context, .comparison-section { padding-block: clamp(2rem, 6vw, 4.5rem); }
+.spec-table { display: grid; gap: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface-raised); }
+.spec-row { display: grid; grid-template-columns: minmax(10rem, .9fr) 1.4fr; gap: 1rem; padding: .95rem 1.15rem; border-top: 1px solid var(--line); }
+.spec-row:first-child { border-top: 0; }
+.spec-row dt { margin: 0; color: var(--muted); font-size: .78rem; font-weight: 750; }
+.spec-row dd { margin: 0; font-weight: 650; }
+.product-context-grid { display: grid; gap: 1.5rem; }
+.product-context h3 { margin: 0 0 .8rem; font-size: 1.05rem; letter-spacing: -.02em; }
+.context-list { margin: 0; padding: 0; list-style: none; display: grid; gap: .65rem; }
+.context-list li { padding: .85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-raised); font-weight: 600; }
+.context-list a { font-weight: 750; }
+.context-list a:hover { color: var(--accent-text); }
+.context-list-links { max-width: 40rem; }
+.hero-inline-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+.comparison-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }
+.comparison-table { width: 100%; min-width: 48rem; border-collapse: collapse; }
+.comparison-table th, .comparison-table td { padding: .95rem 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .92rem; }
+.comparison-table thead th { background: var(--ink); color: var(--white); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+.comparison-table thead a { color: var(--green); font-weight: 800; }
+.comparison-table tbody th { width: 11rem; color: var(--muted); font-size: .78rem; font-weight: 800; }
+.comparison-table tbody tr:last-child th, .comparison-table tbody tr:last-child td { border-bottom: 0; }
+.comparison-note { margin: 1rem 0 0; color: var(--muted); font-size: .78rem; }
 
 .quote-cta { --accent-text: var(--accent-on-dark); --focus-ring: var(--focus-on-dark); display: flex; flex-direction: column; gap: 2rem; align-items: flex-start; margin-top: clamp(3rem, 8vw, 7rem); padding: clamp(1.8rem, 5vw, 4rem); border-radius: var(--radius-lg); background: var(--ink); color: var(--white); overflow: hidden; position: relative; }
 .quote-cta::after { content: ""; position: absolute; right: -7rem; bottom: -8rem; width: 22rem; height: 22rem; border: 3rem solid rgba(184,242,54,.08); border-radius: 50%; }
@@ -359,6 +382,7 @@ p, h1, h2, h3 { margin-top: 0; }
   .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product-context-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .quote-cta { flex-direction: row; justify-content: space-between; align-items: center; }
   .quote-cta .button { flex: 0 0 auto; }
   .application-grid, .value-grid, .editorial-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

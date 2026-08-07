@@ -9,6 +9,7 @@ const schema = {
   '@type': 'ContactPage',
   '@id': `${siteUrl}/teklif-al/#contact`,
   name: 'Teklif Al',
+  description,
   url: `${siteUrl}/teklif-al/`,
   inLanguage: 'tr-TR',
 };
@@ -77,9 +78,34 @@ const schema = {
             ))}
           </select>
         </label>
+        <div class="form-row">
+          <label>
+            Kurulum tipi
+            <select name="install_type">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="sabit">Sabit kurulum</option>
+              <option value="rental">Rental / geçici</option>
+              <option value="poster">Poster / dikey</option>
+              <option value="karisik">Karışık / emin değilim</option>
+            </select>
+          </label>
+          <label>
+            Ortam
+            <select name="environment">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="indoor">İç mekân</option>
+              <option value="outdoor">Dış mekân</option>
+              <option value="her-ikisi">Her ikisi</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Tahmini kabinet adedi veya ekran ölçüsü
+          <input name="quantity_estimate" type="text" maxlength="120" placeholder="Örn. 12 kabinet veya 4×3 m" />
+        </label>
         <label>
           Proje ve ihtiyaç detayları <span aria-hidden="true">*</span>
-          <textarea name="message" rows="6" maxlength="5000" required placeholder="Kullanım alanı, adet, proje takvimi ve paylaşmak istediğiniz diğer ayrıntılar..."></textarea>
+          <textarea name="message" rows="6" maxlength="5000" required placeholder="Pitch/modül, kullanım alanı, proje takvimi ve paylaşmak istediğiniz diğer ayrıntılar..."></textarea>
         </label>
 
         <div class="honeypot" aria-hidden="true">

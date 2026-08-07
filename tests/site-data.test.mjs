@@ -80,3 +80,15 @@ test('every catalog image resolves to a committed local public asset', () => {
     assert.equal(existsSync(publicFile), true, `missing local catalog image: ${image}`);
   }
 });
+
+test('CNC product exposes verified datasheet specs without inventing offers', () => {
+  const cnc = products.find((product) => product.slug === 'cnc-led-kasa');
+  assert.ok(cnc?.specs?.length);
+  assert.ok(cnc.datasheetUrl);
+  assert.equal(
+    existsSync(resolve(process.cwd(), 'public', cnc.datasheetUrl.replace(/^\//, ''))),
+    true,
+    `missing datasheet: ${cnc.datasheetUrl}`,
+  );
+  assert.match(cnc.specs.map((spec) => spec.value).join(' '), /960/);
+});

@@ -14,8 +14,10 @@ const expectedIndexablePaths = [
   '/',
   '/bilgi-merkezi/',
   '/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/',
+  '/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/',
   '/bilgi-merkezi/led-ekran-kablolama-rehberi/',
   '/bilgi-merkezi/led-ekran-kasasi-nasil-secilir/',
+  '/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/',
   '/bilgi-merkezi/poster-led-ekran-kullanim-alanlari/',
   '/bilgi-merkezi/rental-led-ekran-kurulum-rehberi/',
   '/cerez-politikasi/',
@@ -35,6 +37,7 @@ const expectedIndexablePaths = [
   '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/',
   '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/',
   '/urunler/guc-ve-baglanti-ekipmanlari/power-plug/',
+  '/urunler/kasa-karsilastirma/',
   '/urunler/led-ekran-kasalari/',
   '/urunler/led-ekran-kasalari/cnc-led-kasa/',
   '/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/',
@@ -88,6 +91,8 @@ test('every indexable page publishes canonical, Turkish alternate, social image 
     const canonical = `${siteUrl}${route}`;
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical.replaceAll('.', '\\.')}">`), route);
     assert.match(html, new RegExp(`<link rel="alternate" hreflang="tr-TR" href="${canonical.replaceAll('.', '\\.')}">`), route);
+    assert.match(html, new RegExp(`<link rel="alternate" hreflang="x-default" href="${canonical.replaceAll('.', '\\.')}">`), route);
+    assert.match(html, /property="og:image:alt"/, route);
     const image = html.match(/<meta property="og:image" content="https:\/\/ledkasa\.com\.tr(\/assets\/[^"?]+)"/)?.[1];
     assert.ok(image, `missing local Open Graph image: ${route}`);
     assert.equal(existsSync(resolve(outputRoot, image.slice(1))), true, `missing Open Graph asset: ${image}`);

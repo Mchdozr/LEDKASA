@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import { cabinetComparisonRows, siteUrl } from '../../data/site';
+
+const title = 'LED Kasa Karşılaştırma Tablosu | LEDKASA';
+const description =
+  'CNC, kapaksız, rental ve poster LED kasaları kullanım tipi, kurulum sıklığı ve bağlantı planına göre karşılaştırın; teklif öncesi aileyi daraltın.';
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/urunler/kasa-karsilastirma/#webpage`,
+  name: 'LED Kasa Karşılaştırma Tablosu',
+  description,
+  url: `${siteUrl}/urunler/kasa-karsilastirma/`,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/urunler/kasa-karsilastirma/" schema={schema}>
+  <Breadcrumbs items={[{ label: 'Ürünler', url: '/urunler/' }, { label: 'Kasa Karşılaştırma' }]} />
+
+  <header class="content-hero shell">
+    <span class="eyebrow">Karar desteği</span>
+    <h1>LED kasa karşılaştırma tablosu</h1>
+    <p>
+      Ürün adına göre değil; kullanım senaryosu, kurulum sıklığı ve bağlantı planına göre aileyi daraltın.
+      Nihai ölçü, pitch ve aksesuar kapsamı teklif aşamasında netleşir.
+    </p>
+    <div class="hero-inline-actions">
+      <a class="button" href="/teklif-al/">Teklif alın</a>
+      <a class="text-link" href="/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/">
+        Detaylı karşılaştırma rehberi <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="comparison-section shell" aria-labelledby="comparison-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Hızlı bakış</span>
+        <h2 id="comparison-heading">Hangi kasa ailesi nereye uygun?</h2>
+      </div>
+    </div>
+    <div class="comparison-scroll" role="region" aria-label="Kasa karşılaştırma tablosu" tabindex="0">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th scope="col">Kriter</th>
+            <th scope="col"><a href="/urunler/led-ekran-kasalari/cnc-led-kasa/">CNC</a></th>
+            <th scope="col"><a href="/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/">Kapaksız</a></th>
+            <th scope="col"><a href="/urunler/led-ekran-kasalari/rental-led-kabinet/">Rental</a></th>
+            <th scope="col"><a href="/urunler/led-ekran-kasalari/poster-led-kasa/">Poster</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          {cabinetComparisonRows.map((row) => (
+            <tr>
+              <th scope="row">{row.criterion}</th>
+              <td>{row.cnc}</td>
+              <td>{row.kapaksiz}</td>
+              <td>{row.rental}</td>
+              <td>{row.poster}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="comparison-note">
+      Bu tablo yönlendirme amaçlıdır; fiyat, stok veya sertifika iddiası içermez. Proje ölçüsü ve sistem uyumu teklifte doğrulanır.
+    </p>
+  </section>
+
+  <section class="shell product-context" aria-labelledby="next-steps-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Sonraki adım</span>
+        <h2 id="next-steps-heading">Kararı netleştirin</h2>
+      </div>
+    </div>
+    <ul class="context-list context-list-links">
+      <li><a href="/urunler/led-ekran-kasalari/">Tüm LED ekran kasaları</a></li>
+      <li><a href="/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/">Modül pitch ve kasa uyumu</a></li>
+      <li><a href="/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/">Güç ve veri planlama</a></li>
+      <li><a href="/teklif-al/">Proje bilgisiyle teklif formu</a></li>
+    </ul>
+  </section>
+
+  <QuoteCta title="Kasa ailenizi birlikte daraltalım." />
+</BaseLayout>

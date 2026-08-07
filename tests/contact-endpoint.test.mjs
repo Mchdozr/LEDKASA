@@ -85,9 +85,11 @@ const startFakeSmtp = async () => {
 
 const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
   const port = await listenOnFreePort();
+  const sendmailWrapper = resolve(projectRoot, 'scripts/test-sendmail.sh');
   const process = spawn('php', [
     '-d', 'SMTP=127.0.0.1',
     '-d', `smtp_port=${smtpPort}`,
+    '-d', `sendmail_path=${sendmailWrapper} -t -i`,
     '-S', `127.0.0.1:${port}`,
     '-t', publicRoot,
   ], {
@@ -96,6 +98,10 @@ const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
       ...globalThis.process.env,
       LEDKASA_CONTACT_RATE_LIMIT_DIR: rateLimitDirectory,
       LEDKASA_CONTACT_RECIPIENT: 'quotes@example.com',
+      LEDKASA_TEST_SMTP_HOST: '127.0.0.1',
+      LEDKASA_TEST_SMTP_PORT: String(smtpPort),
+      LEDKASA_TEST_NODE: globalThis.process.execPath,
+      LEDKASA_TEST_SENDMAIL_JS: resolve(projectRoot, 'scripts/test-sendmail.mjs'),
     },
     stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,

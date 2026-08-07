@@ -25,7 +25,9 @@ export interface Article {
     | 'rental-led-ekran-kurulum-rehberi'
     | 'poster-led-ekran-kullanim-alanlari'
     | 'led-ekran-kablolama-rehberi'
-    | 'kasa-secimi-cnc-kapaksiz-rental-kabinet';
+    | 'kasa-secimi-cnc-kapaksiz-rental-kabinet'
+    | 'modul-pitch-ve-kasa-uyumu'
+    | 'led-ekran-guc-ve-veri-planlama';
   title: string;
   excerpt: string;
   seoTitle: string;
@@ -293,6 +295,87 @@ export const articles: Article[] = [
       { name: 'CNC LED Kasa', url: '/urunler/led-ekran-kasalari/cnc-led-kasa/' },
       { name: 'Kapaksız LED Kabinet', url: '/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/' },
       { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/' },
+      { name: 'Karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
+    ],
+  },
+  {
+    slug: 'modul-pitch-ve-kasa-uyumu',
+    title: 'Modül Pitch ve LED Kasa Uyumu',
+    excerpt:
+      'Piksel aralığı (pitch), modül ölçüsü ve kabinet boyutunun nasıl birlikte okunacağını teklif öncesi netleştirmek için pratik çerçeve.',
+    seoTitle: 'Modül Pitch ve LED Kasa Uyumu | LEDKASA',
+    seoDescription:
+      'LED ekranda pitch, modül ölçüsü ve kasa boyutunu nasıl eşleştireceğinizi öğrenin. Örnek 960×960 kabinet ve P4–P13.33 uyumu.',
+    image: '/assets/images/editorial/electronics-workshop.webp',
+    imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
+    sections: [
+      {
+        heading: 'Pitch tek başına yeterli değildir',
+        paragraphs: [
+          'Piksel aralığı (örneğin P4, P5, P6.67) görüş mesafesi ve içerik netliği için kritiktir; ancak kabinet seçimi modülün fiziksel ölçüsüyle birlikte yapılmalıdır.',
+          'Aynı kabinet ailesi farklı pitch’leri destekleyebilir. Önemli olan, seçilen modülün kabinet içine tam oturması ve birleşim hatlarının proje yüzeyinde kabul edilebilir olmasıdır.',
+        ],
+        bullets: ['Pitch / görüş mesafesi', 'Modül en × boy ölçüsü', 'Kabinet içi yerleşim adedi'],
+      },
+      {
+        heading: 'Örnek: 960×960 mm kabinet ailesi',
+        paragraphs: [
+          'Doğrulanmış üretici föyündeki 960×960×87 mm Mg alaşım döküm kabinet örneği; P4, P5, P6.67, P8, P10 ve P13.33 modül aileleriyle birlikte değerlendirilebilir.',
+          'Bu liste yönlendirme amaçlıdır. Kullandığınız modül markası, PCB ölçüsü (örnek 320×160 mm suite) ve receiving card düzeni teklif aşamasında ayrıca doğrulanır.',
+        ],
+      },
+      {
+        heading: 'Teklif öncesi paylaşılacak bilgiler',
+        paragraphs: [
+          'Pitch, hedef ekran genişlik/yükseklik, indoor/outdoor koşulu ve montaj yüzeyi paylaşıldığında kasa ailesi ve bağlantı ekipmanları daha hızlı daraltılır.',
+        ],
+        bullets: ['Hedef ekran ölçüleri veya kabinet adedi', 'Pitch / modül modeli', 'Sabit mi rental mı', 'İç / dış mekân'],
+      },
+    ],
+    productLinks: [
+      { name: 'CNC LED Kasa', url: '/urunler/led-ekran-kasalari/cnc-led-kasa/' },
+      { name: 'Flat Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/' },
+      { name: 'Kasa karşılaştırma', url: '/urunler/kasa-karsilastirma/' },
+    ],
+  },
+  {
+    slug: 'led-ekran-guc-ve-veri-planlama',
+    title: 'LED Ekran Güç ve Veri Planlama',
+    excerpt:
+      'PSU seçimi, güç konektörü ve Cat6 veri hattını kabinet düzeniyle birlikte planlamak için saha odaklı kontrol listesi.',
+    seoTitle: 'LED Ekran Güç ve Veri Planlama | LEDKASA',
+    seoDescription:
+      'LED ekran güç kaynağı, power plug ve Cat6 veri planını kabinet yerleşimiyle nasıl birlikte kurgulayacağınızı inceleyin.',
+    image: '/assets/images/editorial/event-stage.webp',
+    imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
+    sections: [
+      {
+        heading: 'Güç ve veriyi aynı planda tutun',
+        paragraphs: [
+          'Kabinet yerleşimi netleşmeden güç ve veri uzunluklarını sabitlemek genelde revizyon üretir. Önce satır–sütun düzeni, sonra hat rotaları belirlenir.',
+          'Power Plug, Cat6 ve Cable Set seçimi; ekranın kurulum tipi (sabit veya rental) ve erişim yönüyle birlikte değerlendirilmelidir.',
+        ],
+      },
+      {
+        heading: 'Örnek güç aralıklarını doğru okuyun',
+        paragraphs: [
+          '960×960 mm örnek föyde 200W-5V 40A veya 400W-5V 80A gibi PSU seçenekleri ve 20A 3×2,5 mm² güç konektörü yer alır. Bunlar örnek konfigürasyonlardır; gerçek tüketim modül tipi ve parlaklık profiline göre teklifte hesaplanır.',
+        ],
+        bullets: ['Kabinet başına tahmini yük', 'Dağıtım hattı ve konektör tipi', 'Yedek / faz planı (projeye göre)'],
+      },
+      {
+        heading: 'Veri hattı kontrol listesi',
+        paragraphs: [
+          'Cat6 hatlarında kontrolör çıkışı, kabinet zinciri ve etiketleme düzeni kurulumu hızlandırır. Rental projelerde söküm sırasında hatların ayrıştırılabilir olması özellikle önemlidir.',
+        ],
+        bullets: ['Kontrolör → ilk kabinet mesafesi', 'Kabinetler arası veri sırası', 'Etiketleme ve yedek hat ihtiyacı'],
+      },
+    ],
+    productLinks: [
+      { name: 'Power Plug', url: '/urunler/guc-ve-baglanti-ekipmanlari/power-plug/' },
+      { name: 'Cat6 Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/' },
+      { name: 'Cable Set', url: '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/' },
+      { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/' },
     ],
   },
 ];
@@ -329,6 +412,21 @@ export const faqItems = [
   {
     question: 'LEDKASA ile nasıl iletişim kurabilirim?',
     answer: 'Teklif formunu kullanabilir veya info@ledkasa.com.tr adresine proje özetinizi gönderebilirsiniz.',
+  },
+  {
+    question: '960×960 mm kabinet hangi pitch’lerle uyumlu?',
+    answer:
+      'Doğrulanmış örnek föyde P4, P5, P6.67, P8, P10 ve P13.33 aileleri listelenir. Kullandığınız modül modeli teklif aşamasında ayrıca doğrulanır.',
+  },
+  {
+    question: 'Teknik föy veya datasheet indirebilir miyim?',
+    answer:
+      'CNC LED Kasa sayfasında 960×960 mm Mg alaşım kabinet için doğrulanmış PDF föyü yayımlanır. Diğer ürünlerin proje özelindeki kapsamı teklifte paylaşılır.',
+  },
+  {
+    question: 'Indoor ve outdoor farkı teklifi nasıl etkiler?',
+    answer:
+      'Ortam koşulu kasa, conta/IP yaklaşımı, güç ve kablo seçimini etkiler. Formdaki ortam alanını ve proje notlarını doldurmanız değerlendirmeyi hızlandırır.',
   },
 ] as const;
 

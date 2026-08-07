@@ -8,8 +8,8 @@
     "build": "astro build",
     "assets:optimize": "node scripts/optimize-assets.mjs",
     "preview": "astro preview",
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
-    "test:browser": "node --test tests/browser/mobile-nav-layout.test.mjs"
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.mjs",
+    "test:browser": "node --experimental-strip-types --test tests/browser/mobile-nav-layout.test.mjs"
   },
   "devDependencies": {
     "@astrojs/sitemap": "3.7.3",

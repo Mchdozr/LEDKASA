@@ -210,15 +210,26 @@ $email = $readField('email');
 $phone = $readField('phone');
 $company = $readField('company');
 $product = $readField('product');
+$installType = $readField('install_type');
+$environment = $readField('environment');
+$quantityEstimate = $readField('quantity_estimate');
 $message = $readField('message');
 $consent = $_POST['kvkk_consent'] ?? '';
+
+$allowedInstallTypes = ['', 'sabit', 'rental', 'poster', 'karisik'];
+$allowedEnvironments = ['', 'indoor', 'outdoor', 'her-ikisi'];
 
 $hasValidLengths = strlen($name) <= 120
     && strlen($email) <= 254
     && strlen($phone) <= 40
     && strlen($company) <= 160
     && strlen($product) <= 80
-    && strlen($message) <= 5000;
+    && strlen($installType) <= 40
+    && strlen($environment) <= 40
+    && strlen($quantityEstimate) <= 120
+    && strlen($message) <= 5000
+    && in_array($installType, $allowedInstallTypes, true)
+    && in_array($environment, $allowedEnvironments, true);
 
 if (
     $name === ''
@@ -236,6 +247,18 @@ $recipient = is_string($configuredRecipient) && filter_var($configuredRecipient,
     : 'info@ledkasa.com.tr';
 
 $subject = 'LEDKASA web sitesi teklif talebi';
+$installLabels = [
+    'sabit' => 'Sabit kurulum',
+    'rental' => 'Rental / geçici',
+    'poster' => 'Poster / dikey',
+    'karisik' => 'Karışık / emin değilim',
+];
+$environmentLabels = [
+    'indoor' => 'İç mekân',
+    'outdoor' => 'Dış mekân',
+    'her-ikisi' => 'Her ikisi',
+];
+
 $bodyLines = [
     'Yeni teklif talebi',
     '',
@@ -244,6 +267,9 @@ $bodyLines = [
     'Telefon: ' . ($phone !== '' ? $phone : 'Belirtilmedi'),
     'Firma: ' . ($company !== '' ? $company : 'Belirtilmedi'),
     'Ürün: ' . ($product !== '' ? $product : 'Belirtilmedi'),
+    'Kurulum tipi: ' . ($installLabels[$installType] ?? 'Belirtilmedi'),
+    'Ortam: ' . ($environmentLabels[$environment] ?? 'Belirtilmedi'),
+    'Tahmini ölçü/adet: ' . ($quantityEstimate !== '' ? $quantityEstimate : 'Belirtilmedi'),
     '',
     'Proje detayları:',
     $message,
