@@ -1,0 +1,31 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  url?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const trail: BreadcrumbItem[] = [{ label: 'Ana Sayfa', url: '/' }, ...items];
+---
+
+<nav class="breadcrumbs shell" aria-label="Sayfa yolu">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    {trail.map((item, index) => {
+      const isLast = index === trail.length - 1;
+      return (
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          {item.url && !isLast ? (
+            <a itemprop="item" href={item.url}><span itemprop="name">{item.label}</span></a>
+          ) : (
+            <span itemprop="name" aria-current={isLast ? 'page' : undefined}>{item.label}</span>
+          )}
+          <meta itemprop="position" content={String(index + 1)} />
+        </li>
+      );
+    })}
+  </ol>
+</nav>
