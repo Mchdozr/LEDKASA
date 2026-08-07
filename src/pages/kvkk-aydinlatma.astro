@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteUrl } from '../data/site';
+
+const title = 'KVKK Aydınlatma Metni | LEDKASA';
+const description = 'LEDKASA teklif formunda paylaşılan kişisel verilerin işlenmesine ilişkin şeffaf KVKK aydınlatma şablonu.';
+const canonical = '/kvkk-aydinlatma/';
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${siteUrl}${canonical}#webpage`,
+  url: `${siteUrl}${canonical}`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'KVKK Aydınlatma Metni' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Yasal bilgilendirme şablonu</span>
+    <h1>KVKK Aydınlatma Metni</h1>
+    <p><strong>Önemli:</strong> Bu metin genel bir taslaktır. Yayına alınmadan önce veri sorumlusunun doğrulanmış ticari bilgileriyle tamamlanmalı ve şirket özelinde hukuki incelemeden geçirilmelidir.</p>
+  </header>
+  <div class="content-layout shell">
+    <article class="prose-content">
+      <section>
+        <h2>İşlenen bilgi kategorileri</h2>
+        <p>Teklif formu üzerinden paylaşılan ad-soyad, e-posta, isteğe bağlı telefon ve firma bilgileri ile proje açıklaması, talebin değerlendirilmesi ve yanıtlanması amacıyla işlenebilir.</p>
+      </section>
+      <section>
+        <h2>İşleme amacı ve yöntemi</h2>
+        <p>Bilgiler, kullanıcının formu göndererek başlattığı teklif iletişimini yürütmek, ihtiyaç kapsamını anlamak ve talebe geri dönüş yapmak için elektronik ortamda alınır. Zorunlu olmayan alanların boş bırakılması teklif talebinin gönderilmesini engellemez.</p>
+      </section>
+      <section>
+        <h2>Aktarım, saklama ve güvenlik</h2>
+        <p>Gerçek aktarım alıcıları, saklama süreleri ve teknik-idari tedbirler, kullanılacak barındırma ve e-posta altyapısı doğrulandıktan sonra bu bölümde açıkça belirtilmelidir. Bu taslak, doğrulanmamış bir üçüncü taraf veya süre beyanı içermez.</p>
+      </section>
+      <section>
+        <h2>Başvuru hakları ve iletişim</h2>
+        <p>İlgili kişiler, yürürlükteki mevzuat kapsamındaki bilgi edinme, düzeltme, silme ve itiraz haklarına ilişkin taleplerini <a href="mailto:info@ledkasa.com.tr">info@ledkasa.com.tr</a> üzerinden iletebilir. Resmî başvuru kanalları, doğrulanmış şirket bilgileri eklendiğinde ayrıca güncellenmelidir.</p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

@@ -46,8 +46,8 @@ export const applicationAreas: ApplicationArea[] = [
     seoTitle: 'Etkinlik ve Sahne LED Ekran Çözümleri | LEDKASA',
     seoDescription:
       'Etkinlik ve sahne LED ekranlarında rental kabinet, güç ve veri bağlantısı seçiminde dikkat edilmesi gerekenleri inceleyin.',
-    image: '/assets/images/products/rental-led-kabinet.png',
-    imageAlt: 'Etkinlik ve sahne uygulamalarına yönelik rental LED kabinet',
+    image: '/assets/images/editorial/event-stage.webp',
+    imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
     sections: [
       {
         heading: 'Kurulum akışını bir bütün olarak ele alın',
@@ -79,8 +79,8 @@ export const applicationAreas: ApplicationArea[] = [
     seoTitle: 'Mağaza ve Showroom LED Ekran Çözümleri | LEDKASA',
     seoDescription:
       'Mağaza, showroom ve karşılama alanları için poster LED kasa ve bağlantı ekipmanı seçeneklerini keşfedin.',
-    image: '/assets/images/products/poster-led-kasa.png',
-    imageAlt: 'Mağaza ve showroom uygulamalarına yönelik poster LED kasa',
+    image: '/assets/images/editorial/retail-digital-signage.webp',
+    imageAlt: 'Dijital ekranların kullanıldığı modern mağaza içi sergileme alanı',
     sections: [
       {
         heading: 'Ekranı mekânın dolaşımına yerleştirin',
@@ -111,8 +111,8 @@ export const applicationAreas: ApplicationArea[] = [
     seoTitle: 'Kurumsal ve Reklam LED Ekran Çözümleri | LEDKASA',
     seoDescription:
       'Kurumsal alanlar ve reklam uygulamaları için CNC LED kasa, kapaksız kabinet ve bağlantı çözümlerini inceleyin.',
-    image: '/assets/images/products/cnc-led-kasa.png',
-    imageAlt: 'Kurumsal ve reklam uygulamalarına yönelik CNC LED kasa',
+    image: '/assets/images/editorial/electronics-workshop.webp',
+    imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
       {
         heading: 'Sabit kurulum koşullarını netleştirin',
@@ -144,8 +144,8 @@ export const articles: Article[] = [
     excerpt: 'Kullanım alanı, kurulum biçimi, erişim yönü ve bağlantı düzeni üzerinden doğru kasa ailesini belirlemek için pratik bir çerçeve.',
     seoTitle: 'LED Ekran Kasası Nasıl Seçilir? | LEDKASA',
     seoDescription: 'LED ekran kasası seçerken kullanım alanı, sabit veya rental kurulum, erişim ve bağlantı planında dikkat edilecek noktalar.',
-    image: '/assets/images/categories/led-ekran-kasalari.png',
-    imageAlt: 'Farklı kullanım senaryolarına yönelik LED ekran kasaları',
+    image: '/assets/images/editorial/electronics-workshop.webp',
+    imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
       {
         heading: 'Önce kullanım senaryosunu tanımlayın',
@@ -180,8 +180,8 @@ export const articles: Article[] = [
     excerpt: 'Rental kabinetlerle oluşturulan geçici ekranlarda yerleşim, bağlantı sırası ve kurulum akışını teklif öncesinde planlayın.',
     seoTitle: 'Rental LED Ekran Kurulum Rehberi | LEDKASA',
     seoDescription: 'Rental LED ekran kurulumunda kabinet yerleşimi, güç ve veri bağlantı düzeni için planlama adımlarını inceleyin.',
-    image: '/assets/images/products/rental-led-kabinet.png',
-    imageAlt: 'Rental LED ekran kurulumunda kullanılan modüler kabinet',
+    image: '/assets/images/editorial/event-stage.webp',
+    imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
     sections: [
       {
         heading: 'Ekran yerleşimini kurulumdan önce tarif edin',
@@ -211,8 +211,8 @@ export const articles: Article[] = [
     excerpt: 'Dikey poster ekranları mağaza, showroom, karşılama ve kurumsal iletişim noktalarında konumlandırırken dikkate alınacak başlıklar.',
     seoTitle: 'Poster LED Ekran Kullanım Alanları | LEDKASA',
     seoDescription: 'Poster LED ekranların mağaza, showroom, fuaye ve kurumsal alanlardaki kullanım senaryolarını keşfedin.',
-    image: '/assets/images/products/katlanabilir-poster-led-kasa.png',
-    imageAlt: 'Dikey iletişim alanları için katlanabilir poster LED kasa',
+    image: '/assets/images/editorial/retail-digital-signage.webp',
+    imageAlt: 'Dijital ekranların kullanıldığı modern mağaza içi sergileme alanı',
     sections: [
       {
         heading: 'Dikey içeriğin öne çıktığı noktalar',
@@ -239,8 +239,8 @@ export const articles: Article[] = [
     excerpt: 'LED ekran sistemlerinde güç, veri ve modül bağlantılarını proje yerleşimiyle birlikte ele almak için temel planlama adımları.',
     seoTitle: 'LED Ekran Kablolama Rehberi | LEDKASA',
     seoDescription: 'LED ekran kablolamasında Cat6, Power Plug, flat kablo ve Cable Set seçimlerini planlama yaklaşımıyla inceleyin.',
-    image: '/assets/images/categories/guc-ve-baglanti-ekipmanlari.png',
-    imageAlt: 'LED ekran güç ve veri bağlantı ekipmanları',
+    image: '/assets/images/editorial/electronics-workshop.webp',
+    imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
       {
         heading: 'Bağlantıları işlevine göre ayırın',
@@ -269,8 +269,8 @@ export const articles: Article[] = [
     excerpt: 'Üç kasa yaklaşımını sabit kurulum, erişim ve geçici kullanım eksenlerinde karşılaştırarak başlangıç seçiminizi daraltın.',
     seoTitle: 'CNC, Kapaksız ve Rental Kabinet Karşılaştırması | LEDKASA',
     seoDescription: 'CNC LED kasa, kapaksız LED kabinet ve rental LED kabinet arasındaki kullanım odaklı farkları karşılaştırın.',
-    image: '/assets/images/products/kapaksiz-led-kabinet.png',
-    imageAlt: 'CNC, kapaksız ve rental LED kabinet seçimlerini temsil eden kasa',
+    image: '/assets/images/editorial/electronics-workshop.webp',
+    imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
       {
         heading: 'CNC LED kasa ne zaman değerlendirilir?',

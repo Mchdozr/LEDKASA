@@ -19,7 +19,7 @@ const {
   title,
   description,
   canonical = Astro.url.pathname,
-  image = '/assets/images/categories/led-ekran-kasalari.png',
+  image = '/assets/images/categories/led-ekran-kasalari.webp',
   schema = [],
   noindex = false,
   bodyClass = '',
@@ -57,6 +57,8 @@ const structuredData = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#101613" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}

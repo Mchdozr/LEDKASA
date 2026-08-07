@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteCta from '../components/QuoteCta.astro';
+import { businessContact, siteUrl } from '../data/site';
+
+const title = 'İletişim | LEDKASA';
+const description = 'LED ekran kasa, kabinet ve bağlantı ekipmanı projeleriniz için LEDKASA ile iletişime geçin veya teklif talebi gönderin.';
+const canonical = '/iletisim/';
+const schema = {
+  '@type': 'ContactPage',
+  '@id': `${siteUrl}${canonical}#contact`,
+  url: `${siteUrl}${canonical}`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'İletişim' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Projeyi birlikte netleştirelim</span>
+    <h1>LEDKASA ile iletişime geçin</h1>
+    <p>Ürün grubu, kullanım alanı ve kurulum biçimini paylaşın; kapsamı teklif sürecinde birlikte değerlendirelim.</p>
+  </header>
+  <section class="story-section shell" aria-labelledby="contact-heading">
+    <div class="story-statement">
+      <span class="eyebrow">E-posta</span>
+      <h2 id="contact-heading"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></h2>
+    </div>
+    <div class="story-copy">
+      <p>Teklif formunda ürün seçimi, firma bilgisi ve proje detaylarını tek yerde paylaşabilirsiniz. Doğrulanmış telefon ve fiziksel konum bilgileri hazır olduğunda bu sayfa güncellenecektir.</p>
+      <a class="button" href="/teklif-al/">Teklif formuna geçin <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <QuoteCta title="LED ekran projenizi değerlendirmeye başlayalım." />
+</BaseLayout>
