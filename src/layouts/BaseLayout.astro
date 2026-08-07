@@ -1,0 +1,105 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import { businessContact, organizationLogo, siteUrl } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  imageAlt?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  bodyClass?: string;
+  openGraphType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  image = '/assets/images/categories/led-ekran-kasalari.webp',
+  imageAlt = 'LEDKASA LED ekran kasa ve bağlantı çözümleri',
+  schema = [],
+  noindex = false,
+  bodyClass = '',
+  openGraphType = 'website',
+} = Astro.props;
+
+const canonicalUrl = new URL(canonical, siteUrl).toString();
+const socialImage = new URL(image, siteUrl).toString();
+const logoUrl = new URL(organizationLogo, siteUrl).toString();
+const pageSchemas = Array.isArray(schema) ? schema : [schema];
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'LEDKASA',
+      url: `${siteUrl}/`,
+      email: businessContact.email,
+      logo: logoUrl,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        email: businessContact.email,
+        telephone: businessContact.phoneTel,
+        availableLanguage: ['Turkish'],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: `${siteUrl}/`,
+      name: 'LEDKASA',
+      inLanguage: 'tr-TR',
+      publisher: { '@id': `${siteUrl}/#organization` },
+    },
+    ...pageSchemas,
+  ],
+};
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101613" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="tr-TR" href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+    <meta property="og:type" content={openGraphType} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="LEDKASA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main-content">Ana içeriğe geç</a>
+    <Header currentPath={Astro.url.pathname} />
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline src="/site.js" defer></script>
+  </body>
+</html>

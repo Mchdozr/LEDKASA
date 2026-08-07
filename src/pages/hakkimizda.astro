@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteCta from '../components/QuoteCta.astro';
+import { businessContact, siteUrl } from '../data/site';
+
+const title = 'Hakkımızda ve Çalışma Yaklaşımımız | LEDKASA';
+const description = 'LEDKASA’nın LED ekran kasaları ve bağlantı ekipmanları için proje odaklı değerlendirme yaklaşımını tanıyın.';
+const schema = {
+  '@type': 'AboutPage',
+  '@id': `${siteUrl}/hakkimizda/#about`,
+  url: `${siteUrl}/hakkimizda/`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/hakkimizda/" image="/assets/images/editorial/electronics-workshop.webp" schema={schema}>
+  <Breadcrumbs items={[{ label: 'Hakkımızda' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">LEDKASA</span>
+    <h1>Projeyi anlayan ürün yaklaşımı</h1>
+    <p>LED ekran kasaları ile güç ve bağlantı ekipmanlarını; kullanım alanı, kurulum biçimi ve proje kapsamı üzerinden değerlendiren bir ürün platformuyuz.</p>
+  </header>
+
+  <section class="story-section shell" aria-labelledby="approach-heading">
+    <div class="story-statement" data-reveal>
+      <span class="eyebrow">Neye odaklanıyoruz?</span>
+      <h2>Ürün seçimini açık bir proje çerçevesine dönüştürmek.</h2>
+    </div>
+    <div class="story-copy" data-reveal>
+      <p>LED ekran projesinde kasa seçimi; yalnızca bir model adı belirlemekten ibaret değildir. Ekranın nerede kullanılacağı, nasıl kurulacağı, erişim yönü ve bağlantı yapısı birlikte düşünülmelidir.</p>
+      <p>LEDKASA, bu başlıkları ürün kataloğu ve teklif süreci içinde anlaşılır hâle getirmeyi amaçlar. Ürün kapsamı, fiyat ve teknik uyumluluk paylaşılan proje bilgilerine göre değerlendirilir.</p>
+    </div>
+  </section>
+
+  <section class="home-section approach-band" aria-labelledby="working-heading">
+    <div class="shell">
+      <div class="section-heading section-heading-light">
+        <div><span class="eyebrow">Nasıl ilerliyoruz?</span><h2 id="working-heading">Çalışma yaklaşımımız</h2></div>
+        <p>İhtiyaçtan başlayıp ürün kapsamına ulaşan sade bir değerlendirme akışı.</p>
+      </div>
+      <div class="value-grid value-grid-dark">
+        <article data-reveal><span>01</span><h3>Dinle</h3><p>Kullanım alanını, kurulum biçimini ve talep edilen ürün grubunu öğren.</p></article>
+        <article data-reveal><span>02</span><h3>Karşılaştır</h3><p>Kasa aileleri ile güç ve bağlantı seçeneklerini proje koşullarına göre değerlendir.</p></article>
+        <article data-reveal><span>03</span><h3>Netleştir</h3><p>Ürün kapsamını teklif aşamasında açık ve incelenebilir hâle getir.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section shell" aria-labelledby="principles-heading">
+    <div class="section-heading"><div><span class="eyebrow">Temel ilkeler</span><h2 id="principles-heading">Bilgiye dayalı seçim</h2></div></div>
+    <div class="principle-list">
+      <article data-reveal><h3>Bağlama uygun ürün</h3><p>Tek bir ürünü her proje için varsaymak yerine kullanım senaryosuna göre seçenekleri daraltırız.</p></article>
+      <article data-reveal><h3>Şeffaf kapsam</h3><p>Fiyat, stok veya uyumluluk konusunda proje bilgisi olmadan kesin ifade kullanmayız.</p></article>
+      <article data-reveal><h3>Bütünlüklü planlama</h3><p>Kasa ile güç, veri ve modül bağlantılarını aynı sistemin parçaları olarak ele alırız.</p></article>
+      <article data-reveal><h3>Ulaşılabilir iletişim</h3><p>Proje özetinizi <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a> adresinden veya teklif formundan paylaşabilirsiniz.</p></article>
+    </div>
+  </section>
+  <QuoteCta />
+</BaseLayout>

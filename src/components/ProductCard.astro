@@ -1,0 +1,34 @@
+---
+import type { Product } from '../data/site';
+
+interface Props {
+  product: Product;
+  priority?: boolean;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { product, priority = false, headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}`;
+---
+
+<article class="product-card" data-reveal>
+  <a class="product-card-media" href={product.url} tabindex="-1" aria-hidden="true">
+    <img
+      src={product.image}
+      alt=""
+      width="800"
+      height="800"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+    <span class="product-card-arrow" aria-hidden="true">↗</span>
+  </a>
+  <div class="product-card-body">
+    <Heading><a href={product.url}>{product.name}</a></Heading>
+    <p>{product.shortDescription}</p>
+    <a class="text-link" href={product.url} aria-label={`${product.name} ürününü incele`}>
+      Ürünü incele <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

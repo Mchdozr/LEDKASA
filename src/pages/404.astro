@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Sayfa Bulunamadı | LEDKASA';
+const description = 'Aradığınız LEDKASA sayfası bulunamadı. Ürün kataloğuna dönün veya proje teklifinizi paylaşın.';
+---
+
+<BaseLayout title={title} description={description} canonical="/404/" noindex bodyClass="error-page">
+  <section class="content-hero shell" aria-labelledby="not-found-title">
+    <span class="eyebrow">404 · Sayfa bulunamadı</span>
+    <h1 id="not-found-title">Aradığınız sayfa bulunamadı</h1>
+    <p>Bağlantı değişmiş veya sayfa kaldırılmış olabilir. LED ekran kasa ve bağlantı ekipmanlarını inceleyebilir ya da proje kapsamınızı bize iletebilirsiniz.</p>
+    <div class="hero-actions">
+      <a class="button" href="/urunler/">Ürünleri inceleyin <span aria-hidden="true">→</span></a>
+      <a class="button button-outline" href="/teklif-al/">Teklif alın</a>
+    </div>
+  </section>
+</BaseLayout>

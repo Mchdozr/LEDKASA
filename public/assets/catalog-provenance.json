@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "publicPath": "/assets/images/products/cnc-led-kasa.webp",
+      "sourceFile": "assets/cnc-kasa.png",
+      "origin": "original-project-render",
+      "sha256": "462822c8dbb0479f5a805a1626130d20238f07418f50267aad1fcf15a4f32bb6"
+    },
+    {
+      "publicPath": "/assets/images/products/kapaksiz-led-kabinet.webp",
+      "sourceFile": "assets/kapaksiz-kabinet.png",
+      "origin": "original-project-render",
+      "sha256": "1ab952c729fa8499874d4e9467723b1dc609db7787847fc05cce54693dadf6a3"
+    },
+    {
+      "publicPath": "/assets/images/products/rental-led-kabinet.webp",
+      "sourceFile": "assets/rental-kabinet.png",
+      "origin": "original-project-render",
+      "sha256": "978861179c1a2efb41e8aa0dc801a1e6892fb80c61f50cfc59a8631cb4c0529f"
+    },
+    {
+      "publicPath": "/assets/images/products/poster-led-kasa.webp",
+      "sourceFile": "assets/poster-kasa.png",
+      "origin": "original-project-render",
+      "sha256": "5e9eecdb95eb9c234f668b4179ac22046e4c160013c21c6c52eb670b1d72af00"
+    },
+    {
+      "publicPath": "/assets/images/products/katlanabilir-poster-led-kasa.webp",
+      "sourceFile": "assets/katlanabilir-poster-kasa.png",
+      "origin": "original-project-render",
+      "sha256": "156f53eda935b8c1b7966c2d451b130fbb972c963de4d4af28fbde45b5e7fa03"
+    },
+    {
+      "publicPath": "/assets/images/products/cat6-kablo.webp",
+      "sourceFile": "assets/generated/cat6-cable-source.png",
+      "origin": "original-project-render",
+      "sha256": "5550c2905c96e511ec75cb4f0eae42e145fbe5253de2288094abf5c7d9f17bc3",
+      "generation": {
+        "tool": "OpenAI built-in image_gen",
+        "date": "2026-08-07",
+        "inputImages": [],
+        "promptSummary": "Generic black Cat6 Ethernet cable coil with RJ45 connectors on a neutral studio background; no logos or text."
+      }
+    },
+    {
+      "publicPath": "/assets/images/products/power-plug.webp",
+      "sourceFile": "assets/generated/power-plug-source.png",
+      "origin": "original-project-render",
+      "sha256": "d592e5387e8125a113a9ed53dc875af1163c296ab592c380a36da8d083584620",
+      "generation": {
+        "tool": "OpenAI built-in image_gen",
+        "date": "2026-08-07",
+        "inputImages": [],
+        "promptSummary": "Generic black and blue locking power connector pair on a neutral studio background; no logos or text."
+      }
+    },
+    {
+      "publicPath": "/assets/images/products/flat-kablo.webp",
+      "sourceFile": "assets/generated/flat-cable-source.png",
+      "origin": "original-project-render",
+      "sha256": "a40bb237c15d2dd3a21d17a3346163c24799fb6055556317cd2217cd0e06c4c7",
+      "generation": {
+        "tool": "OpenAI built-in image_gen",
+        "date": "2026-08-07",
+        "inputImages": [],
+        "promptSummary": "Gray ribbon cable with red edge and generic black IDC connectors on a neutral studio background; no logos or text."
+      }
+    },
+    {
+      "publicPath": "/assets/images/products/cable-set.webp",
+      "sourceFile": "assets/generated/cable-set-source.png",
+      "origin": "original-project-render",
+      "sha256": "1bb6c7e406ad879ee71b327179477f3d19f8b7e9926dfb6dd87c1035d666bef9",
+      "generation": {
+        "tool": "OpenAI built-in image_gen",
+        "date": "2026-08-07",
+        "inputImages": [],
+        "promptSummary": "Coordinated cable kit with Ethernet, locking power and flat ribbon cables on a neutral studio background; no logos or text."
+      }
+    },
+    {
+      "publicPath": "/assets/images/categories/led-ekran-kasalari.webp",
+      "sourceFile": "assets/cnc-kasa.png",
+      "origin": "original-project-render",
+      "sha256": "462822c8dbb0479f5a805a1626130d20238f07418f50267aad1fcf15a4f32bb6"
+    },
+    {
+      "publicPath": "/assets/images/categories/guc-ve-baglanti-ekipmanlari.webp",
+      "sourceFile": "assets/generated/cable-set-source.png",
+      "origin": "original-project-render",
+      "sha256": "1bb6c7e406ad879ee71b327179477f3d19f8b7e9926dfb6dd87c1035d666bef9"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import { productCategories, products, siteUrl } from '../../data/site';
+
+const title = 'LED Ekran Ürün Kataloğu | LEDKASA';
+const description = 'LED ekran kasaları, kabinetler, kablolar ve bağlantı ekipmanlarını keşfedin; projenize uygun çözüm için teklif alın.';
+const schema = {
+  '@type': 'CollectionPage',
+  '@id': `${siteUrl}/urunler/#collection`,
+  name: 'LED Ekran Ürünleri',
+  url: `${siteUrl}/urunler/`,
+  inLanguage: 'tr-TR',
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: products.length,
+    itemListElement: products.map((product, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: product.canonicalUrl,
+      name: product.name,
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/urunler/" schema={schema}>
+  <Breadcrumbs items={[{ label: 'Ürünler' }]} />
+
+  <header class="catalog-hero shell">
+    <span class="eyebrow">Ürün kataloğu</span>
+    <h1>LED Ekran Ürünleri</h1>
+    <p>Kasadan bağlantı altyapısına, LED ekran projenizin temel parçalarını tek bir katalogda inceleyin.</p>
+  </header>
+
+  <section class="category-showcase shell" aria-labelledby="category-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">İki ürün ailesi</span>
+        <h2 id="category-heading">İhtiyacınıza göre başlayın</h2>
+      </div>
+      <p>Uygulama tipinize uygun kasa çözümünü ve sistem için gereken bağlantı ekipmanlarını birlikte değerlendirin.</p>
+    </div>
+    <div class="category-grid">
+      {productCategories.map((category) => (
+        <a class="category-card" href={category.url} data-reveal>
+          <img src={category.image} alt={category.imageAlt} width="800" height="800" loading="eager" decoding="async" />
+          <span class="category-card-shade"></span>
+          <span class="category-card-content">
+            <small>{String(category.products.length).padStart(2, '0')} ürün</small>
+            <strong>{category.name}</strong>
+            <span>{category.description}</span>
+            <i aria-hidden="true">→</i>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="product-section shell" aria-labelledby="all-products-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Tüm çözümler</span>
+        <h2 id="all-products-heading">Ürünleri keşfedin</h2>
+      </div>
+      <p>Fiyat ve teknik uyumluluk, proje ayrıntıları değerlendirildikten sonra tekliflendirilir.</p>
+    </div>
+    <div class="product-grid">
+      {products.map((product, index) => <ProductCard product={product} priority={index < 3} headingLevel={3} />)}
+    </div>
+  </section>
+
+  <QuoteCta />
+</BaseLayout>
