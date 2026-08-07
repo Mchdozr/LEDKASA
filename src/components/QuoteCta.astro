@@ -1,0 +1,23 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+  product?: string;
+}
+
+const {
+  title = 'Projenizi birlikte netleştirelim.',
+  text = 'Kullanım alanınızı ve ihtiyacınızı paylaşın; doğru ürün grubunu belirleyip projenize özel teklif hazırlayalım.',
+  product,
+} = Astro.props;
+const quoteUrl = product ? `/teklif-al/?urun=${encodeURIComponent(product)}` : '/teklif-al/';
+---
+
+<aside class="quote-cta shell" aria-labelledby="quote-cta-title" data-reveal>
+  <div>
+    <span class="eyebrow">Projenize özel</span>
+    <h2 id="quote-cta-title">{title}</h2>
+    <p>{text}</p>
+  </div>
+  <a class="button" href={quoteUrl}>Teklif isteyin <span aria-hidden="true">→</span></a>
+</aside>

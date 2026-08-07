@@ -1,0 +1,73 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import QuoteCta from '../../../components/QuoteCta.astro';
+import { productCategories, siteUrl, type ProductCategory } from '../../../data/site';
+
+export const getStaticPaths = (() =>
+  productCategories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  category: ProductCategory;
+}
+
+const { category } = Astro.props;
+const title = `${category.name} | LEDKASA`;
+const description = `${category.description} Projenize uygun ürünleri inceleyin ve LEDKASA’dan teklif alın.`;
+const schema = {
+  '@type': 'CollectionPage',
+  '@id': `${category.canonicalUrl}#collection`,
+  name: category.name,
+  description,
+  url: category.canonicalUrl,
+  inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: category.products.length,
+    itemListElement: category.products.map((product, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: product.name,
+      url: product.canonicalUrl,
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description} canonical={category.url} image={category.image} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Ürünler', url: '/urunler/' }, { label: category.name }]} />
+
+  <header class="category-hero shell">
+    <div class="category-hero-copy">
+      <span class="eyebrow">Ürün kategorisi</span>
+      <h1>{category.name}</h1>
+      <p>{category.description}</p>
+      <a class="button" href="/teklif-al/">Projeniz için teklif alın</a>
+    </div>
+    <div class="category-hero-media" data-reveal>
+      <span aria-hidden="true">0{category.products.length}</span>
+      <img src={category.image} alt={category.imageAlt} width="800" height="800" decoding="async" fetchpriority="high" />
+    </div>
+  </header>
+
+  <section class="product-section shell" aria-labelledby="category-products-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Katalog</span>
+        <h2 id="category-products-heading">{category.shortName} ürünleri</h2>
+      </div>
+      <p>Ürün detaylarını inceleyin; proje kapsamınıza uygun seçenekleri teklif aşamasında birlikte netleştirelim.</p>
+    </div>
+    <div class="product-grid">
+      {category.products.map((product, index) => <ProductCard product={product} priority={index < 3} />)}
+    </div>
+  </section>
+
+  <QuoteCta title={`${category.shortName} için doğru çözümü belirleyelim.`} />
+</BaseLayout>
