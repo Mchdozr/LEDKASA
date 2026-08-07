@@ -43,6 +43,35 @@ test('every category and product canonical URL is absolute and stable', () => {
   }
 });
 
+test('catalog exposes one shared root-relative navigation tree', () => {
+  assert.deepEqual(
+    productCategories.map((category) => category.url),
+    ['/urunler/led-ekran-kasalari/', '/urunler/guc-ve-baglanti-ekipmanlari/'],
+  );
+
+  assert.deepEqual(
+    productCategories.flatMap((category) => category.products.map((product) => product.url)).sort(),
+    [
+      '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/',
+      '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/',
+      '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/',
+      '/urunler/guc-ve-baglanti-ekipmanlari/power-plug/',
+      '/urunler/led-ekran-kasalari/cnc-led-kasa/',
+      '/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/',
+      '/urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa/',
+      '/urunler/led-ekran-kasalari/poster-led-kasa/',
+      '/urunler/led-ekran-kasalari/rental-led-kabinet/',
+    ],
+  );
+
+  for (const category of productCategories) {
+    assert.ok(category.url.startsWith('/'));
+    assert.equal(category.url.startsWith('//'), false);
+    assert.ok(category.products.length > 0);
+    assert.ok(category.products.every((product) => product.categorySlug === category.slug));
+  }
+});
+
 test('every catalog image resolves to a committed local public asset', () => {
   const catalogImages = [...productCategories, ...products].map((entry) => entry.image);
 

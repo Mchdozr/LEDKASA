@@ -3,7 +3,7 @@ import { productCategories } from '../data/site';
 
 const categoryLinks = productCategories.map((category) => ({
   name: category.name,
-  url: new URL(category.canonicalUrl).pathname,
+  url: category.url,
 }));
 const year = new Date().getFullYear();
 ---

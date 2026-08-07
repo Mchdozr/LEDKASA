@@ -42,15 +42,23 @@
 
   const mobileToggle = header.querySelector('[data-mobile-toggle]');
   const mobileNav = header.querySelector('[data-mobile-nav]');
+  let previousMobileFocus = null;
 
-  const setMobileOpen = (open, returnFocus = false) => {
+  const setMobileOpen = (open, restoreFocus = false) => {
     if (!mobileToggle || !mobileNav) return;
+    if (open && mobileToggle.getAttribute('aria-expanded') !== 'true') {
+      previousMobileFocus = document.activeElement;
+    }
     mobileToggle.setAttribute('aria-expanded', String(open));
     mobileToggle.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
     mobileNav.hidden = !open;
     document.body.classList.toggle('nav-open', open);
     if (open) mobileNav.querySelector(focusableSelector)?.focus();
-    if (returnFocus) mobileToggle.focus();
+    if (!open) {
+      const focusTarget = previousMobileFocus;
+      previousMobileFocus = null;
+      if (restoreFocus) focusTarget?.focus?.();
+    }
   };
 
   mobileToggle?.addEventListener('click', () => {
@@ -68,6 +76,21 @@
   });
 
   document.addEventListener('keydown', (event) => {
+    if (event.key === 'Tab' && mobileToggle?.getAttribute('aria-expanded') === 'true' && mobileNav) {
+      const focusableItems = [mobileToggle, ...mobileNav.querySelectorAll(focusableSelector)];
+      const firstItem = focusableItems[0];
+      const lastItem = focusableItems.at(-1);
+      const focusIsOutside = !focusableItems.includes(document.activeElement);
+
+      if (event.shiftKey && (document.activeElement === firstItem || focusIsOutside)) {
+        event.preventDefault();
+        lastItem?.focus();
+      } else if (!event.shiftKey && (document.activeElement === lastItem || focusIsOutside)) {
+        event.preventDefault();
+        firstItem?.focus();
+      }
+      return;
+    }
     if (event.key !== 'Escape') return;
     if (megaToggle?.getAttribute('aria-expanded') === 'true') setMegaOpen(false, true);
     if (mobileToggle?.getAttribute('aria-expanded') === 'true') setMobileOpen(false, true);
@@ -83,13 +106,19 @@
   if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));
   } else {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    revealItems.forEach((item) => revealObserver.observe(item));
+    try {
+      document.documentElement.classList.add('js-ready');
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } catch {
+      document.documentElement.classList.remove('js-ready');
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
   }
 })();

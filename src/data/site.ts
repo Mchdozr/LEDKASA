@@ -5,9 +5,11 @@ export interface ProductCategory {
   name: string;
   shortName: string;
   description: string;
+  url: string;
   canonicalUrl: string;
   image: string;
   imageAlt: string;
+  products: Product[];
 }
 
 export interface Product {
@@ -26,6 +28,7 @@ export interface Product {
   shortDescription: string;
   description: string;
   highlights: string[];
+  url: string;
   image: string;
   imageAlt: string;
   canonicalUrl: string;
@@ -33,31 +36,10 @@ export interface Product {
   seoDescription: string;
 }
 
+const categoryPath = (slug: ProductCategory['slug']) => `/urunler/${slug}/`;
 const productPath = (categorySlug: ProductCategory['slug'], slug: Product['slug']) =>
-  `${siteUrl}/urunler/${categorySlug}/${slug}/`;
-
-export const productCategories: ProductCategory[] = [
-  {
-    slug: 'led-ekran-kasalari',
-    name: 'LED Ekran Kasaları',
-    shortName: 'LED Kasalar',
-    description:
-      'Sabit kurulum, rental kullanım ve poster ekran projeleri için LED ekran kasa çözümleri.',
-    canonicalUrl: `${siteUrl}/urunler/led-ekran-kasalari/`,
-    image: '/assets/images/categories/led-ekran-kasalari.png',
-    imageAlt: 'LED ekran kasa sistemleri',
-  },
-  {
-    slug: 'guc-ve-baglanti-ekipmanlari',
-    name: 'Güç ve Bağlantı Ekipmanları',
-    shortName: 'Bağlantı Ekipmanları',
-    description:
-      'LED ekran sistemlerinde düzenli güç ve sinyal altyapısı kurmak için bağlantı ekipmanları.',
-    canonicalUrl: `${siteUrl}/urunler/guc-ve-baglanti-ekipmanlari/`,
-    image: '/assets/images/categories/guc-ve-baglanti-ekipmanlari.png',
-    imageAlt: 'LED ekran bağlantı ekipmanları',
-  },
-];
+  `${categoryPath(categorySlug)}${slug}/`;
+const canonicalPath = (path: string) => `${siteUrl}${path}`;
 
 export const products: Product[] = [
   {
@@ -68,9 +50,10 @@ export const products: Product[] = [
     description:
       'CNC LED Kasa, sabit LED ekran projelerinde sistemin düzenli, sağlam ve profesyonel görünmesini destekleyen kasa çözümüdür.',
     highlights: ['Sabit kurulum projelerine uygun', 'Düzenli kabin mimarisi', 'Teklif odaklı proje planlaması'],
+    url: productPath('led-ekran-kasalari', 'cnc-led-kasa'),
     image: '/assets/images/products/cnc-led-kasa.png',
     imageAlt: 'CNC üretim LED ekran kasası',
-    canonicalUrl: productPath('led-ekran-kasalari', 'cnc-led-kasa'),
+    canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'cnc-led-kasa')),
     seoTitle: 'CNC LED Kasa | LEDKASA',
     seoDescription: 'Sabit LED ekran projeleri için CNC LED kasa çözümlerini LEDKASA ile inceleyin.',
   },
@@ -82,9 +65,10 @@ export const products: Product[] = [
     description:
       'Kapaksız LED Kabinet, proje yerleşimine göre erişilebilirlik ve yalın bir kasa yapısı sunmayı hedefleyen LED ekran uygulamaları için değerlendirilir.',
     highlights: ['Yalın kabin yapısı', 'Proje yerleşimine uyum', 'Teklif öncesi ihtiyaç analizi'],
+    url: productPath('led-ekran-kasalari', 'kapaksiz-led-kabinet'),
     image: '/assets/images/products/kapaksiz-led-kabinet.png',
     imageAlt: 'Kapaksız LED ekran kabineti',
-    canonicalUrl: productPath('led-ekran-kasalari', 'kapaksiz-led-kabinet'),
+    canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'kapaksiz-led-kabinet')),
     seoTitle: 'Kapaksız LED Kabinet | LEDKASA',
     seoDescription: 'Kapaksız LED kabinet seçeneklerini LED ekran projeniz için LEDKASA’da inceleyin.',
   },
@@ -96,9 +80,10 @@ export const products: Product[] = [
     description:
       'Rental LED Kabinet, etkinlik, sahne ve geçici kurulum senaryolarında modüler ekran sistemleri için planlanan kasa çözümüdür.',
     highlights: ['Etkinlik ve sahne projeleri', 'Modüler kurulum yaklaşımı', 'Teklif odaklı çözüm'],
+    url: productPath('led-ekran-kasalari', 'rental-led-kabinet'),
     image: '/assets/images/products/rental-led-kabinet.png',
     imageAlt: 'Rental kullanım için LED ekran kabineti',
-    canonicalUrl: productPath('led-ekran-kasalari', 'rental-led-kabinet'),
+    canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'rental-led-kabinet')),
     seoTitle: 'Rental LED Kabinet | LEDKASA',
     seoDescription: 'Etkinlik ve sahne projeleri için rental LED kabinet seçeneklerini LEDKASA’da inceleyin.',
   },
@@ -110,9 +95,10 @@ export const products: Product[] = [
     description:
       'Poster LED Kasa, mağaza, fuaye ve kurumsal alanlardaki dikey LED ekran uygulamalarının ihtiyaçlarına yönelik kasa çözümüdür.',
     highlights: ['Dikey ekran uygulamaları', 'Mağaza ve showroom kullanımı', 'Kurumsal proje desteği'],
+    url: productPath('led-ekran-kasalari', 'poster-led-kasa'),
     image: '/assets/images/products/poster-led-kasa.png',
     imageAlt: 'Dikey poster LED ekran kasası',
-    canonicalUrl: productPath('led-ekran-kasalari', 'poster-led-kasa'),
+    canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'poster-led-kasa')),
     seoTitle: 'Poster LED Kasa | LEDKASA',
     seoDescription: 'Poster LED ekran projeleri için kasa çözümlerini LEDKASA ile inceleyin.',
   },
@@ -124,9 +110,10 @@ export const products: Product[] = [
     description:
       'Katlanabilir Poster LED Kasa, farklı alanlarda değerlendirilmek üzere tasarlanan poster ekran projelerinde pratik yerleşim yaklaşımı sunar.',
     highlights: ['Esnek kullanım senaryoları', 'Poster ekran projeleri', 'Teklif öncesi proje değerlendirmesi'],
+    url: productPath('led-ekran-kasalari', 'katlanabilir-poster-led-kasa'),
     image: '/assets/images/products/katlanabilir-poster-led-kasa.png',
     imageAlt: 'Katlanabilir poster LED ekran kasası',
-    canonicalUrl: productPath('led-ekran-kasalari', 'katlanabilir-poster-led-kasa'),
+    canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'katlanabilir-poster-led-kasa')),
     seoTitle: 'Katlanabilir Poster LED Kasa | LEDKASA',
     seoDescription: 'Katlanabilir poster LED kasa çözümünü LEDKASA ile proje ihtiyaçlarınıza göre değerlendirin.',
   },
@@ -138,9 +125,10 @@ export const products: Product[] = [
     description:
       'Cat6 Kablo, LED ekran sistemlerinde planlı veri bağlantısı kurmak için kullanılan bağlantı ekipmanı alternatifidir.',
     highlights: ['Veri bağlantısı için', 'LED ekran sistemleriyle kullanım', 'Proje ihtiyacına göre teklif'],
+    url: productPath('guc-ve-baglanti-ekipmanlari', 'cat6-kablo'),
     image: '/assets/images/products/cat6-kablo.jpg',
     imageAlt: 'LED ekran sistemleri için Cat6 kablo',
-    canonicalUrl: productPath('guc-ve-baglanti-ekipmanlari', 'cat6-kablo'),
+    canonicalUrl: canonicalPath(productPath('guc-ve-baglanti-ekipmanlari', 'cat6-kablo')),
     seoTitle: 'Cat6 Kablo | LEDKASA',
     seoDescription: 'LED ekran veri bağlantısı için Cat6 kablo çözümlerini LEDKASA’da inceleyin.',
   },
@@ -152,9 +140,10 @@ export const products: Product[] = [
     description:
       'Power Plug, LED ekran sistemlerindeki güç bağlantısı kurgusuna uygun ekipman seçimi için sunulan ürün grubudur.',
     highlights: ['Güç bağlantısı için', 'Sistem kurgusuna uygun seçim', 'Teklif odaklı tedarik'],
+    url: productPath('guc-ve-baglanti-ekipmanlari', 'power-plug'),
     image: '/assets/images/products/power-plug.webp',
     imageAlt: 'LED ekran güç bağlantısı için power plug',
-    canonicalUrl: productPath('guc-ve-baglanti-ekipmanlari', 'power-plug'),
+    canonicalUrl: canonicalPath(productPath('guc-ve-baglanti-ekipmanlari', 'power-plug')),
     seoTitle: 'Power Plug | LEDKASA',
     seoDescription: 'LED ekran güç bağlantıları için Power Plug çözümlerini LEDKASA’da inceleyin.',
   },
@@ -166,9 +155,10 @@ export const products: Product[] = [
     description:
       'Flat Kablo, LED ekran sistemlerinde modül ve bileşen bağlantılarının proje düzenine göre planlanmasına yardımcı olan ekipman grubudur.',
     highlights: ['Düzenli bağlantı yerleşimi', 'LED modül sistemleri için', 'İhtiyaca göre teklif'],
+    url: productPath('guc-ve-baglanti-ekipmanlari', 'flat-kablo'),
     image: '/assets/images/products/flat-kablo.jpg',
     imageAlt: 'LED ekran modülleri için flat kablo',
-    canonicalUrl: productPath('guc-ve-baglanti-ekipmanlari', 'flat-kablo'),
+    canonicalUrl: canonicalPath(productPath('guc-ve-baglanti-ekipmanlari', 'flat-kablo')),
     seoTitle: 'Flat Kablo | LEDKASA',
     seoDescription: 'LED ekran modül bağlantıları için flat kablo seçeneklerini LEDKASA’da inceleyin.',
   },
@@ -180,13 +170,41 @@ export const products: Product[] = [
     description:
       'Cable Set, LED ekran sistemindeki bağlantı ihtiyaçlarını proje kapsamına göre bir arada değerlendirmek için sunulan kablo seti çözümüdür.',
     highlights: ['Birlikte planlanan bağlantı ekipmanları', 'Proje kapsamına göre seçim', 'Teklif odaklı çözüm'],
+    url: productPath('guc-ve-baglanti-ekipmanlari', 'cable-set'),
     image: '/assets/images/products/cable-set.png',
     imageAlt: 'LED ekran bağlantıları için kablo seti',
-    canonicalUrl: productPath('guc-ve-baglanti-ekipmanlari', 'cable-set'),
+    canonicalUrl: canonicalPath(productPath('guc-ve-baglanti-ekipmanlari', 'cable-set')),
     seoTitle: 'Cable Set | LEDKASA',
     seoDescription: 'LED ekran sistemleri için Cable Set çözümlerini LEDKASA ile proje ihtiyacınıza göre değerlendirin.',
   },
 ];
 
+export const productCategories: ProductCategory[] = [
+  {
+    slug: 'led-ekran-kasalari',
+    name: 'LED Ekran Kasaları',
+    shortName: 'LED Kasalar',
+    description:
+      'Sabit kurulum, rental kullanım ve poster ekran projeleri için LED ekran kasa çözümleri.',
+    url: categoryPath('led-ekran-kasalari'),
+    canonicalUrl: canonicalPath(categoryPath('led-ekran-kasalari')),
+    image: '/assets/images/categories/led-ekran-kasalari.png',
+    imageAlt: 'LED ekran kasa sistemleri',
+    products: products.filter((product) => product.categorySlug === 'led-ekran-kasalari'),
+  },
+  {
+    slug: 'guc-ve-baglanti-ekipmanlari',
+    name: 'Güç ve Bağlantı Ekipmanları',
+    shortName: 'Bağlantı Ekipmanları',
+    description:
+      'LED ekran sistemlerinde düzenli güç ve sinyal altyapısı kurmak için bağlantı ekipmanları.',
+    url: categoryPath('guc-ve-baglanti-ekipmanlari'),
+    canonicalUrl: canonicalPath(categoryPath('guc-ve-baglanti-ekipmanlari')),
+    image: '/assets/images/categories/guc-ve-baglanti-ekipmanlari.png',
+    imageAlt: 'LED ekran bağlantı ekipmanları',
+    products: products.filter((product) => product.categorySlug === 'guc-ve-baglanti-ekipmanlari'),
+  },
+];
+
 export const productsByCategory = (categorySlug: ProductCategory['slug']) =>
-  products.filter((product) => product.categorySlug === categorySlug);
+  productCategories.find((category) => category.slug === categorySlug)?.products ?? [];

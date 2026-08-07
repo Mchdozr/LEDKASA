@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-import { productCategories, products } from '../src/data/site.ts';
+import { productCategories } from '../src/data/site.ts';
 
 const headerSource = readFileSync(new URL('../src/components/Header.astro', import.meta.url), 'utf8');
 
@@ -13,7 +13,7 @@ test('shared navigation is driven by both catalog categories and all product det
   );
 
   assert.deepEqual(
-    products.map((product) => new URL(product.canonicalUrl).pathname).sort(),
+    productCategories.flatMap((category) => category.products.map((product) => product.url)).sort(),
     [
       '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/',
       '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/',
@@ -27,8 +27,14 @@ test('shared navigation is driven by both catalog categories and all product det
     ],
   );
 
+  assert.match(headerSource, /import \{ productCategories \} from ['"]\.\.\/data\/site['"]/);
+  assert.doesNotMatch(headerSource, /productsByCategory|new URL/);
   assert.match(headerSource, /productCategories\.map/);
-  assert.match(headerSource, /productsByCategory\(category\.slug\)/);
   assert.match(headerSource, /href=\{category\.url\}/);
   assert.match(headerSource, /href=\{product\.url\}/);
+});
+
+test('navigation marks only an exact URL match as the current page', () => {
+  assert.match(headerSource, /const isCurrent = \(url: string\) => currentPath === url;/);
+  assert.doesNotMatch(headerSource, /currentPath\.startsWith/);
 });
