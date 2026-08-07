@@ -205,6 +205,8 @@ p, h1, h2, h3 { margin-top: 0; }
 .direct-contact-label { margin: 0 0 .85rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .direct-contact-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 .direct-contact-actions .button { min-height: 2.9rem; padding: .65rem 1.1rem; font-size: .9rem; }
+.contact-channel-actions { margin-top: 1rem; }
+.contact-email-line { margin-top: 1.2rem; }
 .quote-steps { display: grid; gap: 1rem; margin: 2.2rem 0 0; padding: 0; list-style: none; }
 .quote-steps li { display: grid; grid-template-columns: 2.7rem 1fr; gap: 1rem; align-items: start; }
 .quote-steps li > span { width: 2.7rem; height: 2.7rem; display: grid; place-items: center; border: 1px solid rgba(16,22,19,.18); border-radius: 50%; color: var(--accent-on-light); font-size: .72rem; font-weight: 850; }

@@ -29,11 +29,11 @@ const schema = {
     <div class="story-statement">
       <span class="eyebrow">Doğrudan iletişim</span>
       <h2 id="contact-heading">{businessContact.phoneDisplay}</h2>
-      <div class="direct-contact-actions" style="margin-top:1rem">
+      <div class="direct-contact-actions contact-channel-actions">
         <a class="button" href={`tel:${businessContact.phoneTel}`}>Telefonla ara</a>
         <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </div>
-      <p style="margin-top:1.2rem"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></p>
+      <p class="contact-email-line"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></p>
     </div>
     <div class="story-copy">
       <p>Teklif formunda ürün seçimi, firma bilgisi ve proje detaylarını tek yerde paylaşabilirsiniz. Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
