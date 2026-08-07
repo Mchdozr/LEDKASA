@@ -58,6 +58,14 @@ test('homepage renders one heading and exactly three progressively enhanced, use
   assert.match(html, /Sık sorulan sorular/);
 });
 
+test('desktop hero reserves one stable frame height for every slide image', () => {
+  const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
+
+  assert.match(css, /--hero-slide-height:\s*clamp\(34rem,\s*62vw,\s*43rem\)/);
+  assert.match(css, /height:\s*var\(--hero-slide-height\)/);
+  assert.match(css, /\.hero-media\s*\{[^}]*height:\s*100%/s);
+});
+
 test('build emits all three application routes with unique canonical URLs and useful catalog links', () => {
   const titles = new Set();
 
