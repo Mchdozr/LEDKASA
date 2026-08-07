@@ -72,7 +72,14 @@ test('desktop header centers the primary navigation between the brand and quote 
   const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
 
   assert.match(css, /\.header-bar\s*\{[^}]*position:\s*relative/s);
-  assert.match(css, /\.desktop-nav\s*\{[^}]*left:\s*50%[^}]*transform:\s*translateX\(-50%\)/s);
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*64rem\)\s*\{[\s\S]*?\.header-bar\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto\s+minmax\(0,\s*1fr\)/s,
+  );
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*64rem\)\s*\{[\s\S]*?\.desktop-nav\s*\{[\s\S]*?justify-self:\s*center/s,
+  );
 });
 
 test('build emits all three application routes with unique canonical URLs and useful catalog links', () => {
