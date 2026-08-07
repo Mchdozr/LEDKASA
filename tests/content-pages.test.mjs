@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, test } from 'node:test';
@@ -38,12 +38,21 @@ after(() => rmSync(outputRoot, { recursive: true, force: true }));
 
 test('homepage renders one heading and exactly three progressively enhanced, user-controlled slides', () => {
   const html = builtHtml();
+  const slideMarkup = [...html.matchAll(/<article[^>]*data-hero-slide[^>]*>([\s\S]*?)<\/article>/g)];
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
-  assert.equal((html.match(/data-hero-slide\b/g) ?? []).length, 3);
-  assert.equal((html.match(/<img[^>]+src="\/assets\/images\/products\//g) ?? []).length >= 3, true);
+  assert.match(html, /<meta property="og:type" content="website">/);
+  assert.equal(slideMarkup.length, 3);
+  for (const [, slide] of slideMarkup) {
+    const imagePath = slide.match(/<img[^>]+src="(\/assets\/images\/products\/[^"]+)"/)?.[1];
+    assert.ok(imagePath, 'each hero slide must use a local product image');
+    assert.equal(existsSync(resolve(projectRoot, 'public', imagePath.slice(1))), true, `missing hero image: ${imagePath}`);
+  }
   assert.match(html, /data-hero-previous/);
   assert.match(html, /data-hero-next/);
   assert.match(html, /data-hero-pause/);
+  assert.match(html, /<div class="hero-track"[^>]*aria-live="off"/);
+  assert.match(html, /data-hero-announcement[^>]+aria-live="polite"/);
+  assert.doesNotMatch(html, /data-hero-status[^>]+aria-live="polite"/);
   assert.doesNotMatch(html, /data-hero-slide[^>]+hidden/);
   assert.match(html, /Projenizi üç adımda netleştirelim/);
   assert.match(html, /Sık sorulan sorular/);
@@ -69,21 +78,33 @@ test('build emits all three application routes with unique canonical URLs and us
 
 test('build emits five evergreen articles with unique metadata, breadcrumbs and contextual links', () => {
   const titles = new Set();
+  const descriptions = new Set();
 
   for (const [slug, heading] of articleRoutes) {
     const html = builtHtml(`bilgi-merkezi/${slug}`);
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
+    const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
+    const socialImage = html.match(/<meta property="og:image" content="https:\/\/ledkasa\.com\.tr(\/assets\/images\/[^"]+)"/)?.[1];
     assert.ok(title?.includes(heading), `missing title for ${slug}`);
+    assert.ok(description, `missing description for ${slug}`);
     assert.equal(titles.has(title), false, `duplicate title: ${title}`);
+    assert.equal(descriptions.has(description), false, `duplicate description: ${description}`);
     titles.add(title);
+    descriptions.add(description);
     assert.match(html, new RegExp(`<h1[^>]*>\\s*${heading.replace('?', '\\?')}\\s*</h1>`));
     assert.match(html, new RegExp(`https://ledkasa\\.com\\.tr/bilgi-merkezi/${slug}/`));
+    assert.match(html, /<meta property="og:type" content="article">/);
+    assert.match(html, /"@type":"Article"/);
+    assert.doesNotMatch(html, /"(?:datePublished|dateModified|author)"\s*:/);
+    assert.ok(socialImage, `missing local social image for ${slug}`);
+    assert.equal(existsSync(resolve(projectRoot, 'public', socialImage.slice(1))), true, `missing social image: ${socialImage}`);
     assert.match(html, /aria-label="Sayfa yolu"/);
     assert.match(html, /href="\/urunler\//);
     assert.match(html, /href="\/teklif-al\/"/);
   }
 
   assert.equal(titles.size, 5);
+  assert.equal(descriptions.size, 5);
 });
 
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {
@@ -99,18 +120,20 @@ test('corporate, discovery and FAQ pages publish evidence-neutral content and em
   assert.doesNotMatch(combinedHtml, /\+90\s*\(?\d{3}\)?|\b\d{3}[ .-]\d{3}[ .-]\d{2}[ .-]\d{2}\b/);
 });
 
-test('hero keeps automatic advancing disabled under reduced motion while manual controls remain available', () => {
+const bootHero = ({ reduced = false } = {}) => {
   const listeners = new Map();
   const makeElement = () => {
     const attributes = new Map();
     const elementListeners = new Map();
     return {
       hidden: false,
+      disabled: false,
       textContent: '',
       classList: { add() {}, remove() {}, toggle() {} },
       addEventListener(type, listener) { elementListeners.set(type, listener); },
-      dispatch(type) { elementListeners.get(type)?.({}); },
+      dispatch(type) { if (!this.disabled) elementListeners.get(type)?.({}); },
       getAttribute(name) { return attributes.get(name) ?? null; },
+      removeAttribute(name) { attributes.delete(name); },
       setAttribute(name, value) { attributes.set(name, String(value)); },
       matches() { return true; },
     };
@@ -121,6 +144,8 @@ test('hero keeps automatic advancing disabled under reduced motion while manual 
   const next = makeElement();
   const pause = makeElement();
   const status = makeElement();
+  const announcement = makeElement();
+  const track = makeElement();
   const hero = makeElement();
   hero.querySelectorAll = (selector) => selector === '[data-hero-slide]' ? slides : [];
   hero.querySelector = (selector) => ({
@@ -128,6 +153,8 @@ test('hero keeps automatic advancing disabled under reduced motion while manual 
     '[data-hero-next]': next,
     '[data-hero-pause]': pause,
     '[data-hero-status]': status,
+    '[data-hero-announcement]': announcement,
+    '[data-hero-track]': track,
   })[selector] ?? null;
 
   const header = makeElement();
@@ -136,7 +163,7 @@ test('hero keeps automatic advancing disabled under reduced motion while manual 
   header.contains = () => false;
 
   const reducedMotion = {
-    matches: true,
+    matches: reduced,
     addEventListener(type, listener) { if (type === 'change') listeners.set('motion', listener); },
   };
   const desktopMedia = { matches: false, addEventListener() {} };
@@ -154,9 +181,10 @@ test('hero keeps automatic advancing disabled under reduced motion while manual 
     querySelectorAll() { return []; },
   };
   let intervalStarts = 0;
+  let intervalCallback;
   const window = {
-    clearInterval() {},
-    setInterval() { intervalStarts += 1; return 1; },
+    clearInterval() { intervalCallback = undefined; },
+    setInterval(callback) { intervalStarts += 1; intervalCallback = callback; return 1; },
     matchMedia(query) {
       return query.includes('prefers-reduced-motion') ? reducedMotion : desktopMedia;
     },
@@ -165,12 +193,66 @@ test('hero keeps automatic advancing disabled under reduced motion while manual 
   const script = readFileSync(resolve(projectRoot, 'public', 'site.js'), 'utf8');
   vm.runInNewContext(script, { document, window });
 
-  assert.deepEqual(slides.map((slide) => slide.hidden), [false, true, true]);
-  assert.equal(pause.getAttribute('aria-pressed'), 'true');
-  assert.equal(intervalStarts, 0);
+  return {
+    announcement,
+    intervalStarts: () => intervalStarts,
+    next,
+    pause,
+    previous,
+    runAutoplay: () => intervalCallback?.(),
+    slides,
+    status,
+    track,
+  };
+};
 
-  next.dispatch('click');
-  assert.deepEqual(slides.map((slide) => slide.hidden), [true, false, true]);
-  assert.equal(status.textContent, '2 / 3');
-  assert.equal(intervalStarts, 0);
+test('hero autoplay changes the visible counter without generating a live-region announcement', () => {
+  const hero = bootHero();
+
+  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [false, true, true]);
+  assert.equal(hero.intervalStarts(), 1);
+  assert.equal(hero.announcement.textContent, '');
+
+  hero.runAutoplay();
+  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [true, false, true]);
+  assert.equal(hero.status.textContent, '2 / 3');
+  assert.equal(hero.announcement.textContent, '');
+});
+
+test('hero manual navigation and pause changes announce once and expose an accurate toggle state', () => {
+  const hero = bootHero();
+
+  hero.next.dispatch('click');
+  assert.equal(hero.announcement.textContent, '2 / 3. slayt gösteriliyor.');
+
+  hero.pause.dispatch('click');
+  assert.equal(hero.pause.getAttribute('aria-pressed'), 'true');
+  assert.equal(hero.pause.textContent, 'Duraklat');
+  assert.equal(hero.announcement.textContent, 'Otomatik slayt geçişi duraklatıldı.');
+  hero.runAutoplay();
+  assert.equal(hero.status.textContent, '2 / 3');
+
+  hero.pause.dispatch('click');
+  assert.equal(hero.pause.getAttribute('aria-pressed'), 'false');
+  assert.equal(hero.pause.textContent, 'Duraklat');
+  assert.equal(hero.announcement.textContent, 'Otomatik slayt geçişi devam ediyor.');
+  hero.runAutoplay();
+  assert.equal(hero.status.textContent, '3 / 3');
+  assert.equal(hero.announcement.textContent, 'Otomatik slayt geçişi devam ediyor.');
+});
+
+test('hero disables autoplay control under reduced motion while manual controls remain available', () => {
+  const hero = bootHero({ reduced: true });
+
+  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [false, true, true]);
+  assert.equal(hero.pause.disabled, true);
+  assert.equal(hero.pause.getAttribute('aria-label'), 'Otomatik geçiş azaltılmış hareket tercihi nedeniyle kapalı');
+  assert.equal(hero.pause.getAttribute('aria-pressed'), null);
+  assert.equal(hero.intervalStarts(), 0);
+
+  hero.next.dispatch('click');
+  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [true, false, true]);
+  assert.equal(hero.status.textContent, '2 / 3');
+  assert.equal(hero.announcement.textContent, '2 / 3. slayt gösteriliyor.');
+  assert.equal(hero.intervalStarts(), 0);
 });

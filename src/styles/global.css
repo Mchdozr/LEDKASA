@@ -33,6 +33,7 @@ p, h1, h2, h3 { margin-top: 0; }
 :focus-visible { outline: 3px solid var(--green-strong); outline-offset: 4px; }
 
 .shell { width: var(--shell); margin-inline: auto; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
 .skip-link { position: fixed; z-index: 1000; top: 0.6rem; left: 0.6rem; padding: 0.7rem 1rem; border-radius: var(--radius-sm); background: var(--white); color: var(--ink); box-shadow: var(--shadow); transform: translateY(-150%); transition: transform 180ms ease; }
 .skip-link:focus { transform: translateY(0); }
 .eyebrow { color: var(--green-strong); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; }

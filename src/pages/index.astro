@@ -50,7 +50,7 @@ const schema = {
 
 <BaseLayout title={title} description={description} canonical="/" schema={schema} bodyClass="home-page">
   <section class="hero shell" data-hero aria-roledescription="carousel" aria-label="Öne çıkan LED ekran çözümleri">
-    <div class="hero-track" aria-live="polite">
+    <div class="hero-track" data-hero-track aria-live="off">
       {heroSlides.map((slide, index) => (
         <article
           class="hero-slide"
@@ -84,9 +84,10 @@ const schema = {
     </div>
     <div class="hero-controls" aria-label="Slayt kontrolleri">
       <button type="button" data-hero-previous aria-label="Önceki slayt">←</button>
-      <span data-hero-status aria-live="polite">1 / 3</span>
+      <span data-hero-status>1 / 3</span>
       <button type="button" data-hero-next aria-label="Sonraki slayt">→</button>
-      <button type="button" data-hero-pause aria-pressed="false">Duraklat</button>
+      <button type="button" data-hero-pause aria-label="Slayt gösterisini duraklat" aria-pressed="false">Duraklat</button>
+      <span class="visually-hidden" data-hero-announcement aria-live="polite" aria-atomic="true"></span>
     </div>
   </section>
 

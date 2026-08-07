@@ -112,17 +112,31 @@
     const nextButton = hero.querySelector('[data-hero-next]');
     const pauseButton = hero.querySelector('[data-hero-pause]');
     const status = hero.querySelector('[data-hero-status]');
+    const announcement = hero.querySelector('[data-hero-announcement]');
     let activeIndex = 0;
-    let paused = prefersReducedMotion.matches;
+    let paused = false;
     let timer;
 
     const updatePauseButton = () => {
       if (!pauseButton) return;
+      if (prefersReducedMotion.matches) {
+        pauseButton.disabled = true;
+        pauseButton.removeAttribute('aria-pressed');
+        pauseButton.setAttribute('aria-label', 'Otomatik geçiş azaltılmış hareket tercihi nedeniyle kapalı');
+        pauseButton.textContent = 'Otomatik geçiş kapalı';
+        return;
+      }
+      pauseButton.disabled = false;
       pauseButton.setAttribute('aria-pressed', String(paused));
-      pauseButton.textContent = paused ? 'Devam ettir' : 'Duraklat';
+      pauseButton.setAttribute('aria-label', 'Slayt gösterisini duraklat');
+      pauseButton.textContent = 'Duraklat';
     };
 
-    const showSlide = (nextIndex) => {
+    const announce = (message) => {
+      if (announcement) announcement.textContent = message;
+    };
+
+    const showSlide = (nextIndex, shouldAnnounce = false) => {
       activeIndex = (nextIndex + slides.length) % slides.length;
       slides.forEach((slide, index) => {
         const isActive = index === activeIndex;
@@ -130,6 +144,7 @@
         slide.setAttribute('aria-hidden', String(!isActive));
       });
       if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+      if (shouldAnnounce) announce(`${activeIndex + 1} / ${slides.length}. slayt gösteriliyor.`);
     };
 
     const stopAutoplay = () => {
@@ -144,19 +159,16 @@
     };
 
     const selectSlide = (nextIndex) => {
-      showSlide(nextIndex);
+      showSlide(nextIndex, true);
       startAutoplay();
     };
 
     previousButton?.addEventListener('click', () => selectSlide(activeIndex - 1));
     nextButton?.addEventListener('click', () => selectSlide(activeIndex + 1));
     pauseButton?.addEventListener('click', () => {
-      if (prefersReducedMotion.matches) {
-        paused = true;
-      } else {
-        paused = !paused;
-      }
+      paused = !paused;
       updatePauseButton();
+      announce(paused ? 'Otomatik slayt geçişi duraklatıldı.' : 'Otomatik slayt geçişi devam ediyor.');
       startAutoplay();
     });
 
@@ -166,7 +178,6 @@
     });
 
     prefersReducedMotion.addEventListener?.('change', (event) => {
-      paused = event.matches;
       updatePauseButton();
       startAutoplay();
     });

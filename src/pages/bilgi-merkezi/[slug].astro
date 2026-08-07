@@ -24,7 +24,7 @@ const schema = {
 };
 ---
 
-<BaseLayout title={article.seoTitle} description={article.seoDescription} canonical={canonical} image={article.image} schema={schema}>
+<BaseLayout title={article.seoTitle} description={article.seoDescription} canonical={canonical} image={article.image} schema={schema} openGraphType="article">
   <Breadcrumbs items={[{ label: 'Bilgi Merkezi', url: '/bilgi-merkezi/' }, { label: article.title }]} />
 
   <article class="knowledge-article">
