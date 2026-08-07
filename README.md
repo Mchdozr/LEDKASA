@@ -32,9 +32,24 @@ Yayınlanacak paket `dist/` klasörüdür. `src/`, `tests/`, kök `assets/` kayn
 2. Plesk **Web Siteleri ve Alan Adları > Dosya Yöneticisi** bölümünde alan adına ayrılmış dizinde `dist` klasörünü oluşturun.
 3. Yerel `dist/` klasörünün **içeriğini** sunucudaki `dist/` dizinine yükleyin; `contact.php` ve `sitemap-index.xml` dosyalarının bu dizinin doğrudan altında olduğunu kontrol edin.
 4. **Web Siteleri ve Alan Adları > Barındırma Ayarları > Belge kökü (Document root)** alanını bu dizine yönlendirin. Standart abonelik düzeninde değer `httpdocs/dist` olur; panel alan adı için farklı bir kök gösteriyorsa onun altındaki gerçek `dist` yolunu seçin.
-5. Ayarı kaydedip Plesk önizlemesinde `/`, `/urunler/`, `/teklif-al/`, `/contact.php` ve `/404.html` yollarını kontrol edin. `contact.php` yalnızca POST kabul ettiği için doğrudan GET isteğinde 405 yanıtı beklenir.
+5. Ayarı kaydedip Plesk önizlemesinde `/`, `/urunler/`, `/teklif-al/`, `/contact.php` ve fiziksel `/404.html` dosyasını kontrol edin. `contact.php` yalnızca POST kabul ettiği için doğrudan GET isteğinde 405 yanıtı beklenir. `404.html` dosyasının bulunması, özel 404 yanıtını kendiliğinden etkinleştirmez; aşağıdaki eşlemeyi ayrıca yapın.
 
 Mevcut canlı dosyaların üzerine tek tek kopyalamak yerine tamamı doğrulanmış yeni `dist/` paketine geçin. Geri dönüş için önceki yayın klasörünü Plesk yedeğinde saklayın.
+
+## Plesk özel 404 eşlemesi
+
+Plesk'te **Web Siteleri ve Alan Adları > Alan adı > Barındırma ve DNS > Barındırma** yolundan **Özel hata belgeleri (Custom error documents)** seçeneğini etkinleştirin. Sunucunun işletim sistemine göre şu eşlemeyi uygulayın:
+
+- **Linux / Apache-nginx:** `dist/404.html` dosyasını alan adının Plesk ana dizinindeki `error_docs/not_found.html` konumuna kopyalayın. Plesk'in 404 için beklediği `not_found.html` adını koruyun; dosyayı yalnızca belge kökünde bırakmak yeterli değildir.
+- **Windows / IIS:** **Sanal Dizinler > /** altında **Hata Belgeleri (Error Documents)** ekranını açın, 404 kaydını düzenleyin ve türü **Dosya (File)** olacak biçimde `error_docs` içindeki `not_found.html` dosyasına bağlayın. Plesk güvenlik nedeniyle `error_docs` yüklemesini Dosya Yöneticisi/FTP üzerinden engelliyorsa dosyayı RDP ile yerleştirin veya barındırma sağlayıcısından eşlemeyi yapmasını isteyin.
+
+Aktif web sunucusu katmanının bu ayarı kullandığını, var olmayan gerçek bir yol isteyerek doğrulayın:
+
+```powershell
+curl.exe -i https://ledkasa.com.tr/404-kontrol-yolu
+```
+
+Yanıt durumunun `404` ve gövdenin `Aradığınız sayfa bulunamadı` metnini içermesi gerekir. `200` veya Plesk'in varsayılan hata sayfası gelirse özel hata belgesi eşlemesi henüz aktif değildir. Ayrıntılar için [Plesk'in resmi özel hata sayfaları belgesine](https://docs.plesk.com/en-US/obsidian/administrator-guide/website-management/websites-and-domains/extended-website-management/customizing-error-pages.65246/) bakın.
 
 ## Teklif formu alıcısı
 

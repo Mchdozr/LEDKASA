@@ -2,6 +2,17 @@
 
 Bu dosyadaki editoryal fotoğraflar ürün görseli değildir. Her fotoğraf yerel WebP kopyası olarak kullanılır; uzun kenarı en fazla 1400 piksel olacak biçimde, kalite 84 ile optimize edilmiştir.
 
+## Özgün aksesuar ürün render'ları
+
+Cat6 Kablo, Power Plug, Flat Kablo ve Cable Set görselleri 7 Ağustos 2026 tarihinde LEDKASA projesi için OpenAI yerleşik `image_gen` aracıyla özgün olarak oluşturuldu. Üretimde girdi veya referans görsel kullanılmadı; üçüncü taraf ürün fotoğrafı yer almıyor.
+
+- `cat6-kablo.webp`
+- `power-plug.webp`
+- `flat-kablo.webp`
+- `cable-set.webp`
+
+Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalog-provenance.json`
+
 ## Etkinlik sahnesi
 
 - Fotoğraf: Araceli Magaña

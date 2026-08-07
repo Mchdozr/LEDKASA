@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { extname, join, relative, resolve, sep } from 'node:path';
@@ -149,8 +150,38 @@ test('public site images are optimized WebP files and catalog data references on
 
 test('asset attribution file records three editorial sources and a rights-cleared licence', () => {
   const attribution = readFileSync(resolve(outputRoot, 'assets', 'attributions.md'), 'utf8');
-  assert.equal((attribution.match(/^## /gm) ?? []).length, 3);
+  assert.equal((attribution.match(/^## (?:Etkinlik sahnesi|Mağaza içi dijital ekranlar|Elektronik çalışma alanı)$/gm) ?? []).length, 3);
   assert.equal((attribution.match(/https:\/\/(?:unsplash\.com|www\.pexels\.com)\/photos\//g) ?? []).length, 3);
   assert.match(attribution, /https:\/\/unsplash\.com\/license|https:\/\/www\.pexels\.com\/license/);
-  assert.doesNotMatch(attribution, /ledarabul|sesajans/i);
+  assert.match(attribution, /^## Özgün aksesuar ürün render'ları$/m);
+  for (const filename of ['cat6-kablo.webp', 'power-plug.webp', 'flat-kablo.webp', 'cable-set.webp']) {
+    assert.match(attribution, new RegExp(`\\b${filename.replace('.', '\\.')}\\b`));
+  }
+});
+
+test('catalog provenance positively inventories every published image and verifies local source digests', async () => {
+  const { productCategories, products } = await import('../src/data/site.ts');
+  const inventory = JSON.parse(readFileSync(resolve(outputRoot, 'assets', 'catalog-provenance.json'), 'utf8'));
+  const byPublicPath = new Map(inventory.assets.map((entry) => [entry.publicPath, entry]));
+
+  for (const image of [...productCategories, ...products].map((entry) => entry.image)) {
+    const provenance = byPublicPath.get(image);
+    assert.ok(provenance, `missing positive provenance: ${image}`);
+    assert.equal(provenance.origin, 'original-project-render');
+    const sourcePath = resolve(projectRoot, provenance.sourceFile);
+    assert.equal(existsSync(sourcePath), true, `missing provenance source: ${provenance.sourceFile}`);
+    const digest = createHash('sha256').update(readFileSync(sourcePath)).digest('hex');
+    assert.equal(digest, provenance.sha256, `source digest mismatch: ${provenance.sourceFile}`);
+  }
+
+  for (const image of [
+    '/assets/images/products/cat6-kablo.webp',
+    '/assets/images/products/power-plug.webp',
+    '/assets/images/products/flat-kablo.webp',
+    '/assets/images/products/cable-set.webp',
+  ]) {
+    const provenance = byPublicPath.get(image);
+    assert.equal(provenance.generation.tool, 'OpenAI built-in image_gen');
+    assert.deepEqual(provenance.generation.inputImages, []);
+  }
 });
