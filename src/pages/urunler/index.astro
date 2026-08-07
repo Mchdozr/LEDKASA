@@ -68,7 +68,7 @@ const schema = {
       <p>Fiyat ve teknik uyumluluk, proje ayrıntıları değerlendirildikten sonra tekliflendirilir.</p>
     </div>
     <div class="product-grid">
-      {products.map((product, index) => <ProductCard product={product} priority={index < 3} />)}
+      {products.map((product, index) => <ProductCard product={product} priority={index < 3} headingLevel={3} />)}
     </div>
   </section>
 

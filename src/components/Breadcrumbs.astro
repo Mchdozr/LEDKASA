@@ -1,4 +1,6 @@
 ---
+import { siteUrl } from '../data/site';
+
 interface BreadcrumbItem {
   label: string;
   url?: string;
@@ -10,8 +12,21 @@ interface Props {
 
 const { items } = Astro.props;
 const trail: BreadcrumbItem[] = [{ label: 'Ana Sayfa', url: '/' }, ...items];
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${canonicalUrl}#breadcrumb`,
+  itemListElement: trail.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.label,
+    item: item.url ? new URL(item.url, siteUrl).toString() : canonicalUrl,
+  })),
+};
 ---
 
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 <nav class="breadcrumbs shell" aria-label="Sayfa yolu">
   <ol itemscope itemtype="https://schema.org/BreadcrumbList">
     {trail.map((item, index) => {

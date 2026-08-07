@@ -39,7 +39,7 @@ let phpServer;
 let phpBaseUrl;
 
 before(async () => {
-  const build = spawnSync(process.execPath, ['node_modules/astro/astro.js', 'build'], {
+  const build = spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'build'], {
     cwd: projectRoot,
     encoding: 'utf8',
   });

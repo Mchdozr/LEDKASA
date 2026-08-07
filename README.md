@@ -65,6 +65,18 @@ Yanıt durumunun `404` ve gövdenin `Aradığınız sayfa bulunamadı` metnini i
 3. Bu alan panelde görünmüyorsa sunucu yöneticisinden aynı ortam değişkenini alan adına ait PHP-FPM havuzunda tanımlamasını isteyin. İşleyiciye özgü ayar bilinmeden `.htaccess` veya genel PHP yapılandırması eklemeyin.
 4. Plesk posta günlüğü ve gerçek bir test formuyla teslimatı doğrulayın. Gönderen alanı `no-reply@ledkasa.com.tr` olduğundan SPF/DKIM ve alan adına ait posta hizmeti de kontrol edilmelidir.
 
+## Teklif formu kötüye kullanım koruması
+
+`contact.php`, tarayıcının sağladığı `Origin` ve `Sec-Fetch-Site` başlıklarında cross-site istekleri posta işleminden önce reddeder. Bu başlıkları göndermeyen normal sunucu/CLI istemcileri desteklenmeye devam eder. Uç nokta ayrıca `REMOTE_ADDR` başına 10 dakikada en fazla beş işleme izin verir. Sayaç, varsayılan olarak sistem geçici dizinindeki `ledkasa-contact-rate-limit` klasöründe, belge kökü dışında ve dosya kilidiyle tutulur. Plesk PHP kullanıcısının bu dizine yazabildiğini yayın öncesi doğrulayın; gerekiyorsa belge kökü dışında bir dizini `LEDKASA_CONTACT_RATE_LIMIT_DIR` ortam değişkeniyle tanımlayın.
+
+Uygulama sınırı tek savunma katmanı kabul edilmemelidir. Sunucu yöneticisinden etkin web yığınına göre `/contact.php` için ikinci bir IP bazlı istek limiti isteyin:
+
+- nginx kullanılıyorsa yönetici, `http` kapsamına bir `limit_req_zone` eklemeli ve Plesk'in ürettiği PHP işleyici konumunu bozmadan bu uç noktada `limit_req` uygulamalıdır. `limit_req_zone` doğrudan alan adının “Ek nginx yönergeleri” alanına yapıştırılmamalıdır; bu yönerge `http` kapsamı gerektirir.
+- Apache kullanılıyorsa yönetici, mevcutsa ModSecurity veya `mod_evasive` üzerinden yalnızca `/contact.php` POST trafiğine IP/zaman penceresi kuralı eklemelidir. Modül ve sunucu kapsamı doğrulanmadan genel bir `.htaccess` kuralı eklenmemelidir.
+- Plesk nginx+Apache proxy düzeninde istemci IP'sinin PHP tarafında doğru `REMOTE_ADDR` olarak ulaştığı kontrol edilmelidir; proxy adresi görünüyorsa güvenilen proxy/IP aktarımı sunucu yöneticisi tarafından yapılandırılmalıdır.
+
+Kuraldan sonra aynı IP'den kısa sürede tekrarlanan test POST'larının genel bir `429`/engelleme yanıtı aldığını, normal aynı-origin form gönderiminin çalıştığını ve yanıtların alıcı ya da posta ayrıntısı içermediğini doğrulayın.
+
 ## DNS, TLS ve yönlendirme
 
 DNS'teki kök `A` kaydı Plesk sunucusu `194.36.84.221` adresine yayıldıktan sonra:

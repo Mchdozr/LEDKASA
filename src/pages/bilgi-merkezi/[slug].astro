@@ -15,7 +15,7 @@ const canonical = `/bilgi-merkezi/${article.slug}/`;
 const schema = {
   '@type': 'Article',
   '@id': `${articleCanonical(article)}#article`,
-  mainEntityOfPage: { '@id': `${articleCanonical(article)}#webpage` },
+  mainEntityOfPage: articleCanonical(article),
   headline: article.title,
   description: article.seoDescription,
   image: new URL(article.image, siteUrl).toString(),

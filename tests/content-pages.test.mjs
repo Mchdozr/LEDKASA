@@ -27,7 +27,7 @@ const builtHtml = (route = '') =>
   readFileSync(resolve(outputRoot, ...route.split('/').filter(Boolean), 'index.html'), 'utf8');
 
 before(() => {
-  const build = spawnSync(process.execPath, ['node_modules/astro/astro.js', 'build', '--outDir', outputRoot], {
+  const build = spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'build', '--outDir', outputRoot], {
     cwd: projectRoot,
     encoding: 'utf8',
   });

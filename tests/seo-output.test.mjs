@@ -52,9 +52,14 @@ const builtHtmlFiles = () => walk(outputRoot).filter((file) => extname(file) ===
 const outputPathForRoute = (route) => route === '/'
   ? resolve(outputRoot, 'index.html')
   : resolve(outputRoot, route.slice(1), 'index.html');
+const structuredDataNodes = (html) => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap((match) => {
+    const document = JSON.parse(match[1]);
+    return Array.isArray(document['@graph']) ? document['@graph'] : [document];
+  });
 
 before(() => {
-  const build = spawnSync(process.execPath, ['node_modules/astro/astro.js', 'build', '--outDir', outputRoot], {
+  const build = spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'build', '--outDir', outputRoot], {
     cwd: projectRoot,
     encoding: 'utf8',
   });
@@ -90,6 +95,59 @@ test('every indexable page publishes canonical, Turkish alternate, social image 
     assert.match(html, /"@type":"Organization"/);
     assert.match(html, /"@type":"WebSite"/);
     assert.doesNotMatch(html, /"@type":"LocalBusiness"/);
+  }
+});
+
+test('every breadcrumb-bearing page publishes an absolute BreadcrumbList JSON-LD trail', () => {
+  for (const route of expectedIndexablePaths.filter((entry) => entry !== '/')) {
+    const html = readFileSync(outputPathForRoute(route), 'utf8');
+    const breadcrumb = structuredDataNodes(html).find((node) => node['@type'] === 'BreadcrumbList');
+    assert.ok(breadcrumb, `missing BreadcrumbList JSON-LD: ${route}`);
+    assert.equal(breadcrumb.itemListElement[0].item, `${siteUrl}/`, route);
+    assert.equal(breadcrumb.itemListElement.at(-1).item, `${siteUrl}${route}`, route);
+    assert.deepEqual(
+      breadcrumb.itemListElement.map((item) => item.position),
+      breadcrumb.itemListElement.map((_, index) => index + 1),
+      route,
+    );
+    for (const item of breadcrumb.itemListElement) {
+      assert.equal(new URL(item.item).origin, siteUrl, `${route}: ${item.item}`);
+      assert.ok(item.name, `${route} breadcrumb items require names.`);
+    }
+  }
+});
+
+test('article mainEntityOfPage relationships resolve to the canonical URL or an emitted page node', () => {
+  for (const route of expectedIndexablePaths.filter((entry) => entry.startsWith('/bilgi-merkezi/') && entry !== '/bilgi-merkezi/')) {
+    const html = readFileSync(outputPathForRoute(route), 'utf8');
+    const nodes = structuredDataNodes(html);
+    const article = nodes.find((node) => node['@type'] === 'Article');
+    assert.ok(article, `missing Article schema: ${route}`);
+    const relationship = article.mainEntityOfPage;
+    const reference = typeof relationship === 'string' ? relationship : relationship?.['@id'];
+    assert.ok(reference, `missing Article mainEntityOfPage: ${route}`);
+    const canonical = `${siteUrl}${route}`;
+    assert.ok(
+      reference === canonical || nodes.some((node) => node['@id'] === reference && ['WebPage', 'ArticlePage'].includes(node['@type'])),
+      `${route} mainEntityOfPage must be the canonical URL or reference an emitted WebPage/ArticlePage node.`,
+    );
+  }
+});
+
+test('product cards are section children with h3 titles on listings and related-product regions', () => {
+  for (const route of [
+    '/',
+    '/urunler/',
+    '/urunler/led-ekran-kasalari/',
+    '/urunler/led-ekran-kasalari/cnc-led-kasa/',
+  ]) {
+    const html = readFileSync(outputPathForRoute(route), 'utf8');
+    const cards = [...html.matchAll(/<article class="product-card"[\s\S]*?<\/article>/g)].map((match) => match[0]);
+    assert.ok(cards.length > 0, `${route} must render product cards.`);
+    for (const card of cards) {
+      assert.match(card, /<h3><a href="\/urunler\//, `${route} card title must be h3.`);
+      assert.doesNotMatch(card, /<h2\b/, `${route} card must not flatten its parent section hierarchy.`);
+    }
   }
 });
 

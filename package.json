@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@astrojs/sitemap": "3.7.3",
-    "astro": "^5.13.0",
+    "astro": "^7.2.0",
     "playwright-core": "^1.62.1",
     "sharp": "0.35.3"
   }

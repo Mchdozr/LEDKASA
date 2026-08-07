@@ -87,7 +87,7 @@ const schema = {
         <a class="text-link" href={category.url}>Tümünü görün <span aria-hidden="true">→</span></a>
       </div>
       <div class="product-grid">
-        {relatedProducts.map((relatedProduct) => <ProductCard product={relatedProduct} />)}
+        {relatedProducts.map((relatedProduct) => <ProductCard product={relatedProduct} headingLevel={3} />)}
       </div>
     </section>
   )}
