@@ -5,8 +5,14 @@ header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store');
 
-function respond(int $status, bool $ok, string $message): never
+function respond(int $status, bool $ok, string $message, bool $wantsJson, ?string $redirectState = null): never
 {
+    if (!$wantsJson && $redirectState !== null) {
+        $safeState = $redirectState === 'basarili' ? 'basarili' : 'hata';
+        header('Location: /teklif-al/?durum=' . $safeState . '#durum-' . $safeState, true, 303);
+        exit;
+    }
+
     http_response_code($status);
     echo json_encode(
         ['ok' => $ok, 'message' => $message],
@@ -15,14 +21,17 @@ function respond(int $status, bool $ok, string $message): never
     exit;
 }
 
+$accept = is_string($_SERVER['HTTP_ACCEPT'] ?? null) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
+$wantsJson = str_contains($accept, 'application/json');
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');
-    respond(405, false, 'Bu uç nokta yalnızca form gönderimlerini kabul eder.');
+    respond(405, false, 'Bu uç nokta yalnızca form gönderimlerini kabul eder.', $wantsJson);
 }
 
 $honeypot = is_string($_POST['website'] ?? null) ? trim($_POST['website']) : '';
 if ($honeypot !== '') {
-    respond(200, true, 'Talebiniz alınmıştır.');
+    respond(200, true, 'Talebiniz alınmıştır.', $wantsJson, 'basarili');
 }
 
 $readField = static function (string $key): string {
@@ -58,7 +67,7 @@ if (
     || filter_var($email, FILTER_VALIDATE_EMAIL) === false
     || $consent !== 'on'
 ) {
-    respond(422, false, 'Lütfen zorunlu alanları geçerli bilgilerle doldurun.');
+    respond(422, false, 'Lütfen zorunlu alanları geçerli bilgilerle doldurun.', $wantsJson, 'hata');
 }
 
 $configuredRecipient = getenv('LEDKASA_CONTACT_RECIPIENT');
@@ -89,7 +98,7 @@ $headers = [
 
 $sent = mail($recipient, $subject, implode("\n", $bodyLines), implode("\r\n", $headers));
 if (!$sent) {
-    respond(503, false, 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin.');
+    respond(503, false, 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin.', $wantsJson, 'hata');
 }
 
-respond(200, true, 'Talebiniz alınmıştır.');
+respond(200, true, 'Talebiniz alınmıştır.', $wantsJson, 'basarili');

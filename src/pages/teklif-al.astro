@@ -36,6 +36,15 @@ const schema = {
         <p><span aria-hidden="true">*</span> işaretli alanlar zorunludur.</p>
       </div>
 
+      <div id="durum-basarili" class="submission-feedback is-success" data-submission-feedback role="status" aria-live="polite" tabindex="-1">
+        <strong>Talebiniz başarıyla alındı.</strong>
+        <span>Ekibimiz en kısa sürede sizinle iletişime geçecek.</span>
+      </div>
+      <div id="durum-hata" class="submission-feedback is-error" data-submission-feedback role="alert" tabindex="-1">
+        <strong>Form gönderilemedi.</strong>
+        <span>Lütfen bilgilerinizi kontrol edip yeniden deneyin.</span>
+      </div>
+
       <form action="/contact.php" method="post" class="quote-form" data-quote-form>
         <div class="form-row">
           <label>
@@ -79,7 +88,7 @@ const schema = {
 
         <label class="consent-field">
           <input name="kvkk_consent" type="checkbox" required />
-          <span><a href="/kvkk-aydinlatma-metni/">KVKK Aydınlatma Metni</a>’ni okudum; teklif talebimin yanıtlanması için bilgilerimin işlenmesini kabul ediyorum. <span aria-hidden="true">*</span></span>
+          <span><a href="/kvkk-aydinlatma/">KVKK Aydınlatma Metni</a>’ni okudum; teklif talebimin yanıtlanması için bilgilerimin işlenmesini kabul ediyorum. <span aria-hidden="true">*</span></span>
         </label>
 
         <div class="form-submit-row">
@@ -95,7 +104,17 @@ const schema = {
     const productSelect = document.querySelector('[data-product-select]');
     const status = document.querySelector('[data-form-status]');
     const submitButton = document.querySelector('[data-submit-button]');
-    const requestedProduct = new URLSearchParams(window.location.search).get('urun');
+    const searchParams = new URLSearchParams(window.location.search);
+    const requestedProduct = searchParams.get('urun');
+    const submissionState = searchParams.get('durum');
+    const submissionFeedback = submissionState === 'basarili' || submissionState === 'hata'
+      ? document.getElementById(`durum-${submissionState}`)
+      : null;
+
+    if (submissionFeedback instanceof HTMLElement) {
+      submissionFeedback.classList.add('is-active');
+      submissionFeedback.focus();
+    }
 
     if (productSelect instanceof HTMLSelectElement && requestedProduct && validProductSlugs.includes(requestedProduct)) {
       productSelect.value = requestedProduct;

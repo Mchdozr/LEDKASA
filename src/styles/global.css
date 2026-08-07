@@ -178,6 +178,12 @@ p, h1, h2, h3 { margin-top: 0; }
 .quote-form-heading { padding-bottom: 1.4rem; border-bottom: 1px solid var(--line); }
 .quote-form-heading h2 { margin: .35rem 0 .3rem; font-size: clamp(1.8rem, 3vw, 2.5rem); letter-spacing: -.04em; }
 .quote-form-heading p { margin: 0; color: var(--muted); font-size: .78rem; }
+.submission-feedback { display: none; margin-top: 1.25rem; padding: .9rem 1rem; border: 1px solid currentColor; border-radius: .8rem; font-size: .88rem; }
+.submission-feedback:target, .submission-feedback.is-active { display: grid; gap: .15rem; }
+.submission-feedback strong { font-weight: 800; }
+.submission-feedback span { font-size: .8rem; font-weight: 550; }
+.submission-feedback.is-success { border-color: rgba(65,109,0,.24); background: rgba(143,215,25,.12); color: #416d00; }
+.submission-feedback.is-error { border-color: rgba(161,34,34,.22); background: rgba(161,34,34,.07); color: #a12222; }
 .quote-form { display: grid; gap: 1.15rem; padding-top: 1.5rem; }
 .form-row { display: grid; gap: 1.15rem; }
 .quote-form label:not(.consent-field) { display: grid; gap: .45rem; font-size: .8rem; font-weight: 750; }

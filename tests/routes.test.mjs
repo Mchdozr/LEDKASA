@@ -93,11 +93,19 @@ test('build emits nine product routes with unique titles and price-free Product 
   assert.equal(titles.size, 9);
 });
 
-test('product pages include breadcrumbs, related products and quotation links', () => {
+test('every product page preserves its canonical and product-specific quotation context', () => {
+  for (const [route] of expectedProductRoutes) {
+    const html = builtHtml(`urunler/${route}`);
+    const slug = route.split('/').at(-1);
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://ledkasa\\.com\\.tr/urunler/${route}/">`));
+    assert.match(html, new RegExp(`href="/teklif-al/\\?urun=${slug}"`));
+  }
+});
+
+test('product pages include breadcrumbs and related products', () => {
   const html = builtHtml('urunler/led-ekran-kasalari/cnc-led-kasa');
   assert.match(html, /aria-label="Sayfa yolu"/);
   assert.match(html, /İlgili ürünler/);
-  assert.match(html, /href="\/teklif-al\/?"/);
 });
 
 test('quote page renders a consent-gated validated form without recipient configuration', () => {
@@ -108,6 +116,13 @@ test('quote page renders a consent-gated validated form without recipient config
   assert.match(html, /name="message"[^>]+required/);
   assert.match(html, /name="website"/);
   assert.match(html, /name="kvkk_consent"[^>]+required/);
+  assert.match(html, /class="consent-field"[\s\S]*?href="\/kvkk-aydinlatma\/"/);
+  assert.match(html, /href="\/kvkk-aydinlatma\/">KVKK Aydınlatma/);
+  assert.doesNotMatch(html, /\/kvkk-aydinlatma-metni\//);
+  assert.match(html, /id="durum-basarili"[^>]+data-submission-feedback[^>]+role="status"[^>]+tabindex="-1"/);
+  assert.match(html, /id="durum-hata"[^>]+data-submission-feedback[^>]+role="alert"[^>]+tabindex="-1"/);
+  assert.match(html, /Talebiniz başarıyla alındı\./);
+  assert.match(html, /Form gönderilemedi\./);
   assert.doesNotMatch(html, /test-recipient@example\.com/);
 });
 
@@ -118,6 +133,7 @@ test('contact handler accepts POST only and validates required fields', async ()
   const invalidResponse = await fetch(`${phpBaseUrl}/contact.php`, {
     method: 'POST',
     body: new URLSearchParams({ name: '', email: 'not-an-email', message: '', kvkk_consent: '' }),
+    headers: { Accept: 'application/json' },
   });
   assert.equal(invalidResponse.status, 422);
   assert.deepEqual(await invalidResponse.json(), {
@@ -136,6 +152,7 @@ test('contact handler silently accepts a completed honeypot without sending', as
       kvkk_consent: 'on',
       website: 'https://spam.example.com',
     }),
+    headers: { Accept: 'application/json' },
   });
 
   assert.equal(response.status, 200);
@@ -143,4 +160,31 @@ test('contact handler silently accepts a completed honeypot without sending', as
     ok: true,
     message: 'Talebiniz alınmıştır.',
   });
+});
+
+test('contact handler redirects normal browser submissions to safe quote states', async () => {
+  const invalidResponse = await fetch(`${phpBaseUrl}/contact.php`, {
+    method: 'POST',
+    body: new URLSearchParams({ name: '', email: 'invalid', message: '', kvkk_consent: '' }),
+    headers: { Accept: 'text/html,application/xhtml+xml' },
+    redirect: 'manual',
+  });
+  assert.equal(invalidResponse.status, 303);
+  assert.equal(invalidResponse.headers.get('location'), '/teklif-al/?durum=hata#durum-hata');
+
+  const honeypotResponse = await fetch(`${phpBaseUrl}/contact.php`, {
+    method: 'POST',
+    body: new URLSearchParams({
+      name: 'Spam Bot',
+      email: 'bot@example.com',
+      message: 'Automated message',
+      kvkk_consent: 'on',
+      website: 'https://spam.example.com',
+    }),
+    headers: { Accept: 'text/html,application/xhtml+xml' },
+    redirect: 'manual',
+  });
+  assert.equal(honeypotResponse.status, 303);
+  assert.equal(honeypotResponse.headers.get('location'), '/teklif-al/?durum=basarili#durum-basarili');
+  assert.doesNotMatch(honeypotResponse.headers.get('location'), /Spam|bot@example|message/);
 });
