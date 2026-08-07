@@ -83,7 +83,7 @@ p, h1, h2, h3 { margin-top: 0; }
 .mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(.4rem) rotate(45deg); }
 .mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-.4rem) rotate(-45deg); }
-.mobile-nav { position: fixed; inset: var(--header-height) 0 0; overflow-y: auto; border-top: 1px solid var(--line); background: var(--surface); }
+.mobile-nav { position: absolute; top: calc(100% + 1px); right: 0; left: 0; height: calc(100dvh - var(--header-height) - 1px); overflow-y: auto; border-top: 1px solid var(--line); background: var(--surface); }
 .mobile-nav[hidden] { display: none; }
 .mobile-nav-inner { display: grid; align-content: start; padding-block: 1.25rem 2.5rem; }
 .mobile-nav-inner > a:not(.button), .mobile-accordion > summary { padding: .9rem .2rem; border-bottom: 1px solid var(--line); font-size: 1.05rem; font-weight: 750; }
