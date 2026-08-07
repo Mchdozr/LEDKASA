@@ -8,11 +8,13 @@
     "build": "astro build",
     "assets:optimize": "node scripts/optimize-assets.mjs",
     "preview": "astro preview",
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs"
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test:browser": "node --test tests/browser/mobile-nav-layout.test.mjs"
   },
   "devDependencies": {
     "@astrojs/sitemap": "3.7.3",
     "astro": "^5.13.0",
+    "playwright-core": "^1.62.1",
     "sharp": "0.35.3"
   }
 }
