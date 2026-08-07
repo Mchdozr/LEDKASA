@@ -131,6 +131,9 @@ test('cabinet comparison page publishes a decision table', () => {
 
 test('quote page renders a consent-gated validated form without recipient configuration', () => {
   const html = builtHtml('teklif-al');
+  assert.match(html, /href="tel:\+905304056768"/);
+  assert.match(html, /href="https:\/\/wa\.me\/905304056768/);
+  assert.match(html, /WhatsApp ile yazın/);
   assert.match(html, /<form[^>]+action="\/contact\.php"[^>]+method="post"/);
   assert.match(html, /name="name"[^>]+required/);
   assert.match(html, /name="email"[^>]+type="email"[^>]+required/);

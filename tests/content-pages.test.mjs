@@ -133,8 +133,8 @@ test('corporate, discovery and FAQ pages publish evidence-neutral content and em
   assert.match(builtHtml('bilgi-merkezi'), /LED Ekran Kasası Nasıl Seçilir\?/);
   assert.match(builtHtml('sss'), /<details[\s\S]*?<summary>/);
   assert.match(combinedHtml, /info@ledkasa\.com\.tr/);
-  assert.doesNotMatch(combinedHtml, /FAQPage|sameAs|telephone|WhatsApp|Sertifikalarımız|Referanslarımız/);
-  assert.doesNotMatch(combinedHtml, /\+90\s*\(?\d{3}\)?|\b\d{3}[ .-]\d{3}[ .-]\d{2}[ .-]\d{2}\b/);
+  assert.match(combinedHtml, /\+90 530 405 67 68/);
+  assert.doesNotMatch(combinedHtml, /FAQPage|sameAs|Sertifikalarımız|Referanslarımız/);
 });
 
 const bootHero = ({ reduced = false } = {}) => {

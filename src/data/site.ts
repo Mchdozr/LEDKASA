@@ -2,6 +2,9 @@ export const siteUrl = 'https://ledkasa.com.tr';
 
 export const businessContact = {
   email: 'info@ledkasa.com.tr',
+  phoneDisplay: '+90 530 405 67 68',
+  phoneTel: '+905304056768',
+  whatsappUrl: 'https://wa.me/905304056768',
 } as const;
 
 export const organizationLogo = '/favicon.svg';

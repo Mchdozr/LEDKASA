@@ -411,7 +411,8 @@ export const faqItems = [
   },
   {
     question: 'LEDKASA ile nasıl iletişim kurabilirim?',
-    answer: 'Teklif formunu kullanabilir veya info@ledkasa.com.tr adresine proje özetinizi gönderebilirsiniz.',
+    answer:
+      'Teklif formunu kullanabilir, +90 530 405 67 68 numarasını arayabilir, WhatsApp üzerinden yazabilir veya info@ledkasa.com.tr adresine proje özetinizi gönderebilirsiniz.',
   },
   {
     question: '960×960 mm kabinet hangi pitch’lerle uyumlu?',
