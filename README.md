@@ -103,4 +103,4 @@ https://ledkasa.com.tr/sitemap-index.xml
 
 - `public/assets/attributions.md` üç editoryal fotoğrafın tam kaynak sayfalarını ve Unsplash lisansını kaydeder. Rakip ürün görseli kullanılmaz.
 - Yasal sayfalar şeffaf taslaklardır. Doğrulanmış ticari bilgiler, gerçek veri akışları ve şirket özelindeki yükümlülükler eklenmeden nihai hukuki metin kabul edilmemelidir.
-- Telefon, fiziksel konum, vergi bilgisi, sertifika veya müşteri referansı doğrulanana kadar siteye eklenmemelidir.
+- Fiziksel konum, vergi bilgisi, sertifika veya müşteri referansı doğrulanana kadar siteye eklenmemelidir. Doğrulanmış telefon: `+90 530 405 67 68`.

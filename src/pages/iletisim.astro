@@ -7,6 +7,7 @@ import { businessContact, siteUrl } from '../data/site';
 const title = 'İletişim | LEDKASA';
 const description = 'LED ekran kasa, kabinet ve bağlantı ekipmanı projeleriniz için LEDKASA ile iletişime geçin veya teklif talebi gönderin.';
 const canonical = '/iletisim/';
+const whatsappHref = `${businessContact.whatsappUrl}?text=${encodeURIComponent('Merhaba, LED ekran projem için bilgi almak istiyorum.')}`;
 const schema = {
   '@type': 'ContactPage',
   '@id': `${siteUrl}${canonical}#contact`,
@@ -26,11 +27,16 @@ const schema = {
   </header>
   <section class="story-section shell" aria-labelledby="contact-heading">
     <div class="story-statement">
-      <span class="eyebrow">E-posta</span>
-      <h2 id="contact-heading"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></h2>
+      <span class="eyebrow">Doğrudan iletişim</span>
+      <h2 id="contact-heading">{businessContact.phoneDisplay}</h2>
+      <div class="direct-contact-actions contact-channel-actions">
+        <a class="button" href={`tel:${businessContact.phoneTel}`}>Telefonla ara</a>
+        <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </div>
+      <p class="contact-email-line"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></p>
     </div>
     <div class="story-copy">
-      <p>Teklif formunda ürün seçimi, firma bilgisi ve proje detaylarını tek yerde paylaşabilirsiniz. Doğrulanmış telefon ve fiziksel konum bilgileri hazır olduğunda bu sayfa güncellenecektir.</p>
+      <p>Teklif formunda ürün seçimi, firma bilgisi ve proje detaylarını tek yerde paylaşabilirsiniz. Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
       <a class="button" href="/teklif-al/">Teklif formuna geçin <span aria-hidden="true">→</span></a>
     </div>
   </section>

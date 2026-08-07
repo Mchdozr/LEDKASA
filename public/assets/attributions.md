@@ -13,6 +13,13 @@ Cat6 Kablo, Power Plug, Flat Kablo ve Cable Set görselleri 7 Ağustos 2026 tari
 
 Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalog-provenance.json`
 
+## Doğrulanmış teknik föy
+
+- Kaynak: LEDKASA’ya sağlanan üretici teknik föyü (`960960PDF.pdf`)
+- Ürün: Mg Alloy Die Casting Cabinet (W960 × H960 × D87 mm)
+- Yerel dosya: `/assets/docs/mg-alloy-cabinet-960x960.pdf`
+- Kullanım: CNC LED Kasa ürün sayfasında örnek teknik özellik ve indirme bağlantısı
+
 ## Etkinlik sahnesi
 
 - Fotoğraf: Araceli Magaña

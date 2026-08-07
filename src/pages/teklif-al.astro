@@ -1,14 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { productCategories, products, siteUrl } from '../data/site';
+import { businessContact, productCategories, products, siteUrl } from '../data/site';
 
 const title = 'LED Ekran Projeniz İçin Teklif Alın | LEDKASA';
 const description = 'LED ekran kasası, kabinet ve bağlantı ekipmanı ihtiyacınızı paylaşın; LEDKASA projenize özel teklif hazırlasın.';
+const whatsappHref = `${businessContact.whatsappUrl}?text=${encodeURIComponent('Merhaba, LED ekran projem için bilgi almak istiyorum.')}`;
 const schema = {
   '@type': 'ContactPage',
   '@id': `${siteUrl}/teklif-al/#contact`,
   name: 'Teklif Al',
+  description,
   url: `${siteUrl}/teklif-al/`,
   inLanguage: 'tr-TR',
 };
@@ -22,6 +24,13 @@ const schema = {
       <span class="eyebrow">Projenize özel teklif</span>
       <h1>İhtiyacınızı anlatın, birlikte planlayalım.</h1>
       <p>Ürün, kullanım alanı ve proje ayrıntılarınızı paylaşın. Ekibimiz talebinizi değerlendirerek sizinle iletişime geçsin.</p>
+      <div class="direct-contact" aria-label="Hızlı iletişim">
+        <p class="direct-contact-label">Hemen ulaşın</p>
+        <div class="direct-contact-actions">
+          <a class="button" href={`tel:${businessContact.phoneTel}`}>Ara · {businessContact.phoneDisplay}</a>
+          <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp ile yazın</a>
+        </div>
+      </div>
       <ol class="quote-steps" aria-label="Teklif süreci">
         <li><span>01</span><div><strong>Talebinizi paylaşın</strong><p>Ürün ve proje bilgilerini forma ekleyin.</p></div></li>
         <li><span>02</span><div><strong>İhtiyacı netleştirelim</strong><p>Gerekli ayrıntılar için sizinle iletişime geçelim.</p></div></li>
@@ -77,9 +86,34 @@ const schema = {
             ))}
           </select>
         </label>
+        <div class="form-row">
+          <label>
+            Kurulum tipi
+            <select name="install_type">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="sabit">Sabit kurulum</option>
+              <option value="rental">Rental / geçici</option>
+              <option value="poster">Poster / dikey</option>
+              <option value="karisik">Karışık / emin değilim</option>
+            </select>
+          </label>
+          <label>
+            Ortam
+            <select name="environment">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="indoor">İç mekân</option>
+              <option value="outdoor">Dış mekân</option>
+              <option value="her-ikisi">Her ikisi</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Tahmini kabinet adedi veya ekran ölçüsü
+          <input name="quantity_estimate" type="text" maxlength="120" placeholder="Örn. 12 kabinet veya 4×3 m" />
+        </label>
         <label>
           Proje ve ihtiyaç detayları <span aria-hidden="true">*</span>
-          <textarea name="message" rows="6" maxlength="5000" required placeholder="Kullanım alanı, adet, proje takvimi ve paylaşmak istediğiniz diğer ayrıntılar..."></textarea>
+          <textarea name="message" rows="6" maxlength="5000" required placeholder="Pitch/modül, kullanım alanı, proje takvimi ve paylaşmak istediğiniz diğer ayrıntılar..."></textarea>
         </label>
 
         <div class="honeypot" aria-hidden="true">

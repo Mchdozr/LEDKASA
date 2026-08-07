@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { createServer } from 'node:net';
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { after, before, test } from 'node:test';
 
 const projectRoot = resolve(import.meta.dirname, '..');
@@ -37,6 +38,7 @@ const getAvailablePort = () => new Promise((resolvePort, reject) => {
 
 let phpServer;
 let phpBaseUrl;
+let rateLimitDirectory;
 
 before(async () => {
   const build = spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'build'], {
@@ -45,11 +47,16 @@ before(async () => {
   });
   assert.equal(build.status, 0, `Astro build failed:\n${build.stdout}\n${build.stderr}`);
 
+  rateLimitDirectory = mkdtempSync(join(tmpdir(), 'ledkasa-routes-contact-'));
   const port = await getAvailablePort();
   phpBaseUrl = `http://127.0.0.1:${port}`;
   phpServer = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', 'public'], {
     cwd: projectRoot,
-    env: { ...process.env, LEDKASA_CONTACT_RECIPIENT: 'test-recipient@example.com' },
+    env: {
+      ...process.env,
+      LEDKASA_CONTACT_RECIPIENT: 'test-recipient@example.com',
+      LEDKASA_CONTACT_RATE_LIMIT_DIR: rateLimitDirectory,
+    },
     stdio: 'ignore',
   });
 
@@ -64,7 +71,10 @@ before(async () => {
   throw new Error('PHP test server did not start');
 });
 
-after(() => phpServer?.kill());
+after(() => {
+  phpServer?.kill();
+  if (rateLimitDirectory) rmSync(rateLimitDirectory, { recursive: true, force: true });
+});
 
 test('build emits the catalog landing page and both category routes', () => {
   const catalogHtml = builtHtml('urunler');
@@ -106,14 +116,31 @@ test('product pages include breadcrumbs and related products', () => {
   const html = builtHtml('urunler/led-ekran-kasalari/cnc-led-kasa');
   assert.match(html, /aria-label="Sayfa yolu"/);
   assert.match(html, /İlgili ürünler/);
+  assert.match(html, /Özellik özeti/);
+  assert.match(html, /W960 × H960 × D87 mm/);
+  assert.match(html, /mg-alloy-cabinet-960x960\.pdf/);
+  assert.match(html, /İlgili rehberler/);
+});
+
+test('cabinet comparison page publishes a decision table', () => {
+  const html = builtHtml('urunler/kasa-karsilastirma');
+  assert.match(html, /LED kasa karşılaştırma tablosu/);
+  assert.match(html, /comparison-table/);
+  assert.match(html, /href="\/urunler\/led-ekran-kasalari\/cnc-led-kasa\/"/);
 });
 
 test('quote page renders a consent-gated validated form without recipient configuration', () => {
   const html = builtHtml('teklif-al');
+  assert.match(html, /href="tel:\+905304056768"/);
+  assert.match(html, /href="https:\/\/wa\.me\/905304056768/);
+  assert.match(html, /WhatsApp ile yazın/);
   assert.match(html, /<form[^>]+action="\/contact\.php"[^>]+method="post"/);
   assert.match(html, /name="name"[^>]+required/);
   assert.match(html, /name="email"[^>]+type="email"[^>]+required/);
   assert.match(html, /name="message"[^>]+required/);
+  assert.match(html, /name="install_type"/);
+  assert.match(html, /name="environment"/);
+  assert.match(html, /name="quantity_estimate"/);
   assert.match(html, /name="website"/);
   assert.match(html, /name="kvkk_consent"[^>]+required/);
   assert.match(html, /class="consent-field"[\s\S]*?href="\/kvkk-aydinlatma\/"/);

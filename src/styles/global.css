@@ -165,6 +165,29 @@ p, h1, h2, h3 { margin-top: 0; }
 .feature-list li span { width: 1.55rem; height: 1.55rem; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--green); font-size: .75rem; }
 .product-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; }
 .product-note { margin: 1.1rem 0 0; color: var(--muted); font-size: .76rem; }
+.product-datasheet { margin: .9rem 0 0; }
+.product-specs, .product-context, .comparison-section { padding-block: clamp(2rem, 6vw, 4.5rem); }
+.spec-table { display: grid; gap: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface-raised); }
+.spec-row { display: grid; grid-template-columns: minmax(10rem, .9fr) 1.4fr; gap: 1rem; padding: .95rem 1.15rem; border-top: 1px solid var(--line); }
+.spec-row:first-child { border-top: 0; }
+.spec-row dt { margin: 0; color: var(--muted); font-size: .78rem; font-weight: 750; }
+.spec-row dd { margin: 0; font-weight: 650; }
+.product-context-grid { display: grid; gap: 1.5rem; }
+.product-context h3 { margin: 0 0 .8rem; font-size: 1.05rem; letter-spacing: -.02em; }
+.context-list { margin: 0; padding: 0; list-style: none; display: grid; gap: .65rem; }
+.context-list li { padding: .85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-raised); font-weight: 600; }
+.context-list a { font-weight: 750; }
+.context-list a:hover { color: var(--accent-text); }
+.context-list-links { max-width: 40rem; }
+.hero-inline-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+.comparison-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }
+.comparison-table { width: 100%; min-width: 48rem; border-collapse: collapse; }
+.comparison-table th, .comparison-table td { padding: .95rem 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .92rem; }
+.comparison-table thead th { background: var(--ink); color: var(--white); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+.comparison-table thead a { color: var(--green); font-weight: 800; }
+.comparison-table tbody th { width: 11rem; color: var(--muted); font-size: .78rem; font-weight: 800; }
+.comparison-table tbody tr:last-child th, .comparison-table tbody tr:last-child td { border-bottom: 0; }
+.comparison-note { margin: 1rem 0 0; color: var(--muted); font-size: .78rem; }
 
 .quote-cta { --accent-text: var(--accent-on-dark); --focus-ring: var(--focus-on-dark); display: flex; flex-direction: column; gap: 2rem; align-items: flex-start; margin-top: clamp(3rem, 8vw, 7rem); padding: clamp(1.8rem, 5vw, 4rem); border-radius: var(--radius-lg); background: var(--ink); color: var(--white); overflow: hidden; position: relative; }
 .quote-cta::after { content: ""; position: absolute; right: -7rem; bottom: -8rem; width: 22rem; height: 22rem; border: 3rem solid rgba(184,242,54,.08); border-radius: 50%; }
@@ -176,6 +199,14 @@ p, h1, h2, h3 { margin-top: 0; }
 .quote-layout { display: grid; gap: clamp(2rem, 6vw, 5rem); align-items: start; padding-block: clamp(2.5rem, 7vw, 6rem); }
 .quote-intro h1 { max-width: 11ch; font-size: clamp(2.8rem, 6vw, 5.3rem); }
 .quote-intro > p { max-width: 35rem; color: var(--muted); font-size: 1.05rem; }
+.button-secondary { border-color: rgba(16,22,19,.18); background: var(--surface-raised); color: var(--ink); }
+.button-secondary:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+.direct-contact { margin-top: 1.6rem; padding: 1.15rem 1.2rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }
+.direct-contact-label { margin: 0 0 .85rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.direct-contact-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.direct-contact-actions .button { min-height: 2.9rem; padding: .65rem 1.1rem; font-size: .9rem; }
+.contact-channel-actions { margin-top: 1rem; }
+.contact-email-line { margin-top: 1.2rem; }
 .quote-steps { display: grid; gap: 1rem; margin: 2.2rem 0 0; padding: 0; list-style: none; }
 .quote-steps li { display: grid; grid-template-columns: 2.7rem 1fr; gap: 1rem; align-items: start; }
 .quote-steps li > span { width: 2.7rem; height: 2.7rem; display: grid; place-items: center; border: 1px solid rgba(16,22,19,.18); border-radius: 50%; color: var(--accent-on-light); font-size: .72rem; font-weight: 850; }
@@ -359,6 +390,7 @@ p, h1, h2, h3 { margin-top: 0; }
   .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product-context-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .quote-cta { flex-direction: row; justify-content: space-between; align-items: center; }
   .quote-cta .button { flex: 0 0 auto; }
   .application-grid, .value-grid, .editorial-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -374,9 +406,26 @@ p, h1, h2, h3 { margin-top: 0; }
 @media (min-width: 64rem) {
   .desktop-nav, .header-quote { display: flex; }
   .mobile-menu-toggle, .mobile-nav { display: none !important; }
-  .header-bar { gap: .8rem; }
-  .desktop-nav { position: absolute; left: 50%; margin-left: 0; transform: translateX(-50%); }
-  .header-quote { margin-left: auto; }
+  .header-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: .8rem;
+  }
+  .brand { justify-self: start; }
+  .desktop-nav {
+    position: static;
+    left: auto;
+    margin-left: 0;
+    transform: none;
+    justify-self: center;
+    grid-column: 2;
+  }
+  .header-quote {
+    justify-self: end;
+    margin-left: 0;
+    grid-column: 3;
+  }
   .category-hero, .product-detail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .quote-layout { grid-template-columns: minmax(0, .9fr) minmax(32rem, 1.1fr); }

@@ -21,6 +21,8 @@ const articleRoutes = [
   ['poster-led-ekran-kullanim-alanlari', 'Poster LED Ekran Kullanım Alanları'],
   ['led-ekran-kablolama-rehberi', 'LED Ekran Kablolama Rehberi'],
   ['kasa-secimi-cnc-kapaksiz-rental-kabinet', 'CNC, Kapaksız ve Rental Kabinet Karşılaştırması'],
+  ['modul-pitch-ve-kasa-uyumu', 'Modül Pitch ve LED Kasa Uyumu'],
+  ['led-ekran-guc-ve-veri-planlama', 'LED Ekran Güç ve Veri Planlama'],
 ];
 
 const builtHtml = (route = '') =>
@@ -70,7 +72,14 @@ test('desktop header centers the primary navigation between the brand and quote 
   const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
 
   assert.match(css, /\.header-bar\s*\{[^}]*position:\s*relative/s);
-  assert.match(css, /\.desktop-nav\s*\{[^}]*left:\s*50%[^}]*transform:\s*translateX\(-50%\)/s);
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*64rem\)\s*\{[\s\S]*?\.header-bar\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto\s+minmax\(0,\s*1fr\)/s,
+  );
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*64rem\)\s*\{[\s\S]*?\.desktop-nav\s*\{[\s\S]*?justify-self:\s*center/s,
+  );
 });
 
 test('build emits all three application routes with unique canonical URLs and useful catalog links', () => {
@@ -91,7 +100,7 @@ test('build emits all three application routes with unique canonical URLs and us
   assert.equal(titles.size, 3);
 });
 
-test('build emits five evergreen articles with unique metadata, breadcrumbs and contextual links', () => {
+test('build emits evergreen articles with unique metadata, breadcrumbs and contextual links', () => {
   const titles = new Set();
   const descriptions = new Set();
 
@@ -118,8 +127,8 @@ test('build emits five evergreen articles with unique metadata, breadcrumbs and 
     assert.match(html, /href="\/teklif-al\/"/);
   }
 
-  assert.equal(titles.size, 5);
-  assert.equal(descriptions.size, 5);
+  assert.equal(titles.size, articleRoutes.length);
+  assert.equal(descriptions.size, articleRoutes.length);
 });
 
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {
@@ -131,8 +140,8 @@ test('corporate, discovery and FAQ pages publish evidence-neutral content and em
   assert.match(builtHtml('bilgi-merkezi'), /LED Ekran Kasası Nasıl Seçilir\?/);
   assert.match(builtHtml('sss'), /<details[\s\S]*?<summary>/);
   assert.match(combinedHtml, /info@ledkasa\.com\.tr/);
-  assert.doesNotMatch(combinedHtml, /FAQPage|sameAs|telephone|WhatsApp|Sertifikalarımız|Referanslarımız/);
-  assert.doesNotMatch(combinedHtml, /\+90\s*\(?\d{3}\)?|\b\d{3}[ .-]\d{3}[ .-]\d{2}[ .-]\d{2}\b/);
+  assert.match(combinedHtml, /\+90 530 405 67 68/);
+  assert.doesNotMatch(combinedHtml, /FAQPage|sameAs|Sertifikalarımız|Referanslarımız/);
 });
 
 const bootHero = ({ reduced = false } = {}) => {
