@@ -6,6 +6,7 @@ import net from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
+import { phpAvailable } from './php-available.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
 const publicRoot = resolve(projectRoot, 'public');
@@ -86,7 +87,7 @@ const startFakeSmtp = async () => {
 const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
   const port = await listenOnFreePort();
   const sendmailWrapper = resolve(projectRoot, 'scripts/test-sendmail.sh');
-  const process = spawn('php', [
+  const phpProcess = spawn('php', [
     '-d', 'SMTP=127.0.0.1',
     '-d', `smtp_port=${smtpPort}`,
     '-d', `sendmail_path=${sendmailWrapper} -t -i`,
@@ -107,19 +108,25 @@ const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
     windowsHide: true,
   });
   let diagnostics = '';
-  process.stderr.setEncoding('utf8');
-  process.stderr.on('data', (chunk) => { diagnostics += chunk; });
+  let spawnError = null;
+  phpProcess.on('error', (error) => {
+    spawnError = error;
+    diagnostics += `${error.message}\n`;
+  });
+  phpProcess.stderr.setEncoding('utf8');
+  phpProcess.stderr.on('data', (chunk) => { diagnostics += chunk; });
 
   for (let attempt = 0; attempt < 60; attempt += 1) {
-    if (process.exitCode !== null) throw new Error(`PHP server exited early:\n${diagnostics}`);
+    if (spawnError) throw new Error(`PHP server failed to start:\n${diagnostics}`);
+    if (phpProcess.exitCode !== null) throw new Error(`PHP server exited early:\n${diagnostics}`);
     try {
       const response = await fetch(`http://127.0.0.1:${port}/contact.php`);
       if (response.status === 405) {
         return {
           origin: `http://127.0.0.1:${port}`,
           close: async () => {
-            process.kill();
-            await once(process, 'exit').catch(() => {});
+            phpProcess.kill();
+            await once(phpProcess, 'exit').catch(() => {});
           },
         };
       }
@@ -127,7 +134,8 @@ const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
     await new Promise((resolveDelay) => setTimeout(resolveDelay, 50));
   }
 
-  process.kill();
+  phpProcess.kill();
+  await once(phpProcess, 'exit').catch(() => {});
   throw new Error(`PHP server did not become ready:\n${diagnostics}`);
 };
 
@@ -140,17 +148,20 @@ const postSubmission = (origin, headers = {}) => fetch(`${origin}/contact.php`, 
 const withEndpoint = async (callback) => {
   const rateLimitDirectory = mkdtempSync(join(tmpdir(), 'ledkasa-contact-limit-'));
   const smtp = await startFakeSmtp();
-  const endpoint = await startPhpEndpoint(smtp.port, rateLimitDirectory);
+  let endpoint;
   try {
+    endpoint = await startPhpEndpoint(smtp.port, rateLimitDirectory);
     await callback({ endpoint, smtp });
   } finally {
-    await endpoint.close();
-    await smtp.close();
+    await endpoint?.close().catch(() => {});
+    await smtp.close().catch(() => {});
     rmSync(rateLimitDirectory, { recursive: true, force: true });
   }
 };
 
-test('contact endpoint accepts a legitimate same-origin browser post', async () => {
+const describeContact = phpAvailable() ? test : test.skip;
+
+describeContact('contact endpoint accepts a legitimate same-origin browser post', async () => {
   await withEndpoint(async ({ endpoint, smtp }) => {
     const response = await postSubmission(endpoint.origin, {
       Origin: endpoint.origin,
@@ -163,7 +174,7 @@ test('contact endpoint accepts a legitimate same-origin browser post', async () 
   });
 });
 
-test('contact endpoint rejects cross-site browser posts before mail delivery', async () => {
+describeContact('contact endpoint rejects cross-site browser posts before mail delivery', async () => {
   await withEndpoint(async ({ endpoint, smtp }) => {
     for (const headers of [
       { Origin: 'https://attacker.example', 'Sec-Fetch-Site': 'same-origin' },
@@ -179,7 +190,7 @@ test('contact endpoint rejects cross-site browser posts before mail delivery', a
   });
 });
 
-test('contact endpoint rate-limits repeated non-browser posts per IP with a generic response', async () => {
+describeContact('contact endpoint rate-limits repeated non-browser posts per IP with a generic response', async () => {
   await withEndpoint(async ({ endpoint, smtp }) => {
     for (let attempt = 0; attempt < 5; attempt += 1) {
       const response = await postSubmission(endpoint.origin);

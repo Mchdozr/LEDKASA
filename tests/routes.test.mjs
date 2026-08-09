@@ -5,8 +5,10 @@ import { tmpdir } from 'node:os';
 import { createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { after, before, test } from 'node:test';
+import { phpAvailable } from './php-available.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
+const describePhp = phpAvailable() ? test : test.skip;
 const expectedProductRoutes = [
   ['led-ekran-kasalari/cnc-led-kasa', 'CNC LED Kasa'],
   ['led-ekran-kasalari/kapaksiz-led-kabinet', 'Kapaksız LED Kabinet'],
@@ -46,6 +48,8 @@ before(async () => {
     encoding: 'utf8',
   });
   assert.equal(build.status, 0, `Astro build failed:\n${build.stdout}\n${build.stderr}`);
+
+  if (!phpAvailable()) return;
 
   rateLimitDirectory = mkdtempSync(join(tmpdir(), 'ledkasa-routes-contact-'));
   const port = await getAvailablePort();
@@ -153,7 +157,7 @@ test('quote page renders a consent-gated validated form without recipient config
   assert.doesNotMatch(html, /test-recipient@example\.com/);
 });
 
-test('contact handler accepts POST only and validates required fields', async () => {
+describePhp('contact handler accepts POST only and validates required fields', async () => {
   const getResponse = await fetch(`${phpBaseUrl}/contact.php`);
   assert.equal(getResponse.status, 405);
 
@@ -169,7 +173,7 @@ test('contact handler accepts POST only and validates required fields', async ()
   });
 });
 
-test('contact handler silently accepts a completed honeypot without sending', async () => {
+describePhp('contact handler silently accepts a completed honeypot without sending', async () => {
   const response = await fetch(`${phpBaseUrl}/contact.php`, {
     method: 'POST',
     body: new URLSearchParams({
@@ -189,7 +193,7 @@ test('contact handler silently accepts a completed honeypot without sending', as
   });
 });
 
-test('contact handler redirects normal browser submissions to safe quote states', async () => {
+describePhp('contact handler redirects normal browser submissions to safe quote states', async () => {
   const invalidResponse = await fetch(`${phpBaseUrl}/contact.php`, {
     method: 'POST',
     body: new URLSearchParams({ name: '', email: 'invalid', message: '', kvkk_consent: '' }),
