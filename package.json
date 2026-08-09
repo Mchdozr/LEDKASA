@@ -1,19 +1,20 @@
 {
-  "name": "ledkasa",
+  "name": "ledkasa-corporate-site",
+  "version": "1.0.0",
+  "private": true,
   "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "assets:optimize": "node scripts/optimize-assets.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.mjs",
+    "test:browser": "node --experimental-strip-types --test tests/browser/mobile-nav-layout.test.mjs"
   },
-  "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
+  "devDependencies": {
+    "@astrojs/sitemap": "3.7.3",
     "astro": "^7.2.0",
-    "sharp": "^0.35.3"
+    "playwright-core": "^1.62.1",
+    "sharp": "0.35.3"
   }
 }

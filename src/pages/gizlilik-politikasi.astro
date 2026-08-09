@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteUrl } from '../data/site';
+
+const title = 'Gizlilik Politikası | LEDKASA';
+const description = 'LEDKASA internet sitesinde paylaşılan bilgilerin korunmasına ilişkin şeffaf gizlilik politikası şablonu.';
+const canonical = '/gizlilik-politikasi/';
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${siteUrl}${canonical}#webpage`,
+  url: `${siteUrl}${canonical}`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Gizlilik Politikası' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Yasal bilgilendirme şablonu</span>
+    <h1>Gizlilik Politikası</h1>
+    <p><strong>Önemli:</strong> Bu metin genel bir taslaktır. Canlı sistemin gerçek veri akışları doğrulanmalı, şirket özelindeki yükümlülükler eklenmeli ve yayın öncesinde hukuki inceleme yapılmalıdır.</p>
+  </header>
+  <div class="content-layout shell">
+    <article class="prose-content">
+      <section>
+        <h2>Sitenin kapsamı</h2>
+        <p>LEDKASA internet sitesi ürünleri, uygulama alanlarını ve bilgi merkezi içeriklerini tanıtır; ziyaretçiler teklif formu veya e-posta üzerinden proje talebi paylaşabilir.</p>
+      </section>
+      <section>
+        <h2>Paylaşılan bilgiler</h2>
+        <p>Teklif iletişiminde kullanıcı tarafından sağlanan bilgiler yalnızca talebin anlaşılması ve yanıtlanması için kullanılmalıdır. Kullanıcıların gerekli olmayan hassas bilgileri form alanlarına yazmaması önerilir.</p>
+      </section>
+      <section>
+        <h2>Teknik kayıtlar ve üçüncü taraflar</h2>
+        <p>Barındırma sunucusunun güvenlik ve erişim kayıtları gibi teknik veriler işlemesi mümkündür. Kullanılan gerçek altyapı, kayıt süreleri ve hizmet sağlayıcı rolleri doğrulandıktan sonra politika bu bilgilerle tamamlanmalıdır.</p>
+      </section>
+      <section>
+        <h2>Güvenlik ve güncellemeler</h2>
+        <p>Aktarım güvenliği için HTTPS kullanılmalı, form alıcısı sınırlı erişimle yapılandırılmalı ve gereksiz veriler tutulmamalıdır. Sitedeki hizmetler değiştiğinde bu politika da gerçek uygulamayla uyumlu olacak biçimde gözden geçirilmelidir.</p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

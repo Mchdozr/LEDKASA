@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteUrl } from '../data/site';
+
+const title = 'Çerez Politikası | LEDKASA';
+const description = 'LEDKASA internet sitesindeki çerez ve benzeri teknolojilere ilişkin şeffaf bilgilendirme şablonu.';
+const canonical = '/cerez-politikasi/';
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${siteUrl}${canonical}#webpage`,
+  url: `${siteUrl}${canonical}`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Çerez Politikası' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Yasal bilgilendirme şablonu</span>
+    <h1>Çerez Politikası</h1>
+    <p><strong>Önemli:</strong> Bu metin genel bir taslaktır. Canlı site yayına alınırken gerçek çerezler ve benzeri teknolojiler taranmalı; sonuçlar şirket özelinde hukuki incelemeyle doğrulanmalıdır.</p>
+  </header>
+  <div class="content-layout shell">
+    <article class="prose-content">
+      <section>
+        <h2>Çerezler nedir?</h2>
+        <p>Çerezler, bir internet sitesinin ziyaret sırasında tarayıcıya kaydedebildiği küçük metin dosyalarıdır. Benzeri yerel depolama teknolojileri de site işlevlerini sürdürmek veya tercihleri hatırlamak için kullanılabilir.</p>
+      </section>
+      <section>
+        <h2>Mevcut site davranışı</h2>
+        <p>Bu statik sürüm, menü ve slayt gibi arayüz davranışlarını tarayıcı içinde çalıştırır ve bu işlevler için kalıcı takip çerezi oluşturmaz. Plesk veya sunucu katmanında devreye alınabilecek teknolojiler canlı ortamda ayrıca kontrol edilmelidir.</p>
+      </section>
+      <section>
+        <h2>Tercihlerin yönetimi</h2>
+        <p>Zorunlu olmayan bir ölçüm, reklam veya kişiselleştirme teknolojisi ileride eklenirse, kullanım başlamadan önce gerekli bilgilendirme ve tercih yönetimi sunulmalıdır. Tarayıcı ayarları üzerinden mevcut çerezler görüntülenebilir veya silinebilir.</p>
+      </section>
+      <section>
+        <h2>Politikanın güncellenmesi</h2>
+        <p>Teknoloji veya hizmet sağlayıcı değişikliklerinde bu sayfa gerçek kullanım, amaç ve saklama sürelerini yansıtacak şekilde güncellenmelidir; doğrulanmamış bir araç ya da sağlayıcı bu taslakta belirtilmez.</p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

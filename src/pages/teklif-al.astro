@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { businessContact, productCategories, products, siteUrl } from '../data/site';
+
+const title = 'LED Ekran Projeniz İçin Teklif Alın | LEDKASA';
+const description = 'LED ekran kasası, kabinet ve bağlantı ekipmanı ihtiyacınızı paylaşın; LEDKASA projenize özel teklif hazırlasın.';
+const whatsappHref = `${businessContact.whatsappUrl}?text=${encodeURIComponent('Merhaba, LED ekran projem için bilgi almak istiyorum.')}`;
+const schema = {
+  '@type': 'ContactPage',
+  '@id': `${siteUrl}/teklif-al/#contact`,
+  name: 'Teklif Al',
+  description,
+  url: `${siteUrl}/teklif-al/`,
+  inLanguage: 'tr-TR',
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/teklif-al/" schema={schema} bodyClass="quote-page">
+  <Breadcrumbs items={[{ label: 'Teklif Al' }]} />
+
+  <div class="quote-layout shell">
+    <header class="quote-intro">
+      <span class="eyebrow">Projenize özel teklif</span>
+      <h1>İhtiyacınızı anlatın, birlikte planlayalım.</h1>
+      <p>Ürün, kullanım alanı ve proje ayrıntılarınızı paylaşın. Ekibimiz talebinizi değerlendirerek sizinle iletişime geçsin.</p>
+      <div class="direct-contact" aria-label="Hızlı iletişim">
+        <p class="direct-contact-label">Hemen ulaşın</p>
+        <div class="direct-contact-actions">
+          <a class="button" href={`tel:${businessContact.phoneTel}`}>Ara · {businessContact.phoneDisplay}</a>
+          <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp ile yazın</a>
+        </div>
+      </div>
+      <ol class="quote-steps" aria-label="Teklif süreci">
+        <li><span>01</span><div><strong>Talebinizi paylaşın</strong><p>Ürün ve proje bilgilerini forma ekleyin.</p></div></li>
+        <li><span>02</span><div><strong>İhtiyacı netleştirelim</strong><p>Gerekli ayrıntılar için sizinle iletişime geçelim.</p></div></li>
+        <li><span>03</span><div><strong>Teklifinizi hazırlayalım</strong><p>Kapsama uygun çözümü ve teklifinizi sunalım.</p></div></li>
+      </ol>
+    </header>
+
+    <section class="quote-form-panel" aria-labelledby="quote-form-heading" data-reveal>
+      <div class="quote-form-heading">
+        <span class="eyebrow">Teklif formu</span>
+        <h2 id="quote-form-heading">Proje bilgileri</h2>
+        <p><span aria-hidden="true">*</span> işaretli alanlar zorunludur.</p>
+      </div>
+
+      <div id="durum-basarili" class="submission-feedback is-success" data-submission-feedback role="status" aria-live="polite" tabindex="-1">
+        <strong>Talebiniz başarıyla alındı.</strong>
+        <span>Ekibimiz en kısa sürede sizinle iletişime geçecek.</span>
+      </div>
+      <div id="durum-hata" class="submission-feedback is-error" data-submission-feedback role="alert" tabindex="-1">
+        <strong>Form gönderilemedi.</strong>
+        <span>Lütfen bilgilerinizi kontrol edip yeniden deneyin.</span>
+      </div>
+
+      <form action="/contact.php" method="post" class="quote-form" data-quote-form>
+        <div class="form-row">
+          <label>
+            Ad soyad <span aria-hidden="true">*</span>
+            <input name="name" type="text" autocomplete="name" maxlength="120" required />
+          </label>
+          <label>
+            E-posta <span aria-hidden="true">*</span>
+            <input name="email" type="email" autocomplete="email" maxlength="254" required />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Telefon
+            <input name="phone" type="tel" autocomplete="tel" maxlength="40" inputmode="tel" />
+          </label>
+          <label>
+            Firma
+            <input name="company" type="text" autocomplete="organization" maxlength="160" />
+          </label>
+        </div>
+        <label>
+          İlgilendiğiniz ürün
+          <select name="product" data-product-select>
+            <option value="">Henüz karar vermedim</option>
+            {productCategories.map((category) => (
+              <optgroup label={category.name}>
+                {category.products.map((product) => <option value={product.slug}>{product.name}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+        <div class="form-row">
+          <label>
+            Kurulum tipi
+            <select name="install_type">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="sabit">Sabit kurulum</option>
+              <option value="rental">Rental / geçici</option>
+              <option value="poster">Poster / dikey</option>
+              <option value="karisik">Karışık / emin değilim</option>
+            </select>
+          </label>
+          <label>
+            Ortam
+            <select name="environment">
+              <option value="">Belirtmek istemiyorum</option>
+              <option value="indoor">İç mekân</option>
+              <option value="outdoor">Dış mekân</option>
+              <option value="her-ikisi">Her ikisi</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Tahmini kabinet adedi veya ekran ölçüsü
+          <input name="quantity_estimate" type="text" maxlength="120" placeholder="Örn. 12 kabinet veya 4×3 m" />
+        </label>
+        <label>
+          Proje ve ihtiyaç detayları <span aria-hidden="true">*</span>
+          <textarea name="message" rows="6" maxlength="5000" required placeholder="Pitch/modül, kullanım alanı, proje takvimi ve paylaşmak istediğiniz diğer ayrıntılar..."></textarea>
+        </label>
+
+        <div class="honeypot" aria-hidden="true">
+          <label>İnternet sitesi <input name="website" type="url" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <label class="consent-field">
+          <input name="kvkk_consent" type="checkbox" required />
+          <span><a href="/kvkk-aydinlatma/">KVKK Aydınlatma Metni</a>’ni okudum; teklif talebimin yanıtlanması için bilgilerimin işlenmesini kabul ediyorum. <span aria-hidden="true">*</span></span>
+        </label>
+
+        <div class="form-submit-row">
+          <button class="button" type="submit" data-submit-button>Teklif talebini gönder <span aria-hidden="true">→</span></button>
+          <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script define:vars={{ validProductSlugs: products.map((product) => product.slug) }}>
+    const form = document.querySelector('[data-quote-form]');
+    const productSelect = document.querySelector('[data-product-select]');
+    const status = document.querySelector('[data-form-status]');
+    const submitButton = document.querySelector('[data-submit-button]');
+    const searchParams = new URLSearchParams(window.location.search);
+    const requestedProduct = searchParams.get('urun');
+    const submissionState = searchParams.get('durum');
+    const submissionFeedback = submissionState === 'basarili' || submissionState === 'hata'
+      ? document.getElementById(`durum-${submissionState}`)
+      : null;
+
+    if (submissionFeedback instanceof HTMLElement) {
+      submissionFeedback.classList.add('is-active');
+      submissionFeedback.focus();
+    }
+
+    if (productSelect instanceof HTMLSelectElement && requestedProduct && validProductSlugs.includes(requestedProduct)) {
+      productSelect.value = requestedProduct;
+    }
+
+    if (form instanceof HTMLFormElement && status && submitButton instanceof HTMLButtonElement) {
+      form.addEventListener('submit', async (event) => {
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        event.preventDefault();
+        submitButton.disabled = true;
+        submitButton.setAttribute('aria-busy', 'true');
+        status.textContent = 'Talebiniz gönderiliyor…';
+        status.className = 'form-status';
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          const result = await response.json();
+          if (!response.ok || !result.ok) throw new Error('request-failed');
+
+          status.textContent = result.message;
+          status.className = 'form-status is-success';
+          form.reset();
+        } catch {
+          status.textContent = 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
+          status.className = 'form-status is-error';
+        } finally {
+          submitButton.disabled = false;
+          submitButton.removeAttribute('aria-busy');
+        }
+      });
+    }
+  </script>
+</BaseLayout>

@@ -1,58 +1,44 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LeadForm from '../components/LeadForm.astro';
-import { site } from '../data/site';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteCta from '../components/QuoteCta.astro';
+import { businessContact, siteUrl } from '../data/site';
 
-const success = Astro.url.searchParams.get('success') === '1';
-const selectedProduct = Astro.url.searchParams.get('urun') ?? '';
-
-const contactLd = {
-  '@context': 'https://schema.org',
+const title = 'İletişim | LEDKASA';
+const description = 'LED ekran kasa, kabinet ve bağlantı ekipmanı projeleriniz için LEDKASA ile iletişime geçin veya teklif talebi gönderin.';
+const canonical = '/iletisim/';
+const whatsappHref = `${businessContact.whatsappUrl}?text=${encodeURIComponent('Merhaba, LED ekran projem için bilgi almak istiyorum.')}`;
+const schema = {
   '@type': 'ContactPage',
-  name: 'İletişim | LEDKASA',
-  url: `${site.url}/iletisim`,
-  mainEntity: {
-    '@type': 'Organization',
-    name: site.legalName,
-    email: site.email,
-    telephone: site.phone,
-  },
+  '@id': `${siteUrl}${canonical}#contact`,
+  url: `${siteUrl}${canonical}`,
+  name: title,
+  description,
+  inLanguage: 'tr-TR',
 };
 ---
 
-<BaseLayout
-  title="İletişim & Teklif | LEDKASA"
-  description="LED ekran kasa ve bağlantı projeleriniz için teklif alın. Telefon, e-posta, WhatsApp veya form ile ulaşın."
-  canonicalPath="/iletisim"
-  jsonLd={contactLd}
->
-  <main id="top">
-    <section class="page-hero dark contact-hero">
-      <p class="eyebrow">İletişim</p>
-      <h1>Projenizi<br /><em>konuşalım.</em></h1>
-      <p class="lede">
-        İhtiyacınızı yazın; uygun LED kasa ve bağlantı ekipmanları için size dönüş yapalım.
-      </p>
-    </section>
-
-    <section class="contact-panel">
-      <div>
-        <p class="eyebrow">Kanallar</p>
-        <h2 style="font-size:clamp(32px,3.4vw,46px); margin-bottom:28px;">
-          Tek noktadan<br /><em>teklif.</em>
-        </h2>
-        <div class="contact-channels">
-          <a href={site.phoneHref}><small>Telefon</small><strong>{site.phone}</strong></a>
-          <a href={`mailto:${site.email}`}><small>E-posta</small><strong>{site.email}</strong></a>
-          <a href={site.whatsapp} target="_blank" rel="noopener"
-            ><small>WhatsApp</small><strong>Hızlı yazın ↗</strong></a
-          >
-        </div>
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'İletişim' }]} />
+  <header class="content-hero shell">
+    <span class="eyebrow">Projeyi birlikte netleştirelim</span>
+    <h1>LEDKASA ile iletişime geçin</h1>
+    <p>Ürün grubu, kullanım alanı ve kurulum biçimini paylaşın; kapsamı teklif sürecinde birlikte değerlendirelim.</p>
+  </header>
+  <section class="story-section shell" aria-labelledby="contact-heading">
+    <div class="story-statement">
+      <span class="eyebrow">Doğrudan iletişim</span>
+      <h2 id="contact-heading">{businessContact.phoneDisplay}</h2>
+      <div class="direct-contact-actions contact-channel-actions">
+        <a class="button" href={`tel:${businessContact.phoneTel}`}>Telefonla ara</a>
+        <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </div>
-      <div>
-        <p class="eyebrow">Teklif formu</p>
-        <LeadForm selectedProduct={selectedProduct} success={success} />
-      </div>
-    </section>
-  </main>
+      <p class="contact-email-line"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></p>
+    </div>
+    <div class="story-copy">
+      <p>Teklif formunda ürün seçimi, firma bilgisi ve proje detaylarını tek yerde paylaşabilirsiniz. Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
+      <a class="button" href="/teklif-al/">Teklif formuna geçin <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <QuoteCta title="LED ekran projenizi değerlendirmeye başlayalım." />
 </BaseLayout>
