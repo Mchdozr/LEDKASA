@@ -1,5 +1,21 @@
+---
+import { site } from '../data/site';
+---
+
 <footer class="site-footer">
-  <a class="logo" href="/">LED<span>KASA</span></a>
-  <span>© {new Date().getFullYear()} LEDKASA. Tüm hakları saklıdır.</span>
-  <a href="#top">Yukarı <b>↑</b></a>
+  <div class="footer-main">
+    <a class="logo" href="/">LED<span>KASA</span></a>
+    <nav class="footer-nav" aria-label="Alt menü">
+      <a href="/urunler">Ürünler</a>
+      <a href="/#hakkimizda">Neden LEDKASA?</a>
+      <a href="/iletisim">Teklif Al</a>
+      <a href={site.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+  </div>
+  <div class="footer-meta">
+    <span>© {new Date().getFullYear()} LEDKASA. Tüm hakları saklıdır.</span>
+    <a href="#top">Yukarı <b>↑</b></a>
+  </div>
 </footer>
+
+<a class="float-cta" href="/iletisim" aria-label="Teklif al">Teklif Al <b>→</b></a>

@@ -1,19 +1,24 @@
 ---
 interface Props {
-  dark?: boolean;
+  home?: boolean;
 }
 
-const { dark = false } = Astro.props;
+const { home = false } = Astro.props;
+
+const productsHref = home ? '#urunler' : '/urunler';
+const aboutHref = home ? '#hakkimizda' : '/#hakkimizda';
+const quoteHref = home ? '#iletisim' : '/iletisim';
 ---
 
-<header class:list={['site-header', { 'is-dark': dark }]}>
-  <a class="logo" href="/" aria-label="LEDKASA ana sayfa">LED<span>KASA</span></a>
+<header class="site-header is-fixed is-dark" id="site-header">
+  <a class="logo" href={home ? '#top' : '/'} aria-label="LEDKASA ana sayfa">LED<span>KASA</span></a>
   <button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false" type="button">
     <i></i><i></i>
   </button>
   <nav class="nav" aria-label="Ana menü">
-    <a href="/urunler">Ürünler</a>
-    <a href="/#hakkimizda">Neden LEDKASA?</a>
-    <a href="/iletisim" class="nav-cta">Teklif Al</a>
+    <a href={productsHref}>Ürünler</a>
+    <a href={aboutHref}>Neden LEDKASA?</a>
+    <a href="/urunler">Katalog</a>
+    <a href={quoteHref} class="nav-cta">Teklif Al</a>
   </nav>
 </header>

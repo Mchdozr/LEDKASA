@@ -9,20 +9,27 @@ interface Props {
 const { product } = Astro.props;
 ---
 
-<a class="product-card" href={`/urunler/${product.slug}`}>
-  <div class="product-no">{product.number}</div>
-  <div class="product-image">
-    <Image
-      src={product.image}
-      alt={product.alt}
-      widths={[280, 420, 640]}
-      sizes="(max-width: 430px) 90vw, (max-width: 980px) 45vw, 22vw"
-      loading="lazy"
-    />
-  </div>
+<article class="product-card">
+  <a class="product-card-media" href={`/urunler/${product.slug}`} aria-label={`${product.title} detay`}>
+    <div class="product-no">{product.number}</div>
+    <div class="product-image">
+      <Image
+        src={product.image}
+        alt={product.alt}
+        widths={[280, 420, 640]}
+        sizes="(max-width: 430px) 90vw, (max-width: 980px) 45vw, 22vw"
+        loading="lazy"
+      />
+    </div>
+  </a>
   <div class="product-info">
     <p>{product.tagline}</p>
-    <h3>{product.title}</h3>
-    <span class="linkish">Detaylı bilgi <b>↗</b></span>
+    <h3>
+      <a href={`/urunler/${product.slug}`}>{product.title}</a>
+    </h3>
+    <div class="product-actions">
+      <a class="linkish" href={`/urunler/${product.slug}`}>Detaylı bilgi <b>↗</b></a>
+      <a class="linkish quote" href={`/iletisim?urun=${product.slug}`}>Teklif Al <b>→</b></a>
+    </div>
   </div>
-</a>
+</article>

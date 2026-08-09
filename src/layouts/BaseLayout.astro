@@ -11,7 +11,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'product';
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-  headerDark?: boolean;
+  home?: boolean;
 }
 
 const {
@@ -21,16 +21,12 @@ const {
   ogImage = site.defaultOgImage,
   ogType = 'website',
   jsonLd,
-  headerDark = false,
+  home = false,
 } = Astro.props;
 
 const canonical = new URL(canonicalPath, site.url).toString();
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site.url).toString();
-const structured = jsonLd
-  ? Array.isArray(jsonLd)
-    ? jsonLd
-    : [jsonLd]
-  : [];
+const structured = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -72,12 +68,20 @@ const structured = jsonLd
     }
   </head>
   <body>
-    <Header dark={headerDark} />
+    <Header home={home} />
     <slot />
     <Footer />
     <script>
+      const header = document.querySelector('#site-header');
       const toggle = document.querySelector('.menu-toggle');
       const nav = document.querySelector('.nav');
+
+      const syncHeader = () => {
+        header?.classList.toggle('is-scrolled', window.scrollY > 12);
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
 
       toggle?.addEventListener('click', () => {
         const open = nav?.classList.toggle('open');
