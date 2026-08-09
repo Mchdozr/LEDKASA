@@ -401,6 +401,10 @@ p, h1, h2, h3 { margin-top: 0; }
 .footer-grid { display: grid; gap: 2.5rem; padding-block: clamp(3.5rem, 7vw, 6rem); }
 .brand-light { color: var(--white); }
 .footer-brand p { max-width: 30rem; margin: 1rem 0 1.5rem; color: #9ea9a2; }
+.footer-contact { display: flex; flex-wrap: wrap; gap: .65rem 1.1rem; margin: 0 0 1.35rem; }
+.footer-contact a { color: #dfe5e1; font-size: .92rem; font-weight: 650; }
+.footer-contact a:hover { color: var(--green); }
+.content-layout .hub-links { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
 .footer-grid nav h2 { margin-bottom: 1rem; color: var(--white); font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; }
 .footer-grid ul { display: grid; gap: .65rem; margin: 0; padding: 0; list-style: none; }
 .footer-grid nav a { font-size: .9rem; }

@@ -27,6 +27,16 @@ interface Props {
 }
 
 const { product, category, relatedProducts } = Astro.props;
+const complementaryProducts = (product.complementaryProducts ?? [])
+  .map((slug) => products.find((entry) => entry.slug === slug))
+  .filter((entry): entry is Product => Boolean(entry));
+const isCabinet = category.slug === 'led-ekran-kasalari';
+const hasContext =
+  Boolean(product.useCases?.length) ||
+  Boolean(product.relatedGuides?.length) ||
+  Boolean(product.applicationLinks?.length) ||
+  isCabinet;
+
 const schema = {
   '@type': 'Product',
   '@id': `${product.canonicalUrl}#product`,
@@ -39,6 +49,15 @@ const schema = {
     '@type': 'Brand',
     name: 'LEDKASA',
   },
+  ...(product.specs && product.specs.length > 0
+    ? {
+        additionalProperty: product.specs.map((spec) => ({
+          '@type': 'PropertyValue',
+          name: spec.label,
+          value: spec.value,
+        })),
+      }
+    : {}),
 };
 ---
 
@@ -105,7 +124,7 @@ const schema = {
     </section>
   )}
 
-  {(product.useCases?.length || product.relatedGuides?.length) && (
+  {hasContext && (
     <section class="product-context shell" aria-labelledby="context-heading">
       <div class="section-heading">
         <div>
@@ -132,6 +151,39 @@ const schema = {
             </ul>
           </div>
         )}
+        {product.applicationLinks && product.applicationLinks.length > 0 && (
+          <div>
+            <h3>Uygulama alanları</h3>
+            <ul class="context-list">
+              {product.applicationLinks.map((link) => (
+                <li><a href={link.url}>{link.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {isCabinet && (
+          <div>
+            <h3>Karşılaştırma</h3>
+            <ul class="context-list">
+              <li><a href="/urunler/kasa-karsilastirma/">LED kasa karşılaştırma tablosu</a></li>
+              <li><a href="/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/">Kasa seçimi rehberi</a></li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  {complementaryProducts.length > 0 && (
+    <section class="related-products shell" aria-labelledby="complementary-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Birlikte değerlendirin</span>
+          <h2 id="complementary-heading">Tamamlayıcı ürünler</h2>
+        </div>
+      </div>
+      <div class="product-grid">
+        {complementaryProducts.map((relatedProduct) => <ProductCard product={relatedProduct} headingLevel={3} />)}
       </div>
     </section>
   )}

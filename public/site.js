@@ -128,8 +128,8 @@
       }
       pauseButton.disabled = false;
       pauseButton.setAttribute('aria-pressed', String(paused));
-      pauseButton.setAttribute('aria-label', 'Slayt gösterisini duraklat');
-      pauseButton.textContent = 'Duraklat';
+      pauseButton.setAttribute('aria-label', paused ? 'Slayt gösterisini devam ettir' : 'Slayt gösterisini duraklat');
+      pauseButton.textContent = paused ? 'Devam ettir' : 'Duraklat';
     };
 
     const announce = (message) => {

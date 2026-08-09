@@ -1,11 +1,12 @@
 ---
-import { productCategories } from '../data/site';
+import { businessContact, productCategories } from '../data/site';
 
 const categoryLinks = productCategories.map((category) => ({
   name: category.name,
   url: category.url,
 }));
 const year = new Date().getFullYear();
+const whatsappHref = `${businessContact.whatsappUrl}?text=${encodeURIComponent('Merhaba, LED ekran projem için bilgi almak istiyorum.')}`;
 ---
 
 <footer class="site-footer">
@@ -17,6 +18,11 @@ const year = new Date().getFullYear();
         <span>LED<span>KASA</span></span>
       </a>
       <p>LED ekran kasaları ile güç ve bağlantı ekipmanlarında proje odaklı çözümler.</p>
+      <div class="footer-contact" aria-label="İletişim kanalları">
+        <a href={`tel:${businessContact.phoneTel}`}>{businessContact.phoneDisplay}</a>
+        <a href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a>
+      </div>
       <a class="button button-outline" href="/teklif-al/">Projenizi Konuşalım</a>
     </div>
     <nav aria-labelledby="footer-products">
@@ -44,7 +50,6 @@ const year = new Date().getFullYear();
         <li><a href="/kvkk-aydinlatma/">KVKK Aydınlatma Metni</a></li>
         <li><a href="/gizlilik-politikasi/">Gizlilik Politikası</a></li>
         <li><a href="/cerez-politikasi/">Çerez Politikası</a></li>
-        <li><a href="/site-haritasi/">Site Haritası</a></li>
       </ul>
     </nav>
   </div>

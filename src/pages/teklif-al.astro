@@ -176,10 +176,26 @@ const schema = {
           const result = await response.json();
           if (!response.ok || !result.ok) throw new Error('request-failed');
 
+          form.reset();
+          document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
+            node.classList.remove('is-active');
+          });
+          const successFeedback = document.getElementById('durum-basarili');
+          if (successFeedback instanceof HTMLElement) {
+            successFeedback.classList.add('is-active');
+            successFeedback.focus();
+          }
           status.textContent = result.message;
           status.className = 'form-status is-success';
-          form.reset();
         } catch {
+          document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
+            node.classList.remove('is-active');
+          });
+          const errorFeedback = document.getElementById('durum-hata');
+          if (errorFeedback instanceof HTMLElement) {
+            errorFeedback.classList.add('is-active');
+            errorFeedback.focus();
+          }
           status.textContent = 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
           status.className = 'form-status is-error';
         } finally {

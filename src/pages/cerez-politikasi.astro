@@ -18,7 +18,7 @@ const schema = {
 
 <BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
   <Breadcrumbs items={[{ label: 'Çerez Politikası' }]} />
-  <header class="content-hero shell">
+  <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">Yasal bilgilendirme şablonu</span>
     <h1>Çerez Politikası</h1>
     <p><strong>Önemli:</strong> Bu metin genel bir taslaktır. Canlı site yayına alınırken gerçek çerezler ve benzeri teknolojiler taranmalı; sonuçlar şirket özelinde hukuki incelemeyle doğrulanmalıdır.</p>
@@ -42,5 +42,11 @@ const schema = {
         <p>Teknoloji veya hizmet sağlayıcı değişikliklerinde bu sayfa gerçek kullanım, amaç ve saklama sürelerini yansıtacak şekilde güncellenmelidir; doğrulanmamış bir araç ya da sağlayıcı bu taslakta belirtilmez.</p>
       </section>
     </article>
+    <nav class="hub-links" aria-label="İlgili sayfalar">
+      <a href="/gizlilik-politikasi/">Gizlilik politikası</a>
+      <a href="/kvkk-aydinlatma/">KVKK aydınlatma</a>
+      <a href="/iletisim/">İletişim</a>
+      <a href="/">Ana sayfa</a>
+    </nav>
   </div>
 </BaseLayout>

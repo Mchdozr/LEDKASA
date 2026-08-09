@@ -92,3 +92,18 @@ test('CNC product exposes verified datasheet specs without inventing offers', ()
   );
   assert.match(cnc.specs.map((spec) => spec.value).join(' '), /960/);
 });
+
+test('every product carries qualitative specs, guide and application cross-links', () => {
+  const slugSet = new Set(products.map((product) => product.slug));
+
+  for (const product of products) {
+    assert.ok(product.specs?.length, `${product.slug} needs specs`);
+    assert.ok(product.specsNote, `${product.slug} needs specsNote`);
+    assert.ok(product.relatedGuides?.length, `${product.slug} needs relatedGuides`);
+    assert.ok(product.applicationLinks?.length, `${product.slug} needs applicationLinks`);
+    assert.ok(product.complementaryProducts?.length, `${product.slug} needs complementaryProducts`);
+    for (const relatedSlug of product.complementaryProducts) {
+      assert.equal(slugSet.has(relatedSlug), true, `${product.slug} → unknown ${relatedSlug}`);
+    }
+  }
+});

@@ -32,6 +32,7 @@ test('shared navigation is driven by both catalog categories and all product det
   assert.match(headerSource, /productCategories\.map/);
   assert.match(headerSource, /href=\{category\.url\}/);
   assert.match(headerSource, /href=\{product\.url\}/);
+  assert.match(headerSource, /name: 'İletişim',\s*url: '\/iletisim\/'/);
 });
 
 test('navigation marks only an exact URL match as the current page', () => {

@@ -252,7 +252,7 @@ test('hero manual navigation and pause changes announce once and expose an accur
 
   hero.pause.dispatch('click');
   assert.equal(hero.pause.getAttribute('aria-pressed'), 'true');
-  assert.equal(hero.pause.textContent, 'Duraklat');
+  assert.equal(hero.pause.textContent, 'Devam ettir');
   assert.equal(hero.announcement.textContent, 'Otomatik slayt geçişi duraklatıldı.');
   hero.runAutoplay();
   assert.equal(hero.status.textContent, '2 / 3');

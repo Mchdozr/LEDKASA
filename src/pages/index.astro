@@ -38,14 +38,32 @@ const heroSlides = [
   },
 ];
 
-const schema = {
-  '@type': 'WebPage',
-  '@id': `${siteUrl}/#webpage`,
-  url: `${siteUrl}/`,
-  name: title,
-  description,
-  inLanguage: 'tr-TR',
-};
+const previewFaqs = faqItems.slice(0, 4);
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${siteUrl}/#webpage`,
+    url: `${siteUrl}/`,
+    name: title,
+    description,
+    inLanguage: 'tr-TR',
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${siteUrl}/#faq`,
+    url: `${siteUrl}/`,
+    name: 'Sık sorulan sorular',
+    inLanguage: 'tr-TR',
+    mainEntity: previewFaqs.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} canonical="/" schema={schema} bodyClass="home-page">

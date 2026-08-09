@@ -25,6 +25,7 @@ const expectedIndexablePaths = [
   '/hakkimizda/',
   '/iletisim/',
   '/kvkk-aydinlatma/',
+  '/site-haritasi/',
   '/sss/',
   '/teklif-al/',
   '/uygulama-alanlari/',
@@ -139,6 +140,17 @@ test('article mainEntityOfPage relationships resolve to the canonical URL or an 
   }
 });
 
+test('homepage preview FAQ and product detail expose FAQPage / Product additionalProperty schema', () => {
+  const home = readFileSync(outputPathForRoute('/'), 'utf8');
+  assert.match(home, /"@type":"FAQPage"/);
+  assert.match(home, /Hangi LED ekran kasası projem için uygun\?/);
+
+  const product = readFileSync(outputPathForRoute('/urunler/led-ekran-kasalari/cnc-led-kasa/'), 'utf8');
+  const productNode = structuredDataNodes(product).find((node) => node['@type'] === 'Product');
+  assert.ok(productNode?.additionalProperty?.length);
+  assert.ok(productNode.additionalProperty.every((entry) => entry['@type'] === 'PropertyValue' && entry.name && entry.value));
+});
+
 test('product cards are section children with h3 titles on listings and related-product regions', () => {
   for (const route of [
     '/',
@@ -162,6 +174,9 @@ test('404 is a useful noindex page and is absent from the sitemap', () => {
   assert.match(html, /Aradığınız sayfa bulunamadı/);
   assert.match(html, /href="\/urunler\/"/);
   assert.match(html, /href="\/teklif-al\/"/);
+  assert.match(html, /href="\/uygulama-alanlari\/"/);
+  assert.match(html, /href="\/bilgi-merkezi\/"/);
+  assert.match(html, /href="\/iletisim\/"/);
 });
 
 test('manifest, favicon and PHP form handler survive the production build', () => {

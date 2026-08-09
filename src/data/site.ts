@@ -45,6 +45,8 @@ export interface Product {
   specs?: ProductSpec[];
   useCases?: string[];
   relatedGuides?: { name: string; url: string }[];
+  applicationLinks?: { name: string; url: string }[];
+  complementaryProducts?: Product['slug'][];
   datasheetUrl?: string;
   datasheetLabel?: string;
   specsNote?: string;
@@ -98,6 +100,10 @@ export const products: Product[] = [
       { name: 'Modül pitch ve kasa uyumu', url: '/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/' },
       { name: 'Kasa karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
     ],
+    applicationLinks: [
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['kapaksiz-led-kabinet', 'cat6-kablo', 'power-plug'],
     datasheetUrl: '/assets/docs/mg-alloy-cabinet-960x960.pdf',
     datasheetLabel: '960×960 mm teknik föyü (PDF)',
     url: productPath('led-ekran-kasalari', 'cnc-led-kasa'),
@@ -116,11 +122,24 @@ export const products: Product[] = [
     description:
       'Kapaksız LED Kabinet, bakım erişimi ve yalın arka yapı ihtiyacının öne çıktığı sabit LED ekran uygulamalarında değerlendirilir. Yerleşim ve erişim yönü teklif öncesi netleştirilir.',
     highlights: ['Yalın kabin mimarisi', 'Bakım erişimine uygun planlama', 'Sabit proje yerleşimine uyum'],
+    specs: [
+      { label: 'Kurulum tipi', value: 'Sabit kurulum' },
+      { label: 'Tipik kullanım', value: 'Erişim odaklı sabit LED yüzeyler' },
+      { label: 'Öne çıkan ihtiyaç', value: 'Bakım / servis erişim yönü' },
+      { label: 'Bağlantı yaklaşımı', value: 'Erişilebilir arka hat planı' },
+      { label: 'Teklifte netleşenler', value: 'Ölçü, pitch, montaj yüzeyi, aksesuar' },
+    ],
+    specsNote: 'Ölçü ve pitch değerleri proje özelinde değişir; uydurma teknik ölçü yayınlanmaz. Kapsam teklifte netleştirilir.',
     useCases: ['Servis erişimi gereken sabit duvar ekranları', 'Kontrol odası ve teknik alanlar', 'Kurumsal kalıcı paneller'],
     relatedGuides: [
       { name: 'CNC, kapaksız ve rental karşılaştırma', url: '/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/' },
       { name: 'Kasa karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
+      { name: 'LED ekran kasası nasıl seçilir?', url: '/bilgi-merkezi/led-ekran-kasasi-nasil-secilir/' },
     ],
+    applicationLinks: [
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['cnc-led-kasa', 'cat6-kablo', 'power-plug'],
     url: productPath('led-ekran-kasalari', 'kapaksiz-led-kabinet'),
     image: '/assets/images/products/kapaksiz-led-kabinet.webp',
     imageAlt: 'Kapaksız LED ekran kabineti',
@@ -136,11 +155,24 @@ export const products: Product[] = [
     description:
       'Rental LED Kabinet, etkinlik, sahne ve geçici kurulumlarda hızlı montaj–söküm akışına uygun modüler LED ekran sistemleri için planlanır. Taşıma, kilitleme ve bağlantı rotası birlikte ele alınır.',
     highlights: ['Etkinlik ve sahne projeleri', 'Modüler kurulum / söküm akışı', 'Güç ve veri ile birlikte planlama'],
+    specs: [
+      { label: 'Kurulum tipi', value: 'Geçici / rental' },
+      { label: 'Tipik kullanım', value: 'Etkinlik, sahne, organizasyon' },
+      { label: 'Öne çıkan ihtiyaç', value: 'Hızlı kurulum–söküm ve taşıma' },
+      { label: 'Bağlantı yaklaşımı', value: 'Sökülebilir güç + veri hatları' },
+      { label: 'Teklifte netleşenler', value: 'Kabinet adedi, hat uzunlukları, set kapsamı' },
+    ],
+    specsNote: 'Rental sistemlerde ölçü ve hat uzunlukları sahaya göre değişir; kapsam teklifte belirlenir.',
     useCases: ['Konser ve sahne LED yüzeyleri', 'Fuar ve organizasyon ekranları', 'Geçici outdoor/indoor kurgular'],
     relatedGuides: [
       { name: 'Rental LED ekran kurulum rehberi', url: '/bilgi-merkezi/rental-led-ekran-kurulum-rehberi/' },
       { name: 'Kablolama rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
+      { name: 'Kasa karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
     ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+    ],
+    complementaryProducts: ['cable-set', 'power-plug', 'cat6-kablo'],
     url: productPath('led-ekran-kasalari', 'rental-led-kabinet'),
     image: '/assets/images/products/rental-led-kabinet.webp',
     imageAlt: 'Rental kullanım için LED ekran kabineti',
@@ -156,11 +188,25 @@ export const products: Product[] = [
     description:
       'Poster LED Kasa, mağaza, fuaye ve kurumsal alanlarda dikey içerik sunan LED ekran uygulamaları için değerlendirilir. Görüş mesafesi ve yerleşim noktası seçimi etkiler.',
     highlights: ['Dikey ekran uygulamaları', 'Mağaza ve showroom kullanımı', 'Kurumsal karşılama noktaları'],
+    specs: [
+      { label: 'Kurulum tipi', value: 'Sabit dikey yüzey' },
+      { label: 'Tipik kullanım', value: 'Mağaza, showroom, karşılama' },
+      { label: 'Öne çıkan ihtiyaç', value: 'Dikey içerik ve görüş mesafesi' },
+      { label: 'Bağlantı yaklaşımı', value: 'Tek nokta güç/veri planı' },
+      { label: 'Teklifte netleşenler', value: 'Yükseklik, pitch, montaj tipi' },
+    ],
+    specsNote: 'Poster kasa ölçüleri mekân ve içerik formatına göre değişir; teknik kapsam teklifte netleşir.',
     useCases: ['Mağaza vitrin ve ürün alanları', 'Showroom dikey paneller', 'Kurumsal lobi iletişimi'],
     relatedGuides: [
       { name: 'Poster LED kullanım alanları', url: '/bilgi-merkezi/poster-led-ekran-kullanim-alanlari/' },
       { name: 'Mağaza ve showroom uygulamaları', url: '/uygulama-alanlari/magaza-ve-showroom/' },
+      { name: 'Kasa karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
     ],
+    applicationLinks: [
+      { name: 'Mağaza ve Showroom', url: '/uygulama-alanlari/magaza-ve-showroom/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['katlanabilir-poster-led-kasa', 'flat-kablo', 'power-plug'],
     url: productPath('led-ekran-kasalari', 'poster-led-kasa'),
     image: '/assets/images/products/poster-led-kasa.webp',
     imageAlt: 'Dikey poster LED ekran kasası',
@@ -176,10 +222,23 @@ export const products: Product[] = [
     description:
       'Katlanabilir Poster LED Kasa, farklı noktalarda değerlendirilen dikey LED ekran projelerinde taşıma ve kurulum akışını sadeleştirmeyi hedefler.',
     highlights: ['Değişken yerleşim senaryoları', 'Poster ekran projeleri', 'Taşıma ve kurulum planlaması'],
+    specs: [
+      { label: 'Kurulum tipi', value: 'Değişken / taşınabilir dikey' },
+      { label: 'Tipik kullanım', value: 'Çoklu nokta poster iletişim' },
+      { label: 'Öne çıkan ihtiyaç', value: 'Taşıma ve yeniden kurulum' },
+      { label: 'Bağlantı yaklaşımı', value: 'Hızlı sökülebilir hatlar' },
+      { label: 'Teklifte netleşenler', value: 'Taşıma formu, yerleşim adedi, hatlar' },
+    ],
+    specsNote: 'Katlanabilir sistemlerde lojistik ve yerleşim koşulları teklif kapsamını belirler.',
     useCases: ['Gezici tanıtım noktaları', 'Çoklu mağaza yerleşimleri', 'Geçici dikey iletişim yüzeyleri'],
     relatedGuides: [
       { name: 'Poster LED kullanım alanları', url: '/bilgi-merkezi/poster-led-ekran-kullanim-alanlari/' },
+      { name: 'Mağaza ve showroom uygulamaları', url: '/uygulama-alanlari/magaza-ve-showroom/' },
     ],
+    applicationLinks: [
+      { name: 'Mağaza ve Showroom', url: '/uygulama-alanlari/magaza-ve-showroom/' },
+    ],
+    complementaryProducts: ['poster-led-kasa', 'cable-set', 'flat-kablo'],
     url: productPath('led-ekran-kasalari', 'katlanabilir-poster-led-kasa'),
     image: '/assets/images/products/katlanabilir-poster-led-kasa.webp',
     imageAlt: 'Katlanabilir poster LED ekran kasası',
@@ -195,11 +254,23 @@ export const products: Product[] = [
     description:
       'Cat6 Kablo, LED ekran sistemlerinde receiving card ve veri hattı kurgusuna uygun bağlantı için kullanılır. Uzunluk ve rota ekran yerleşimine göre teklifte netleşir.',
     highlights: ['Veri bağlantısı için', 'LED ekran sistemleriyle kullanım', 'Proje rotasına göre teklif'],
+    specs: [
+      { label: 'İşlev', value: 'LED veri hattı' },
+      { label: 'Tipik kullanım', value: 'Kontrolör–kabinet / kabinetler arası' },
+      { label: 'Planlama girdisi', value: 'Ekran yerleşimi ve rota' },
+      { label: 'Teklifte netleşenler', value: 'Uzunluk, adet, etiketleme' },
+    ],
+    specsNote: 'Kablo uzunluğu ve adet, kabinet düzeni netleşmeden sabitlenmez.',
     useCases: ['Kabinetler arası veri hattı', 'Kontrolör–ekran veri yolu', 'Etkinlik ve sabit kurulumlar'],
     relatedGuides: [
       { name: 'LED ekran kablolama rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
       { name: 'Güç ve veri planlama', url: '/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/' },
     ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['power-plug', 'cable-set', 'rental-led-kabinet'],
     url: productPath('guc-ve-baglanti-ekipmanlari', 'cat6-kablo'),
     image: '/assets/images/products/cat6-kablo.webp',
     imageAlt: 'LED ekran sistemleri için Cat6 kablo',
@@ -215,11 +286,23 @@ export const products: Product[] = [
     description:
       'Power Plug, LED ekran güç dağıtımında kabinet ve PSU kurgusuna uygun bağlantı ekipmanı seçimi için sunulur. Akım ve konektör tipi proje bilgisine göre değerlendirilir.',
     highlights: ['Güç bağlantısı için', 'Sistem kurgusuna uygun seçim', 'Teklif odaklı tedarik'],
+    specs: [
+      { label: 'İşlev', value: 'LED güç bağlantısı' },
+      { label: 'Tipik kullanım', value: 'Kabinet / dağıtım hattı' },
+      { label: 'Planlama girdisi', value: 'Yük profili ve erişim' },
+      { label: 'Teklifte netleşenler', value: 'Konektör tipi, adet, hat düzeni' },
+    ],
+    specsNote: 'Akım ve konektör tipi modül/PSU bilgisine göre teklifte doğrulanır.',
     useCases: ['Kabinet güç girişi', 'Dağıtım hattı bağlantıları', 'Rental ve sabit kurulumlar'],
     relatedGuides: [
       { name: 'Güç ve veri planlama', url: '/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/' },
       { name: 'Kablolama rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
     ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['cat6-kablo', 'cable-set', 'cnc-led-kasa'],
     url: productPath('guc-ve-baglanti-ekipmanlari', 'power-plug'),
     image: '/assets/images/products/power-plug.webp',
     imageAlt: 'LED ekran güç bağlantısı için power plug',
@@ -235,11 +318,22 @@ export const products: Product[] = [
     description:
       'Flat Kablo, LED ekranlarda modül–kart ve panel içi bağlantıların düzenli yerleşimine yardımcı olur. Adet ve pin yapısı kullanılan modül ailesine göre teklifte netleşir.',
     highlights: ['Düzenli bağlantı yerleşimi', 'LED modül sistemleri için', 'İhtiyaca göre teklif'],
+    specs: [
+      { label: 'İşlev', value: 'Modül / panel içi bağlantı' },
+      { label: 'Tipik kullanım', value: 'Düzenli arka kablolama' },
+      { label: 'Planlama girdisi', value: 'Modül ailesi ve kabinet formu' },
+      { label: 'Teklifte netleşenler', value: 'Adet, pin/yapı, uzunluk' },
+    ],
+    specsNote: 'Pin yapısı ve adet, kullanılan modül ailesine göre teklifte netleşir.',
     useCases: ['Modül içi sinyal bağlantısı', 'Panel arkası düzenli kablolama', 'Bakım erişimine uygun yerleşim'],
     relatedGuides: [
       { name: 'Modül pitch ve kasa uyumu', url: '/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/' },
       { name: 'Kablolama rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
     ],
+    applicationLinks: [
+      { name: 'Mağaza ve Showroom', url: '/uygulama-alanlari/magaza-ve-showroom/' },
+    ],
+    complementaryProducts: ['poster-led-kasa', 'cnc-led-kasa', 'cable-set'],
     url: productPath('guc-ve-baglanti-ekipmanlari', 'flat-kablo'),
     image: '/assets/images/products/flat-kablo.webp',
     imageAlt: 'LED ekran modülleri için flat kablo',
@@ -255,11 +349,23 @@ export const products: Product[] = [
     description:
       'Cable Set, güç, veri ve modül bağlantı ihtiyaçlarını proje kapsamında bir arada değerlendirmek için sunulan set çözümüdür. İçerik proje ölçüsüne göre teklifte belirlenir.',
     highlights: ['Birlikte planlanan bağlantı ekipmanları', 'Proje kapsamına göre seçim', 'Teklif odaklı çözüm'],
+    specs: [
+      { label: 'İşlev', value: 'Güç + veri bağlantı seti' },
+      { label: 'Tipik kullanım', value: 'Komple proje parça listesi' },
+      { label: 'Planlama girdisi', value: 'Kasa tipi ve ekran ölçeği' },
+      { label: 'Teklifte netleşenler', value: 'Set içeriği, adet, uyumluluk' },
+    ],
+    specsNote: 'Set içeriği proje ölçüsüne göre belirlenir; sabit paket içeriği varsayılmaz.',
     useCases: ['Komple ekran bağlantı paketi', 'Rental saha setleri', 'Sabit kurulum parça listeleri'],
     relatedGuides: [
       { name: 'Kablolama rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
       { name: 'Güç ve veri planlama', url: '/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/' },
     ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
+    complementaryProducts: ['rental-led-kabinet', 'cnc-led-kasa', 'cat6-kablo'],
     url: productPath('guc-ve-baglanti-ekipmanlari', 'cable-set'),
     image: '/assets/images/products/cable-set.webp',
     imageAlt: 'LED ekran bağlantıları için kablo seti',

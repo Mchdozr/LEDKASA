@@ -218,6 +218,18 @@ $consent = $_POST['kvkk_consent'] ?? '';
 
 $allowedInstallTypes = ['', 'sabit', 'rental', 'poster', 'karisik'];
 $allowedEnvironments = ['', 'indoor', 'outdoor', 'her-ikisi'];
+$allowedProducts = [
+    '',
+    'cnc-led-kasa',
+    'kapaksiz-led-kabinet',
+    'rental-led-kabinet',
+    'poster-led-kasa',
+    'katlanabilir-poster-led-kasa',
+    'cat6-kablo',
+    'power-plug',
+    'flat-kablo',
+    'cable-set',
+];
 
 $hasValidLengths = strlen($name) <= 120
     && strlen($email) <= 254
@@ -229,7 +241,8 @@ $hasValidLengths = strlen($name) <= 120
     && strlen($quantityEstimate) <= 120
     && strlen($message) <= 5000
     && in_array($installType, $allowedInstallTypes, true)
-    && in_array($environment, $allowedEnvironments, true);
+    && in_array($environment, $allowedEnvironments, true)
+    && in_array($product, $allowedProducts, true);
 
 if (
     $name === ''

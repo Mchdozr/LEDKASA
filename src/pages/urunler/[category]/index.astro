@@ -56,6 +56,48 @@ const schema = {
     </div>
   </header>
 
+  <section class="shell" aria-label="Karar desteği">
+    <ul class="decision-matrix">
+      {category.slug === 'led-ekran-kasalari' ? (
+        <>
+          <li>
+            <strong>Aileyi daraltın</strong>
+            <span>CNC, kapaksız, rental ve poster kasaları senaryoya göre karşılaştırın.</span>
+            <a href="/urunler/kasa-karsilastirma/">Kasa karşılaştırma</a>
+          </li>
+          <li>
+            <strong>Rehberden ilerleyin</strong>
+            <span>Kurulum tipi ve erişim ihtiyacına göre seçim adımlarını okuyun.</span>
+            <a href="/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/">Kasa seçimi rehberi</a>
+          </li>
+          <li>
+            <strong>Uygulama bağlamı</strong>
+            <span>Etkinlik, mağaza veya kurumsal senaryoya göre ürün ailesini netleştirin.</span>
+            <a href="/uygulama-alanlari/">Uygulama alanları</a>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <strong>Güç ve veri planı</strong>
+            <span>Hat düzeni ve konektör seçimini proje ölçeğine göre planlayın.</span>
+            <a href="/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/">Güç ve veri rehberi</a>
+          </li>
+          <li>
+            <strong>Kablolama</strong>
+            <span>Cat6, flat kablo ve set ihtiyacını kurulum biçimine göre ayırın.</span>
+            <a href="/bilgi-merkezi/led-ekran-kablolama-rehberi/">Kablolama rehberi</a>
+          </li>
+          <li>
+            <strong>Kasa ile birlikte</strong>
+            <span>Bağlantı ekipmanını seçtiğiniz kasa ailesiyle birlikte tekliflendirin.</span>
+            <a href="/urunler/led-ekran-kasalari/">LED ekran kasaları</a>
+          </li>
+        </>
+      )}
+    </ul>
+  </section>
+
   <section class="product-section shell" aria-labelledby="category-products-heading">
     <div class="section-heading">
       <div>
