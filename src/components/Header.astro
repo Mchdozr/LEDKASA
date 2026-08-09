@@ -1,0 +1,19 @@
+---
+interface Props {
+  dark?: boolean;
+}
+
+const { dark = false } = Astro.props;
+---
+
+<header class:list={['site-header', { 'is-dark': dark }]}>
+  <a class="logo" href="/" aria-label="LEDKASA ana sayfa">LED<span>KASA</span></a>
+  <button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false" type="button">
+    <i></i><i></i>
+  </button>
+  <nav class="nav" aria-label="Ana menü">
+    <a href="/urunler">Ürünler</a>
+    <a href="/#hakkimizda">Neden LEDKASA?</a>
+    <a href="/iletisim" class="nav-cta">Teklif Al</a>
+  </nav>
+</header>

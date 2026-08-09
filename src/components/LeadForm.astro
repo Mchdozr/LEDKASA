@@ -1,0 +1,57 @@
+---
+import { products } from '../data/products';
+
+interface Props {
+  selectedProduct?: string;
+  success?: boolean;
+}
+
+const { selectedProduct = '', success = false } = Astro.props;
+---
+
+{
+  success ? (
+    <div class="form-success" role="status">
+      Talebiniz alındı. Ekibimiz en kısa sürede sizinle iletişime geçecek.
+    </div>
+  ) : (
+    <form class="lead-form" name="teklif" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/iletisim?success=1">
+      <input type="hidden" name="form-name" value="teklif" />
+      <p class="hp">
+        <label>
+          Bot field
+          <input name="bot-field" tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+      <label>
+        Ad Soyad
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        E-posta
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        Telefon
+        <input type="tel" name="phone" autocomplete="tel" />
+      </label>
+      <label>
+        İlgilendiğiniz ürün
+        <select name="product">
+          <option value="">Genel teklif</option>
+          {products.map((product) => (
+            <option value={product.title} selected={selectedProduct === product.slug}>
+              {product.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Proje notu
+        <textarea name="message" required placeholder="Kurulum tipi, adet, lokasyon..." />
+      </label>
+      <button class="button button-primary" type="submit">Teklif isteyin <b>→</b></button>
+      <p class="form-note">Form gönderimleri Netlify Forms üzerinden güvenli şekilde iletilir.</p>
+    </form>
+  )
+}

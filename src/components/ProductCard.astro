@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import type { Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<a class="product-card" href={`/urunler/${product.slug}`}>
+  <div class="product-no">{product.number}</div>
+  <div class="product-image">
+    <Image
+      src={product.image}
+      alt={product.alt}
+      widths={[280, 420, 640]}
+      sizes="(max-width: 430px) 90vw, (max-width: 980px) 45vw, 22vw"
+      loading="lazy"
+    />
+  </div>
+  <div class="product-info">
+    <p>{product.tagline}</p>
+    <h3>{product.title}</h3>
+    <span class="linkish">Detaylı bilgi <b>↗</b></span>
+  </div>
+</a>

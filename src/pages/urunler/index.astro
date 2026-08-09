@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductGroup from '../../components/ProductGroup.astro';
+import { getProductsByCategory, products } from '../../data/products';
+import { site } from '../../data/site';
+
+const kasalar = getProductsByCategory('kasalar');
+const baglanti = getProductsByCategory('baglanti');
+
+const itemListLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'LEDKASA Ürün Kataloğu',
+  numberOfItems: products.length,
+  itemListElement: products.map((product, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: `${site.url}/urunler/${product.slug}`,
+    name: product.title,
+    description: product.summary,
+  })),
+};
+---
+
+<BaseLayout
+  title="Ürünler | LEDKASA LED Kasa ve Bağlantı"
+  description="LED ekran kasaları, rental kabinetler, poster sistemleri ve Cat6, power plug, flat kablo gibi bağlantı ekipmanları."
+  canonicalPath="/urunler"
+  headerDark
+  jsonLd={itemListLd}
+>
+  <main id="top">
+    <section class="page-hero dark">
+      <p class="eyebrow">Ürün kataloğu</p>
+      <h1>LED sisteminiz için<br /><em>doğru bileşenler.</em></h1>
+      <p class="lede">
+        Kasalar ve bağlantı ekipmanlarını inceleyin; projenize uygun ürün için teklif alın.
+      </p>
+    </section>
+
+    <section class="section" style="padding-top: 48px;">
+      <ProductGroup category="kasalar" products={kasalar} />
+      <ProductGroup category="baglanti" products={baglanti} second />
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <a class="button button-primary" href="/iletisim">Teklif Al <b>→</b></a>
+    </section>
+  </main>
+</BaseLayout>

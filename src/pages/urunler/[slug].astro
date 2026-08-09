@@ -1,0 +1,99 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import {
+  getProduct,
+  getRelatedProducts,
+  products,
+  categoryLabels,
+} from '../../data/products';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const product = getProduct(slug!);
+
+if (!product) {
+  throw new Error(`Product not found: ${slug}`);
+}
+
+const related = getRelatedProducts(product);
+const category = categoryLabels[product.category];
+const optimized = await getImage({ src: product.image, width: 1200 });
+const ogImage = new URL(optimized.src, site.url).toString();
+
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.title,
+  description: product.seoDescription,
+  image: ogImage,
+  brand: {
+    '@type': 'Brand',
+    name: site.name,
+  },
+  category: category.title,
+  url: `${site.url}/urunler/${product.slug}`,
+};
+---
+
+<BaseLayout
+  title={product.seoTitle}
+  description={product.seoDescription}
+  canonicalPath={`/urunler/${product.slug}`}
+  ogImage={ogImage}
+  ogType="product"
+  headerDark
+  jsonLd={productLd}
+>
+  <main id="top">
+    <section class="page-hero dark">
+      <p class="eyebrow">{category.title} · {product.number}</p>
+      <h1 class="detail-hero">{product.title}</h1>
+      <p class="lede">{product.summary}</p>
+    </section>
+
+    <section class="detail-layout">
+      <div class="detail-visual">
+        <Image
+          src={product.image}
+          alt={product.alt}
+          widths={[480, 720, 960, 1200]}
+          sizes="(max-width: 980px) 90vw, 48vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div>
+        <p class="detail-meta">{product.tagline} · LED bağlantı çözümü</p>
+        <p class="detail-summary">{product.summary}</p>
+        <p class="detail-body">{product.description}</p>
+        <ul class="feature-list">
+          {product.features.map((feature) => <li>{feature}</li>)}
+        </ul>
+        <a class="button button-primary" href={`/iletisim?urun=${product.slug}`}
+          >Bu ürün için teklif al <b>→</b></a
+        >
+      </div>
+    </section>
+
+    {
+      related.length > 0 && (
+        <section class="related-block">
+          <h2>İlgili ürünler</h2>
+          <div class="product-grid">
+            {related.map((item) => (
+              <ProductCard product={item} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>
