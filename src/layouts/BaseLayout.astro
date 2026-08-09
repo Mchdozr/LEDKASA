@@ -42,6 +42,15 @@ const structuredData = {
       url: `${siteUrl}/`,
       email: businessContact.email,
       logo: logoUrl,
+      description:
+        'LED ekran kasaları ile güç ve bağlantı ekipmanlarını kullanım alanı, kurulum biçimi ve proje kapsamı üzerinden değerlendiren ürün platformu.',
+      knowsAbout: [
+        'LED ekran kasası',
+        'Rental LED kabinet',
+        'Poster LED kasa',
+        'LED ekran kablolama',
+        'Cat6 ve güç bağlantısı',
+      ],
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',
@@ -57,6 +66,13 @@ const structuredData = {
       name: 'LEDKASA',
       inLanguage: 'tr-TR',
       publisher: { '@id': `${siteUrl}/#organization` },
+      hasPart: [
+        { '@type': 'SiteNavigationElement', name: 'Ürünler', url: `${siteUrl}/urunler/` },
+        { '@type': 'SiteNavigationElement', name: 'Uygulama Alanları', url: `${siteUrl}/uygulama-alanlari/` },
+        { '@type': 'SiteNavigationElement', name: 'Bilgi Merkezi', url: `${siteUrl}/bilgi-merkezi/` },
+        { '@type': 'SiteNavigationElement', name: 'Teklif Al', url: `${siteUrl}/teklif-al/` },
+        { '@type': 'SiteNavigationElement', name: 'Site Haritası', url: `${siteUrl}/site-haritasi/` },
+      ],
     },
     ...pageSchemas,
   ],

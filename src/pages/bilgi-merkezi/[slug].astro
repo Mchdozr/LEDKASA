@@ -21,6 +21,8 @@ const schema = {
   image: new URL(article.image, siteUrl).toString(),
   inLanguage: 'tr-TR',
   publisher: { '@id': `${siteUrl}/#organization` },
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${siteUrl}/#organization` },
 };
 ---
 
@@ -46,6 +48,16 @@ const schema = {
             {section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
           </section>
         ))}
+        {article.applicationLinks.length > 0 && (
+          <section data-reveal>
+            <h2>İlgili uygulama alanları</h2>
+            <p>Bu rehberi senaryo sayfalarıyla birlikte okuyarak ürün ailesini daha hızlı daraltabilirsiniz.</p>
+            <ul>
+              {article.applicationLinks.map((area) => <li><a href={area.url}>{area.name}</a></li>)}
+              <li><a href="/teklif-al/">Teklif Al</a></li>
+            </ul>
+          </section>
+        )}
       </div>
       <aside class="article-aside" aria-labelledby="article-products">
         <span class="eyebrow">Katalog bağlantıları</span>
@@ -53,6 +65,14 @@ const schema = {
         <nav>
           {article.productLinks.map((product) => <a href={product.url}>{product.name}<span aria-hidden="true">→</span></a>)}
         </nav>
+        {article.applicationLinks.length > 0 && (
+          <>
+            <span class="eyebrow" style="display:block;margin-top:1.4rem;">Uygulama</span>
+            <nav>
+              {article.applicationLinks.map((area) => <a href={area.url}>{area.name}<span aria-hidden="true">→</span></a>)}
+            </nav>
+          </>
+        )}
         <a class="button" href="/teklif-al/">Teklif alın</a>
       </aside>
     </div>

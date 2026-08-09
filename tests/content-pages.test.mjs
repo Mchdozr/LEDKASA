@@ -141,7 +141,8 @@ test('corporate, discovery and FAQ pages publish evidence-neutral content and em
   assert.match(builtHtml('sss'), /<details[\s\S]*?<summary>/);
   assert.match(combinedHtml, /info@ledkasa\.com\.tr/);
   assert.match(combinedHtml, /\+90 530 405 67 68/);
-  assert.doesNotMatch(combinedHtml, /FAQPage|sameAs|Sertifikalarımız|Referanslarımız/);
+  assert.match(builtHtml('sss'), /FAQPage/);
+  assert.doesNotMatch(combinedHtml, /sameAs|Sertifikalarımız|Referanslarımız/);
 });
 
 const bootHero = ({ reduced = false } = {}) => {

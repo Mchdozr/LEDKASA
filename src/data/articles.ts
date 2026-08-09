@@ -6,6 +6,12 @@ export interface ContentSection {
   bullets?: string[];
 }
 
+export interface ContentLink {
+  name: string;
+  url: string;
+  note?: string;
+}
+
 export interface ApplicationArea {
   slug: 'etkinlik-ve-sahne' | 'magaza-ve-showroom' | 'kurumsal-ve-reklam';
   title: string;
@@ -15,8 +21,11 @@ export interface ApplicationArea {
   seoDescription: string;
   image: string;
   imageAlt: string;
+  productFamilyHint: string;
   sections: ContentSection[];
-  productLinks: { name: string; url: string; note: string }[];
+  productLinks: ContentLink[];
+  guideLinks: ContentLink[];
+  categoryLinks: ContentLink[];
 }
 
 export interface Article {
@@ -32,10 +41,12 @@ export interface Article {
   excerpt: string;
   seoTitle: string;
   seoDescription: string;
+  decisionLabel: string;
   image: string;
   imageAlt: string;
   sections: ContentSection[];
-  productLinks: { name: string; url: string }[];
+  productLinks: ContentLink[];
+  applicationLinks: ContentLink[];
 }
 
 export const applicationAreas: ApplicationArea[] = [
@@ -50,6 +61,7 @@ export const applicationAreas: ApplicationArea[] = [
       'Etkinlik ve sahne LED ekranlarında rental kabinet, güç ve veri bağlantısı seçiminde dikkat edilmesi gerekenleri inceleyin.',
     image: '/assets/images/editorial/event-stage.webp',
     imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
+    productFamilyHint: 'Rental kabinet + güç/veri seti',
     sections: [
       {
         heading: 'Kurulum akışını bir bütün olarak ele alın',
@@ -65,11 +77,32 @@ export const applicationAreas: ApplicationArea[] = [
         ],
         bullets: ['Bağlantı noktalarının erişilebilirliği', 'Kabloların kurulum rotası', 'Söküm sırasında düzenli ayrıştırma'],
       },
+      {
+        heading: 'Sahada hız kazandıran kontrol listesi',
+        paragraphs: [
+          'LEDKASA’nın misyonu; kasa ve bağlantıyı sahada sürpriz üretmeyecek şekilde aynı proje çerçevesinde netleştirmektir. Etkinlik ekranında aşağıdaki girdiler teklifi hızlandırır.',
+        ],
+        bullets: [
+          'Ekranın yaklaşık en × boy ve kabinet adedi',
+          'Kurulum / söküm penceresi ve ekip hareket alanı',
+          'Güç kaynağı mesafesi ile veri kontrol noktası',
+          'Taşıma ve istifleme kısıtları',
+        ],
+      },
     ],
     productLinks: [
       { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/', note: 'Modüler sahne ve etkinlik ekranları için.' },
       { name: 'Power Plug', url: '/urunler/guc-ve-baglanti-ekipmanlari/power-plug/', note: 'Güç bağlantısı kurgusu için.' },
       { name: 'Cable Set', url: '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/', note: 'Bağlantıları bir arada planlamak için.' },
+    ],
+    guideLinks: [
+      { name: 'Rental LED Ekran Kurulum Rehberi', url: '/bilgi-merkezi/rental-led-ekran-kurulum-rehberi/' },
+      { name: 'LED Ekran Güç ve Veri Planlama', url: '/bilgi-merkezi/led-ekran-guc-ve-veri-planlama/' },
+      { name: 'LED Ekran Kablolama Rehberi', url: '/bilgi-merkezi/led-ekran-kablolama-rehberi/' },
+    ],
+    categoryLinks: [
+      { name: 'LED Ekran Kasaları', url: '/urunler/led-ekran-kasalari/' },
+      { name: 'Güç ve Bağlantı Ekipmanları', url: '/urunler/guc-ve-baglanti-ekipmanlari/' },
     ],
   },
   {
@@ -83,6 +116,7 @@ export const applicationAreas: ApplicationArea[] = [
       'Mağaza, showroom ve karşılama alanları için poster LED kasa ve bağlantı ekipmanı seçeneklerini keşfedin.',
     image: '/assets/images/editorial/retail-digital-signage.webp',
     imageAlt: 'Dijital ekranların kullanıldığı modern mağaza içi sergileme alanı',
+    productFamilyHint: 'Poster / katlanabilir poster kasa',
     sections: [
       {
         heading: 'Ekranı mekânın dolaşımına yerleştirin',
@@ -97,11 +131,31 @@ export const applicationAreas: ApplicationArea[] = [
           'Dikey içerik için ayrılan alan ile kasa formunun uyumu, ekranın mekân içinde bütünlüklü görünmesine yardımcı olur. Sabit bir duvar uygulaması düşünülüyorsa CNC veya kapaksız kabinet seçenekleri ayrıca karşılaştırılabilir.',
         ],
       },
+      {
+        heading: 'Mağaza senaryosu için netleştirilecekler',
+        paragraphs: [
+          'Doğru ürün ailesini seçmek; markanın iletişim yüzeyini, bakım erişimini ve bağlantı gizliliğini aynı anda düşünmeyi gerektirir.',
+        ],
+        bullets: [
+          'Ekranın sabit mi yoksa yer değiştiren bir yüzey mi olacağı',
+          'İçerik formatı (dikey poster / geniş duvar)',
+          'Güç ve veri hatlarının görünürlüğü',
+          'Bakım için önden veya arkadan erişim tercihi',
+        ],
+      },
     ],
     productLinks: [
       { name: 'Poster LED Kasa', url: '/urunler/led-ekran-kasalari/poster-led-kasa/', note: 'Dikey ekran uygulamaları için.' },
       { name: 'Katlanabilir Poster LED Kasa', url: '/urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa/', note: 'Değişken yerleşim senaryoları için.' },
       { name: 'Flat Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/', note: 'Modül bağlantı düzeni için.' },
+    ],
+    guideLinks: [
+      { name: 'Poster LED Ekran Kullanım Alanları', url: '/bilgi-merkezi/poster-led-ekran-kullanim-alanlari/' },
+      { name: 'LED Ekran Kasası Nasıl Seçilir?', url: '/bilgi-merkezi/led-ekran-kasasi-nasil-secilir/' },
+    ],
+    categoryLinks: [
+      { name: 'LED Ekran Kasaları', url: '/urunler/led-ekran-kasalari/' },
+      { name: 'Güç ve Bağlantı Ekipmanları', url: '/urunler/guc-ve-baglanti-ekipmanlari/' },
     ],
   },
   {
@@ -115,6 +169,7 @@ export const applicationAreas: ApplicationArea[] = [
       'Kurumsal alanlar ve reklam uygulamaları için CNC LED kasa, kapaksız kabinet ve bağlantı çözümlerini inceleyin.',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
+    productFamilyHint: 'CNC / kapaksız sabit kasa',
     sections: [
       {
         heading: 'Sabit kurulum koşullarını netleştirin',
@@ -130,11 +185,32 @@ export const applicationAreas: ApplicationArea[] = [
         ],
         bullets: ['Kasa formu ve montaj yüzeyi', 'Bakım erişim yönü', 'Güç ve veri kablosu rotaları'],
       },
+      {
+        heading: 'Kalıcı ekranda karar çerçevesi',
+        paragraphs: [
+          'LEDKASA sabit projelerde ürün adını değil; kullanım ömrü boyunca erişim, uyumluluk ve bağlantı bütünlüğünü önceleyen bir değerlendirme sunar.',
+        ],
+        bullets: [
+          'Montaj yüzeyi ve taşıyıcı yapı bilgisi',
+          'Pitch / modül modeli veya hedef görüş mesafesi',
+          'Indoor / outdoor ortam koşulu',
+          'Cat6 ve güç hatlarının gizli veya servise açık planı',
+        ],
+      },
     ],
     productLinks: [
       { name: 'CNC LED Kasa', url: '/urunler/led-ekran-kasalari/cnc-led-kasa/', note: 'Sabit ekran projeleri için.' },
       { name: 'Kapaksız LED Kabinet', url: '/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/', note: 'Yalın ve erişilebilir kasa yapısı için.' },
       { name: 'Cat6 Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/', note: 'Veri bağlantısı planı için.' },
+    ],
+    guideLinks: [
+      { name: 'CNC, Kapaksız ve Rental Karşılaştırması', url: '/bilgi-merkezi/kasa-secimi-cnc-kapaksiz-rental-kabinet/' },
+      { name: 'Modül Pitch ve LED Kasa Uyumu', url: '/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/' },
+      { name: 'LED Ekran Kasası Nasıl Seçilir?', url: '/bilgi-merkezi/led-ekran-kasasi-nasil-secilir/' },
+    ],
+    categoryLinks: [
+      { name: 'LED Ekran Kasaları', url: '/urunler/led-ekran-kasalari/' },
+      { name: 'Kasa Karşılaştırma', url: '/urunler/kasa-karsilastirma/' },
     ],
   },
 ];
@@ -146,6 +222,7 @@ export const articles: Article[] = [
     excerpt: 'Kullanım alanı, kurulum biçimi, erişim yönü ve bağlantı düzeni üzerinden doğru kasa ailesini belirlemek için pratik bir çerçeve.',
     seoTitle: 'LED Ekran Kasası Nasıl Seçilir? | LEDKASA',
     seoDescription: 'LED ekran kasası seçerken kullanım alanı, sabit veya rental kurulum, erişim ve bağlantı planında dikkat edilecek noktalar.',
+    decisionLabel: 'Kasa ailesine karar vermeden önce',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
@@ -168,12 +245,19 @@ export const articles: Article[] = [
         heading: 'Bağlantı ekipmanlarını sonradan eklemeyin',
         paragraphs: [
           'Cat6, güç bağlantıları, flat kablolar ve kablo seti; ekranın modül ve kabinet düzeniyle birlikte planlandığında teklif kapsamı daha anlaşılır olur.',
+          'LEDKASA bu yüzden kasa seçimini uygulama alanı ve bağlantı planıyla aynı çerçevede ele alır; ürün adı tek başına teklif üretmez.',
         ],
       },
     ],
     productLinks: [
       { name: 'LED Ekran Kasaları', url: '/urunler/led-ekran-kasalari/' },
       { name: 'Güç ve Bağlantı Ekipmanları', url: '/urunler/guc-ve-baglanti-ekipmanlari/' },
+      { name: 'Kasa Karşılaştırma', url: '/urunler/kasa-karsilastirma/' },
+    ],
+    applicationLinks: [
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Mağaza ve Showroom', url: '/uygulama-alanlari/magaza-ve-showroom/' },
     ],
   },
   {
@@ -182,6 +266,7 @@ export const articles: Article[] = [
     excerpt: 'Rental kabinetlerle oluşturulan geçici ekranlarda yerleşim, bağlantı sırası ve kurulum akışını teklif öncesinde planlayın.',
     seoTitle: 'Rental LED Ekran Kurulum Rehberi | LEDKASA',
     seoDescription: 'Rental LED ekran kurulumunda kabinet yerleşimi, güç ve veri bağlantı düzeni için planlama adımlarını inceleyin.',
+    decisionLabel: 'Geçici / rental kurulum planlıyorsanız',
     image: '/assets/images/editorial/event-stage.webp',
     imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
     sections: [
@@ -199,12 +284,19 @@ export const articles: Article[] = [
       },
       {
         heading: 'Söküm planını da kurulum kapsamına alın',
-        paragraphs: ['Geçici ekranlarda bağlantıların düzenli ayrıştırılması ve parçaların bir sonraki kullanıma hazırlanması, ekipman planının doğal bir parçasıdır.'],
+        paragraphs: [
+          'Geçici ekranlarda bağlantıların düzenli ayrıştırılması ve parçaların bir sonraki kullanıma hazırlanması, ekipman planının doğal bir parçasıdır.',
+          'Teklif formunda kurulum penceresini ve söküm ihtiyacını belirtmek, rental kabinet ile Cable Set kapsamını aynı anda netleştirir.',
+        ],
       },
     ],
     productLinks: [
       { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/' },
       { name: 'Cable Set', url: '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/' },
+      { name: 'Power Plug', url: '/urunler/guc-ve-baglanti-ekipmanlari/power-plug/' },
+    ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
     ],
   },
   {
@@ -213,6 +305,7 @@ export const articles: Article[] = [
     excerpt: 'Dikey poster ekranları mağaza, showroom, karşılama ve kurumsal iletişim noktalarında konumlandırırken dikkate alınacak başlıklar.',
     seoTitle: 'Poster LED Ekran Kullanım Alanları | LEDKASA',
     seoDescription: 'Poster LED ekranların mağaza, showroom, fuaye ve kurumsal alanlardaki kullanım senaryolarını keşfedin.',
+    decisionLabel: 'Dikey poster ekran düşünüyorsanız',
     image: '/assets/images/editorial/retail-digital-signage.webp',
     imageAlt: 'Dijital ekranların kullanıldığı modern mağaza içi sergileme alanı',
     sections: [
@@ -227,12 +320,20 @@ export const articles: Article[] = [
       },
       {
         heading: 'Yerleşim kararını içerikle birlikte verin',
-        paragraphs: ['İçeriğin okunacağı mesafe, ekran çevresindeki yaya akışı ve enerji bağlantısına erişim, kasa seçiminin yanı sıra mekân planını da etkiler.'],
+        paragraphs: [
+          'İçeriğin okunacağı mesafe, ekran çevresindeki yaya akışı ve enerji bağlantısına erişim, kasa seçiminin yanı sıra mekân planını da etkiler.',
+          'Mağaza ve showroom uygulama sayfasından senaryoyu, ardından ilgili poster kasa ürün sayfalarından kapsamı netleştirebilirsiniz.',
+        ],
       },
     ],
     productLinks: [
       { name: 'Poster LED Kasa', url: '/urunler/led-ekran-kasalari/poster-led-kasa/' },
       { name: 'Katlanabilir Poster LED Kasa', url: '/urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa/' },
+      { name: 'Flat Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/' },
+    ],
+    applicationLinks: [
+      { name: 'Mağaza ve Showroom', url: '/uygulama-alanlari/magaza-ve-showroom/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
     ],
   },
   {
@@ -241,6 +342,7 @@ export const articles: Article[] = [
     excerpt: 'LED ekran sistemlerinde güç, veri ve modül bağlantılarını proje yerleşimiyle birlikte ele almak için temel planlama adımları.',
     seoTitle: 'LED Ekran Kablolama Rehberi | LEDKASA',
     seoDescription: 'LED ekran kablolamasında Cat6, Power Plug, flat kablo ve Cable Set seçimlerini planlama yaklaşımıyla inceleyin.',
+    decisionLabel: 'Güç ve veri bağlantısını planlıyorsanız',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
@@ -255,7 +357,10 @@ export const articles: Article[] = [
       },
       {
         heading: 'Set kapsamını teklif öncesinde netleştirin',
-        paragraphs: ['Cable Set, birden fazla bağlantı ihtiyacının proje kapsamında birlikte değerlendirilmesine yardımcı olur. Set içeriği ve uyumluluk, paylaşılan proje bilgilerine göre teklif aşamasında netleştirilir.'],
+        paragraphs: [
+          'Cable Set, birden fazla bağlantı ihtiyacının proje kapsamında birlikte değerlendirilmesine yardımcı olur. Set içeriği ve uyumluluk, paylaşılan proje bilgilerine göre teklif aşamasında netleştirilir.',
+          'Bağlantı planını uygulama alanınız ve kasa ailesiyle birlikte paylaşmak, LEDKASA’nın proje odaklı değerlendirme modelinin temelidir.',
+        ],
       },
     ],
     productLinks: [
@@ -264,6 +369,10 @@ export const articles: Article[] = [
       { name: 'Flat Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/' },
       { name: 'Cable Set', url: '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/' },
     ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
   },
   {
     slug: 'kasa-secimi-cnc-kapaksiz-rental-kabinet',
@@ -271,6 +380,7 @@ export const articles: Article[] = [
     excerpt: 'Üç kasa yaklaşımını sabit kurulum, erişim ve geçici kullanım eksenlerinde karşılaştırarak başlangıç seçiminizi daraltın.',
     seoTitle: 'CNC, Kapaksız ve Rental Kabinet Karşılaştırması | LEDKASA',
     seoDescription: 'CNC LED kasa, kapaksız LED kabinet ve rental LED kabinet arasındaki kullanım odaklı farkları karşılaştırın.',
+    decisionLabel: 'CNC / kapaksız / rental arasında kalıyorsanız',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
@@ -288,7 +398,10 @@ export const articles: Article[] = [
       },
       {
         heading: 'Karşılaştırmayı proje bilgileriyle tamamlayın',
-        paragraphs: ['Kullanım alanı, kurulum sıklığı, erişim yönü ve bağlantı düzeni birlikte değerlendirilmeden yalnızca ürün adına göre karar verilmemelidir.'],
+        paragraphs: [
+          'Kullanım alanı, kurulum sıklığı, erişim yönü ve bağlantı düzeni birlikte değerlendirilmeden yalnızca ürün adına göre karar verilmemelidir.',
+          'Karar tablosunu inceledikten sonra uygulama alanınızı ve teklif formunu kullanarak kapsamı netleştirin.',
+        ],
       },
     ],
     productLinks: [
@@ -296,6 +409,10 @@ export const articles: Article[] = [
       { name: 'Kapaksız LED Kabinet', url: '/urunler/led-ekran-kasalari/kapaksiz-led-kabinet/' },
       { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/' },
       { name: 'Karşılaştırma tablosu', url: '/urunler/kasa-karsilastirma/' },
+    ],
+    applicationLinks: [
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
     ],
   },
   {
@@ -306,6 +423,7 @@ export const articles: Article[] = [
     seoTitle: 'Modül Pitch ve LED Kasa Uyumu | LEDKASA',
     seoDescription:
       'LED ekranda pitch, modül ölçüsü ve kasa boyutunu nasıl eşleştireceğinizi öğrenin. Örnek 960×960 kabinet ve P4–P13.33 uyumu.',
+    decisionLabel: 'Pitch ve kabinet uyumunu kontrol ediyorsanız',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
     sections: [
@@ -337,6 +455,9 @@ export const articles: Article[] = [
       { name: 'Flat Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/flat-kablo/' },
       { name: 'Kasa karşılaştırma', url: '/urunler/kasa-karsilastirma/' },
     ],
+    applicationLinks: [
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
+    ],
   },
   {
     slug: 'led-ekran-guc-ve-veri-planlama',
@@ -346,6 +467,7 @@ export const articles: Article[] = [
     seoTitle: 'LED Ekran Güç ve Veri Planlama | LEDKASA',
     seoDescription:
       'LED ekran güç kaynağı, power plug ve Cat6 veri planını kabinet yerleşimiyle nasıl birlikte kurgulayacağınızı inceleyin.',
+    decisionLabel: 'Güç ve veri hatlarını sahaya taşıyorsanız',
     image: '/assets/images/editorial/event-stage.webp',
     imageAlt: 'Büyük ekranlarla aydınlatılmış etkinlik sahnesi',
     sections: [
@@ -376,6 +498,10 @@ export const articles: Article[] = [
       { name: 'Cat6 Kablo', url: '/urunler/guc-ve-baglanti-ekipmanlari/cat6-kablo/' },
       { name: 'Cable Set', url: '/urunler/guc-ve-baglanti-ekipmanlari/cable-set/' },
       { name: 'Rental LED Kabinet', url: '/urunler/led-ekran-kasalari/rental-led-kabinet/' },
+    ],
+    applicationLinks: [
+      { name: 'Etkinlik ve Sahne', url: '/uygulama-alanlari/etkinlik-ve-sahne/' },
+      { name: 'Kurumsal ve Reklam', url: '/uygulama-alanlari/kurumsal-ve-reklam/' },
     ],
   },
 ];

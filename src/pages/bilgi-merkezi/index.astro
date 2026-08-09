@@ -12,7 +12,10 @@ const schema = {
   '@id': `${siteUrl}/bilgi-merkezi/#collection`,
   url: `${siteUrl}/bilgi-merkezi/`,
   name: 'LED Ekran Bilgi Merkezi',
+  description,
   inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${siteUrl}/#organization` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: articles.length,
@@ -28,11 +31,36 @@ const schema = {
 
 <BaseLayout title={title} description={description} canonical="/bilgi-merkezi/" schema={schema}>
   <Breadcrumbs items={[{ label: 'Bilgi Merkezi' }]} />
-  <header class="content-hero shell">
+  <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">Karar rehberleri</span>
     <h1>LED Ekran Bilgi Merkezi</h1>
     <p>Kasa, kabinet ve bağlantı ekipmanı seçimini kullanım senaryosu üzerinden değerlendirmek için hazırlanan temel rehberler.</p>
   </header>
+
+  <section class="shell" aria-labelledby="mission-knowledge">
+    <div class="mission-band" data-reveal>
+      <div>
+        <span class="eyebrow">Karar ağacı</span>
+        <h2 id="mission-knowledge">Okuyun, daraltın, teklife geçin.</h2>
+      </div>
+      <p>
+        Rehberler LEDKASA’nın misyonunu destekler: ürün adını varsaymak yerine kullanım alanı,
+        kurulum biçimi ve bağlantı düzenini birlikte okumak.
+        Sonra <a href="/uygulama-alanlari/">uygulama alanına</a> veya
+        <a href="/urunler/">kataloga</a> geçip <a href="/teklif-al/">teklif</a> isteyin.
+      </p>
+    </div>
+
+    <ul class="decision-matrix" aria-label="Rehber karar ağacı">
+      {articles.map((article) => (
+        <li data-reveal>
+          <strong>{article.decisionLabel}</strong>
+          <span>{article.excerpt}</span>
+          <a href={`/bilgi-merkezi/${article.slug}/`}>Rehberi oku</a>
+        </li>
+      ))}
+    </ul>
+  </section>
 
   <section class="article-directory shell" aria-label="Bilgi merkezi yazıları">
     {articles.map((article, index) => (
@@ -44,7 +72,11 @@ const schema = {
           <span class="eyebrow">Rehber {String(index + 1).padStart(2, '0')}</span>
           <h2><a href={`/bilgi-merkezi/${article.slug}/`}>{article.title}</a></h2>
           <p>{article.excerpt}</p>
-          <a class="text-link" href={`/bilgi-merkezi/${article.slug}/`}>Rehberi okuyun <span aria-hidden="true">→</span></a>
+          <div class="hub-links">
+            <a href={`/bilgi-merkezi/${article.slug}/`}>Rehberi okuyun →</a>
+            {article.applicationLinks.slice(0, 1).map((area) => <a href={area.url}>{area.name}</a>)}
+            <a href="/teklif-al/">Teklif Al</a>
+          </div>
         </div>
       </article>
     ))}

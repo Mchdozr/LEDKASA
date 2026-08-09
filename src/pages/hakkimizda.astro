@@ -13,25 +13,51 @@ const schema = {
   name: title,
   description,
   inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${siteUrl}/#organization` },
+  mainEntity: { '@id': `${siteUrl}/#organization` },
 };
 ---
 
 <BaseLayout title={title} description={description} canonical="/hakkimizda/" image="/assets/images/editorial/electronics-workshop.webp" schema={schema}>
   <Breadcrumbs items={[{ label: 'Hakkımızda' }]} />
-  <header class="content-hero shell">
+  <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">LEDKASA</span>
     <h1>Projeyi anlayan ürün yaklaşımı</h1>
     <p>LED ekran kasaları ile güç ve bağlantı ekipmanlarını; kullanım alanı, kurulum biçimi ve proje kapsamı üzerinden değerlendiren bir ürün platformuyuz.</p>
   </header>
 
+  <section class="shell" aria-labelledby="mission-heading">
+    <div class="mission-band" data-reveal>
+      <div>
+        <span class="eyebrow">Misyon</span>
+        <h2 id="mission-heading">Kasa ve bağlantıyı aynı çerçevede netleştirmek.</h2>
+      </div>
+      <p>
+        LEDKASA’nın amacı; LED ekran projesinde ürün adını varsaymak yerine senaryoyu, montajı ve
+        bağlantı düzenini birlikte okunur hâle getirmek. Böylece teklif kapsamı daha açık,
+        saha sürprizi daha az olur.
+      </p>
+    </div>
+    <nav class="hub-links" aria-label="LEDKASA içinde gezin">
+      <a href="/urunler/">Ürün kataloğu</a>
+      <a href="/uygulama-alanlari/">Uygulama alanları</a>
+      <a href="/bilgi-merkezi/">Bilgi merkezi</a>
+      <a href="/sss/">Sık sorulan sorular</a>
+      <a href="/teklif-al/">Teklif Al</a>
+      <a href="/site-haritasi/">Site haritası</a>
+    </nav>
+  </section>
+
   <section class="story-section shell" aria-labelledby="approach-heading">
     <div class="story-statement" data-reveal>
       <span class="eyebrow">Neye odaklanıyoruz?</span>
-      <h2>Ürün seçimini açık bir proje çerçevesine dönüştürmek.</h2>
+      <h2 id="approach-heading">Ürün seçimini açık bir proje çerçevesine dönüştürmek.</h2>
     </div>
     <div class="story-copy" data-reveal>
       <p>LED ekran projesinde kasa seçimi; yalnızca bir model adı belirlemekten ibaret değildir. Ekranın nerede kullanılacağı, nasıl kurulacağı, erişim yönü ve bağlantı yapısı birlikte düşünülmelidir.</p>
-      <p>LEDKASA, bu başlıkları ürün kataloğu ve teklif süreci içinde anlaşılır hâle getirmeyi amaçlar. Ürün kapsamı, fiyat ve teknik uyumluluk paylaşılan proje bilgilerine göre değerlendirilir.</p>
+      <p>LEDKASA, bu başlıkları ürün kataloğu, uygulama alanları ve bilgi merkezi üzerinden anlaşılır hâle getirir. Ürün kapsamı, fiyat ve teknik uyumluluk paylaşılan proje bilgilerine göre değerlendirilir.</p>
+      <p>Sabit kurumsal ekran, rental sahne kurulumu veya poster iletişim yüzeyi fark etmeksizin aynı akışı izleriz: senaryoyu dinle, ürün ailesini karşılaştır, kapsamı teklifte netleştir.</p>
     </div>
   </section>
 
@@ -52,10 +78,10 @@ const schema = {
   <section class="home-section shell" aria-labelledby="principles-heading">
     <div class="section-heading"><div><span class="eyebrow">Temel ilkeler</span><h2 id="principles-heading">Bilgiye dayalı seçim</h2></div></div>
     <div class="principle-list">
-      <article data-reveal><h3>Bağlama uygun ürün</h3><p>Tek bir ürünü her proje için varsaymak yerine kullanım senaryosuna göre seçenekleri daraltırız.</p></article>
-      <article data-reveal><h3>Şeffaf kapsam</h3><p>Fiyat, stok veya uyumluluk konusunda proje bilgisi olmadan kesin ifade kullanmayız.</p></article>
-      <article data-reveal><h3>Bütünlüklü planlama</h3><p>Kasa ile güç, veri ve modül bağlantılarını aynı sistemin parçaları olarak ele alırız.</p></article>
-      <article data-reveal><h3>Ulaşılabilir iletişim</h3><p>Proje özetinizi <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a> adresinden veya teklif formundan paylaşabilirsiniz.</p></article>
+      <article data-reveal><h3>Bağlama uygun ürün</h3><p>Tek bir ürünü her proje için varsaymak yerine <a href="/uygulama-alanlari/">kullanım senaryosuna</a> göre seçenekleri daraltırız.</p></article>
+      <article data-reveal><h3>Şeffaf kapsam</h3><p>Fiyat, stok veya uyumluluk konusunda proje bilgisi olmadan kesin ifade kullanmayız; kapsam <a href="/teklif-al/">teklif</a> aşamasında oluşur.</p></article>
+      <article data-reveal><h3>Bütünlüklü planlama</h3><p>Kasa ile güç, veri ve modül bağlantılarını <a href="/urunler/">aynı katalog</a> içinde sistemin parçaları olarak ele alırız.</p></article>
+      <article data-reveal><h3>Ulaşılabilir iletişim</h3><p>Proje özetinizi <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a> adresinden, WhatsApp üzerinden veya teklif formundan paylaşabilirsiniz. <a href="/sss/">SSS</a> sayfasında sık sorulan başlıklar da yer alır.</p></article>
     </div>
   </section>
   <QuoteCta />

@@ -12,7 +12,10 @@ const schema = {
   '@id': `${siteUrl}/uygulama-alanlari/#collection`,
   url: `${siteUrl}/uygulama-alanlari/`,
   name: 'LED Ekran Uygulama Alanları',
+  description,
   inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${siteUrl}/#organization` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: applicationAreas.length,
@@ -28,11 +31,35 @@ const schema = {
 
 <BaseLayout title={title} description={description} canonical="/uygulama-alanlari/" schema={schema}>
   <Breadcrumbs items={[{ label: 'Uygulama Alanları' }]} />
-  <header class="content-hero shell">
+  <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">Kullanım senaryoları</span>
     <h1>LED Ekran Uygulama Alanları</h1>
     <p>Doğru ürün ailesini ekranın kullanılacağı ortam, kurulum biçimi ve bağlantı ihtiyacından yola çıkarak belirleyin.</p>
   </header>
+
+  <section class="shell" aria-labelledby="mission-apps">
+    <div class="mission-band" data-reveal>
+      <div>
+        <span class="eyebrow">LEDKASA yaklaşımı</span>
+        <h2 id="mission-apps">Senaryodan ürüne, üründen teklife.</h2>
+      </div>
+      <p>
+        LEDKASA; LED ekran kasası ile güç ve bağlantı ekipmanlarını proje bağlamında netleştirir.
+        Önce kullanım senaryosunu seçin, ardından ilgili <a href="/urunler/">ürün ailesini</a> ve
+        <a href="/bilgi-merkezi/">rehberleri</a> inceleyin; kapsamı <a href="/teklif-al/">teklif formunda</a> paylaşın.
+      </p>
+    </div>
+
+    <ul class="decision-matrix" aria-label="Senaryoya göre ürün ailesi">
+      {applicationAreas.map((area) => (
+        <li data-reveal>
+          <strong>{area.title}</strong>
+          <span>{area.productFamilyHint}. {area.summary}</span>
+          <a href={`/uygulama-alanlari/${area.slug}/`}>Alanı aç</a>
+        </li>
+      ))}
+    </ul>
+  </section>
 
   <section class="application-directory shell" aria-label="Uygulama alanları">
     {applicationAreas.map((area, index) => (
@@ -44,7 +71,11 @@ const schema = {
           <span class="eyebrow">0{index + 1} · {area.eyebrow}</span>
           <h2><a href={`/uygulama-alanlari/${area.slug}/`}>{area.title}</a></h2>
           <p>{area.summary}</p>
-          <a class="text-link" href={`/uygulama-alanlari/${area.slug}/`}>Alanı inceleyin <span aria-hidden="true">→</span></a>
+          <div class="hub-links">
+            <a href={`/uygulama-alanlari/${area.slug}/`}>Alanı inceleyin →</a>
+            {area.guideLinks.slice(0, 1).map((guide) => <a href={guide.url}>{guide.name}</a>)}
+            <a href="/teklif-al/">Teklif Al</a>
+          </div>
         </div>
       </article>
     ))}

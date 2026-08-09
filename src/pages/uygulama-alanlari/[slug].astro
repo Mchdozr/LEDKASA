@@ -19,6 +19,9 @@ const schema = {
   name: area.title,
   description: area.seoDescription,
   inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${siteUrl}/#organization` },
+  primaryImageOfPage: new URL(area.image, siteUrl).toString(),
 };
 ---
 
@@ -46,6 +49,15 @@ const schema = {
           {section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
         </section>
       ))}
+      <section data-reveal>
+        <h2>İlgili rehberler ve katalog</h2>
+        <p>Bu senaryoyu ürün ve bilgi içerikleriyle birlikte okuyun; ardından teklif formunda kapsamı paylaşın.</p>
+        <ul>
+          {area.guideLinks.map((guide) => <li><a href={guide.url}>{guide.name}</a></li>)}
+          {area.categoryLinks.map((category) => <li><a href={category.url}>{category.name}</a></li>)}
+          <li><a href="/teklif-al/">Teklif Al</a></li>
+        </ul>
+      </section>
     </article>
     <aside class="context-panel" aria-labelledby="products-for-area">
       <span class="eyebrow">İlgili ürünler</span>
@@ -53,6 +65,11 @@ const schema = {
       <div class="context-links">
         {area.productLinks.map((product) => (
           <a href={product.url}><strong>{product.name}</strong><span>{product.note}</span><i aria-hidden="true">→</i></a>
+        ))}
+      </div>
+      <div class="context-links" style="margin-top:1.25rem;">
+        {area.guideLinks.map((guide) => (
+          <a href={guide.url}><strong>{guide.name}</strong><span>Bilgi merkezi</span><i aria-hidden="true">→</i></a>
         ))}
       </div>
     </aside>

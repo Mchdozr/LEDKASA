@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { applicationAreas, articles } from '../data/articles';
+import { productCategories, products, siteUrl } from '../data/site';
+
+const title = 'Site Haritası | LEDKASA';
+const description =
+  'LEDKASA site haritası: ürünler, uygulama alanları, bilgi merkezi, teklif ve kurumsal sayfaların tamamı.';
+
+const groups = [
+  {
+    title: 'Ana sayfalar',
+    links: [
+      { name: 'Ana Sayfa', url: '/' },
+      { name: 'Hakkımızda', url: '/hakkimizda/' },
+      { name: 'Teklif Al', url: '/teklif-al/' },
+      { name: 'İletişim', url: '/iletisim/' },
+      { name: 'Sık Sorulan Sorular', url: '/sss/' },
+      { name: 'Site Haritası', url: '/site-haritasi/' },
+    ],
+  },
+  {
+    title: 'Ürünler',
+    links: [
+      { name: 'Tüm Ürünler', url: '/urunler/' },
+      { name: 'Kasa Karşılaştırma', url: '/urunler/kasa-karsilastirma/' },
+      ...productCategories.map((category) => ({ name: category.name, url: category.url })),
+      ...products.map((product) => ({ name: product.name, url: product.url })),
+    ],
+  },
+  {
+    title: 'Uygulama Alanları',
+    links: [
+      { name: 'Tüm Uygulama Alanları', url: '/uygulama-alanlari/' },
+      ...applicationAreas.map((area) => ({
+        name: area.title,
+        url: `/uygulama-alanlari/${area.slug}/`,
+      })),
+    ],
+  },
+  {
+    title: 'Bilgi Merkezi',
+    links: [
+      { name: 'Tüm Rehberler', url: '/bilgi-merkezi/' },
+      ...articles.map((article) => ({
+        name: article.title,
+        url: `/bilgi-merkezi/${article.slug}/`,
+      })),
+    ],
+  },
+  {
+    title: 'Yasal',
+    links: [
+      { name: 'KVKK Aydınlatma Metni', url: '/kvkk-aydinlatma/' },
+      { name: 'Gizlilik Politikası', url: '/gizlilik-politikasi/' },
+      { name: 'Çerez Politikası', url: '/cerez-politikasi/' },
+    ],
+  },
+];
+
+const schema = {
+  '@type': 'CollectionPage',
+  '@id': `${siteUrl}/site-haritasi/#collection`,
+  url: `${siteUrl}/site-haritasi/`,
+  name: 'LEDKASA Site Haritası',
+  description,
+  inLanguage: 'tr-TR',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/site-haritasi/" schema={schema}>
+  <Breadcrumbs items={[{ label: 'Site Haritası' }]} />
+  <header class="content-hero content-hero-compact shell">
+    <span class="eyebrow">Gezinme</span>
+    <h1>Site Haritası</h1>
+    <p>LEDKASA’daki tüm ürün, senaryo, rehber ve kurumsal sayfalara buradan ulaşabilirsiniz.</p>
+  </header>
+
+  <section class="shell sitemap-groups" aria-label="Site haritası grupları">
+    {groups.map((group) => (
+      <nav class="sitemap-group" aria-label={group.title} data-reveal>
+        <h2>{group.title}</h2>
+        <ul>
+          {group.links.map((link) => (
+            <li><a href={link.url}>{link.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+  </section>
+</BaseLayout>
