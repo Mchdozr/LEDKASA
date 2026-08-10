@@ -91,8 +91,11 @@ const schema = [
     </div>
 
     <div class="about-company-grid">
-      <article class="about-fact-panel" data-reveal>
-        <span class="eyebrow">Yasal ünvan</span>
+      <article class="about-fact-panel is-legal" data-reveal>
+        <div class="about-fact-topline">
+          <span class="eyebrow">Yasal ünvan</span>
+          <span class="about-fact-badge" aria-hidden="true">Sicil</span>
+        </div>
         <h3>{companyProfile.legalName}</h3>
         <dl class="about-fact-list">
           <div>
@@ -120,8 +123,11 @@ const schema = [
         </dl>
       </article>
 
-      <article class="about-fact-panel" data-reveal>
-        <span class="eyebrow">İletişim</span>
+      <article class="about-fact-panel is-contact" data-reveal>
+        <div class="about-fact-topline">
+          <span class="eyebrow">İletişim</span>
+          <span class="about-fact-badge" aria-hidden="true">Hat</span>
+        </div>
         <h3>Proje ve satış hattı</h3>
         <ul class="about-contact-list">
           <li>

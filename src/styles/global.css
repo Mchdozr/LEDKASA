@@ -770,32 +770,140 @@ p, h1, h2, h3 { margin-top: 0; }
   gap: 1rem;
   margin-top: 1.25rem;
 }
-.about-fact-panel, .about-location-card {
+.about-fact-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.35rem, 3.2vw, 1.9rem);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1.1rem 2.4rem rgba(14, 23, 18, 0.08);
+}
+.about-fact-panel::before {
+  content: "";
+  position: absolute;
+  inset: auto -10% -35% auto;
+  width: 14rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.about-fact-panel.is-legal {
+  border: 1px solid rgba(16, 22, 19, 0.12);
+  background:
+    linear-gradient(145deg, rgba(184, 242, 54, 0.22) 0%, rgba(255, 253, 247, 0.92) 42%, #fffdf7 100%),
+    radial-gradient(circle at 100% 0%, rgba(143, 215, 25, 0.18), transparent 46%);
+  color: var(--ink);
+}
+.about-fact-panel.is-legal::before {
+  background: radial-gradient(circle, rgba(184, 242, 54, 0.35), transparent 68%);
+}
+.about-fact-panel.is-contact {
+  --accent-text: var(--accent-on-dark);
+  --focus-ring: var(--focus-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(184, 242, 54, 0.2), transparent 42%),
+    linear-gradient(155deg, #1c2923 0%, #101814 52%, #15201a 100%);
+  color: var(--white);
+  box-shadow: 0 1.4rem 3rem rgba(10, 16, 13, 0.28);
+}
+.about-fact-panel.is-contact::before {
+  background: radial-gradient(circle, rgba(90, 130, 105, 0.45), transparent 70%);
+}
+.about-fact-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .35rem;
+}
+.about-fact-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.about-fact-panel.is-legal .about-fact-badge {
+  background: var(--ink);
+  color: var(--green);
+}
+.about-fact-panel.is-contact .about-fact-badge {
+  background: rgba(184, 242, 54, 0.16);
+  color: var(--green);
+  border: 1px solid rgba(184, 242, 54, 0.35);
+}
+.about-fact-panel h3, .about-location-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: .4rem 0 1.15rem;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  letter-spacing: -.03em;
+  line-height: 1.2;
+}
+.about-fact-panel.is-contact h3 { color: var(--white); }
+.about-fact-list, .about-contact-list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: .55rem;
+  margin: 0;
+}
+.about-fact-list > div,
+.about-contact-list li {
+  display: grid;
+  gap: .2rem;
+  padding: .7rem .8rem;
+  border-radius: .75rem;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+.about-fact-panel.is-legal .about-fact-list > div {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(16, 22, 19, 0.08);
+}
+.about-fact-panel.is-legal .about-fact-list > div:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.9);
+}
+.about-fact-panel.is-contact .about-contact-list li {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.about-fact-panel.is-contact .about-contact-list li:hover {
+  transform: translateY(-1px);
+  background: rgba(184, 242, 54, 0.1);
+  border-color: rgba(184, 242, 54, 0.28);
+}
+.about-fact-list dt,
+.about-contact-list span {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.about-fact-panel.is-contact .about-contact-list span { color: var(--muted-on-dark); }
+.about-fact-list dd { margin: 0; font-weight: 780; }
+.about-fact-list a,
+.about-contact-list a {
+  color: var(--accent-on-light);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+.about-fact-panel.is-contact .about-contact-list a {
+  color: var(--green);
+}
+.about-contact-list { padding: 0; list-style: none; }
+.about-location-card {
   padding: clamp(1.2rem, 3vw, 1.7rem);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface-raised);
 }
-.about-fact-panel h3, .about-location-card h3 {
-  margin: .4rem 0 1rem;
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
-  letter-spacing: -.03em;
-  line-height: 1.2;
-}
-.about-fact-list { display: grid; gap: .7rem; margin: 0; }
-.about-fact-list > div {
-  display: grid;
-  gap: .15rem;
-  padding-top: .7rem;
-  border-top: 1px solid var(--line);
-}
-.about-fact-list dt { color: var(--muted); font-size: .75rem; font-weight: 700; }
-.about-fact-list dd { margin: 0; font-weight: 750; }
-.about-fact-list a { color: var(--accent-on-light); text-decoration: underline; text-underline-offset: .18em; }
-.about-contact-list { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
-.about-contact-list li { display: grid; gap: .2rem; }
-.about-contact-list span { color: var(--muted); font-size: .75rem; font-weight: 700; }
-.about-contact-list a { font-weight: 750; }
 .about-location-card p { margin: 0 0 .35rem; color: var(--muted); }
 .about-location-card .text-link { margin-top: .85rem; }
 .about-location-card.is-production {
