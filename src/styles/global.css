@@ -869,6 +869,7 @@ p, h1, h2, h3 { margin-top: 0; }
   .hero-ready .hero-slide.is-enter-from-left,
   .hero-ready .hero-slide.is-enter-from-right {
     transform: none;
+    filter: none;
   }
   .hero-ready .hero-slide.is-active .hero-copy,
   .hero-ready .hero-slide.is-active .hero-media img {
