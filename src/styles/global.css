@@ -169,87 +169,36 @@ p, h1, h2, h3 { margin-top: 0; }
   padding-block: clamp(2rem, 7vw, 6rem);
 }
 .product-spin-stage {
-  --spin-size: min(100%, 34rem);
-  --spin-face: calc(var(--spin-size) * 0.78);
-  --spin-depth: clamp(3.6rem, 9vw, 5.5rem);
+  --spin-size: min(100%, 36rem);
   position: relative;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  overflow: visible;
+  overflow: hidden;
   border-radius: var(--radius-lg);
   background:
-    radial-gradient(circle at 50% 42%, rgba(255,255,255,.72), transparent 42%),
-    linear-gradient(145deg, #e2e3da, #fffdf7);
-  isolation: isolate;
+    radial-gradient(circle at 50% 38%, rgba(255,255,255,.8), transparent 46%),
+    linear-gradient(160deg, #dddfd6, #f7f5ee 55%, #ebe8df);
 }
 .product-spin-scene {
-  width: var(--spin-size);
-  height: var(--spin-size);
-  display: grid;
-  place-items: center;
-  perspective: 1600px;
-  perspective-origin: 50% 45%;
-  transform-style: preserve-3d;
-}
-.product-spin-object {
   position: relative;
-  width: var(--spin-face);
-  height: var(--spin-face);
-  transform-style: preserve-3d;
-  transform: rotateX(10deg) rotateY(var(--spin-y, 0deg));
-  will-change: transform;
-}
-.product-spin-face {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--spin-face);
-  height: var(--spin-face);
-  margin: calc(var(--spin-face) / -2) 0 0 calc(var(--spin-face) / -2);
-  backface-visibility: hidden;
-  border-radius: .75rem;
-  background: #1a1f1c;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-}
-.product-spin-face img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: linear-gradient(145deg, #ecece4, #f8f7f1);
-}
-.product-spin-face-front { transform: translateZ(calc(var(--spin-depth) / 2)); }
-.product-spin-face-back {
   display: grid;
   place-items: center;
-  transform: rotateY(180deg) translateZ(calc(var(--spin-depth) / 2));
-  background:
-    linear-gradient(145deg, #232a26 0%, #101412 55%, #2a312c 100%);
-  color: rgba(238, 242, 239, .72);
-  font-family: var(--font-display, inherit);
-  font-size: clamp(1.15rem, 2.2vw, 1.65rem);
-  font-weight: 750;
-  letter-spacing: .04em;
 }
-.product-spin-face-left,
-.product-spin-face-right {
-  width: var(--spin-depth);
-  margin-left: calc(var(--spin-depth) / -2);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.1), transparent 28%, transparent 72%, rgba(0,0,0,.4)),
-    repeating-linear-gradient(90deg, #2a312c 0 2px, #171c19 2px 4px);
+.product-spin-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-.product-spin-face-left { transform: rotateY(-90deg) translateZ(calc(var(--spin-face) / 2)); }
-.product-spin-face-right { transform: rotateY(90deg) translateZ(calc(var(--spin-face) / 2)); }
-.product-spin-face-top,
-.product-spin-face-bottom {
-  height: var(--spin-depth);
-  margin-top: calc(var(--spin-depth) / -2);
-  background: linear-gradient(90deg, #101412, #2c342f 45%, #141916);
+.product-spin-fallback {
+  width: min(86%, 28rem);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 1.4rem 2rem rgba(16,22,19,.16));
 }
-.product-spin-face-top { transform: rotateX(90deg) translateZ(calc(var(--spin-face) / 2)); }
-.product-spin-face-bottom { transform: rotateX(-90deg) translateZ(calc(var(--spin-face) / 2)); }
+.product-spin-scene.is-3d-ready .product-spin-fallback { display: none; }
 .product-spin-meter {
   position: absolute;
   z-index: 2;
@@ -634,7 +583,6 @@ p, h1, h2, h3 { margin-top: 0; }
     min-height: calc(100vh - var(--header-height) - 1rem);
     padding-block: 1.5rem;
   }
-  .product-spin-stage { --spin-size: min(100%, 36rem); }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .quote-layout { grid-template-columns: minmax(0, .9fr) minmax(32rem, 1.1fr); }
   .quote-intro, .faq-page-layout > div:first-child { position: sticky; top: calc(var(--header-height) + 2rem); }

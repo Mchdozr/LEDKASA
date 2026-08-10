@@ -81,19 +81,18 @@ const schema = {
         <div class="product-spin-sticky shell">
           <div class="product-spin-stage" data-spin-stage>
             <span class="product-detail-category">{category.shortName}</span>
-            <div class="product-spin-scene">
-              <div class="product-spin-object" data-spin-object>
-                <div class="product-spin-face product-spin-face-front">
-                  <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
-                </div>
-                <div class="product-spin-face product-spin-face-back" aria-hidden="true">
-                  <span>CNC LED Kasa</span>
-                </div>
-                <div class="product-spin-face product-spin-face-left" aria-hidden="true"></div>
-                <div class="product-spin-face product-spin-face-right" aria-hidden="true"></div>
-                <div class="product-spin-face product-spin-face-top" aria-hidden="true"></div>
-                <div class="product-spin-face product-spin-face-bottom" aria-hidden="true"></div>
-              </div>
+            <div class="product-spin-scene" data-spin-canvas-host data-spin-image={product.image}>
+              <canvas class="product-spin-canvas" data-spin-canvas hidden aria-hidden="true"></canvas>
+              <img
+                class="product-spin-fallback"
+                data-spin-fallback
+                src={product.image}
+                alt={product.imageAlt}
+                width="1000"
+                height="1000"
+                decoding="async"
+                fetchpriority="high"
+              />
             </div>
             <div class="product-spin-meter" aria-hidden="true">
               <span data-spin-degrees>0°</span>
@@ -256,4 +255,10 @@ const schema = {
   )}
 
   <QuoteCta product={product.slug} title={`${product.name} için teklif isteyin.`} />
+
+  {product.slug === 'cnc-led-kasa' && (
+    <script>
+      import '../../../scripts/cnc-product-spin.ts';
+    </script>
+  )}
 </BaseLayout>

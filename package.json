@@ -16,5 +16,8 @@
     "astro": "^7.2.0",
     "playwright-core": "^1.62.1",
     "sharp": "0.35.3"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
   }
 }
