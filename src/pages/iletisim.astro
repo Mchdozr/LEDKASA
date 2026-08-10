@@ -97,11 +97,33 @@ const channels = [
         <a href="/hakkimizda/">Hakkımızda</a>
         <a href="/site-haritasi/">Site haritası</a>
       </nav>
-      <div class="contact-address-block">
-        <p><strong>{companyProfile.office.label}</strong><br />{companyProfile.office.line1}<br />{companyProfile.office.line2}</p>
-        <p><strong>{companyProfile.production.label}</strong><br />{companyProfile.production.line1}<br />{companyProfile.production.line2}<br /><span>{companyProfile.production.coordinatesDisplay}</span></p>
-      </div>
     </aside>
+
+    <div class="contact-address-block" aria-label="Ofis ve üretim konumları">
+      <a
+        class="contact-address-card"
+        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(companyProfile.office.mapQuery)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="contact-address-label">{companyProfile.office.label}</span>
+        <strong>{companyProfile.office.line1}</strong>
+        <span>{companyProfile.office.line2}</span>
+        <em>Haritada aç <span aria-hidden="true">↗</span></em>
+      </a>
+      <a
+        class="contact-address-card is-production"
+        href={companyProfile.production.mapLinkUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="contact-address-label">{companyProfile.production.label}</span>
+        <strong>{companyProfile.production.line1}</strong>
+        <span>{companyProfile.production.line2}</span>
+        <span class="contact-address-coords">{companyProfile.production.coordinatesDisplay}</span>
+        <em>Haritada aç <span aria-hidden="true">↗</span></em>
+      </a>
+    </div>
   </section>
 
   <QuoteCta title="LED ekran projenizi değerlendirmeye başlayalım." />

@@ -264,19 +264,66 @@ p, h1, h2, h3 { margin-top: 0; }
 .contact-note { margin-top: 1.1rem !important; font-size: .8rem !important; }
 .contact-address-block {
   display: grid;
-  gap: .9rem;
-  margin-top: 1.2rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid var(--line);
+  gap: .85rem;
+  margin-top: .25rem;
 }
-.contact-address-block p {
-  margin: 0 !important;
-  color: var(--muted);
-  font-size: .86rem !important;
-  line-height: 1.45;
+.contact-address-card {
+  display: grid;
+  gap: .35rem;
+  align-content: start;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: inherit;
+  transition: border-color 180ms ease, transform 180ms ease, background-color 180ms ease;
 }
-.contact-address-block strong { color: var(--ink); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-.contact-address-block span { display: inline-block; margin-top: .25rem; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.contact-address-card:hover {
+  border-color: rgba(67, 109, 0, 0.45);
+  background: linear-gradient(145deg, rgba(184, 242, 54, 0.12), var(--surface-raised) 55%);
+  transform: translateY(-2px);
+}
+.contact-address-card.is-production {
+  background:
+    linear-gradient(150deg, rgba(16, 22, 19, 0.96), #18211d 70%);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+}
+.contact-address-card.is-production:hover {
+  border-color: rgba(184, 242, 54, 0.5);
+  background:
+    linear-gradient(150deg, #1c2923, #121a16 70%);
+}
+.contact-address-label {
+  color: var(--accent-on-light);
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.contact-address-card.is-production .contact-address-label { color: var(--green); }
+.contact-address-card strong {
+  font-size: .98rem;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+}
+.contact-address-card > span { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+.contact-address-card.is-production > span { color: var(--muted-on-dark); }
+.contact-address-coords {
+  color: var(--ink) !important;
+  font-size: .82rem !important;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+.contact-address-card.is-production .contact-address-coords { color: var(--green) !important; }
+.contact-address-card em {
+  margin-top: .45rem;
+  color: var(--accent-on-light);
+  font-size: .82rem;
+  font-style: normal;
+  font-weight: 750;
+}
+.contact-address-card.is-production em { color: var(--green); }
 .quote-steps { display: grid; gap: 1rem; margin: 2.2rem 0 0; padding: 0; list-style: none; }
 .quote-steps li { display: grid; grid-template-columns: 2.7rem 1fr; gap: 1rem; align-items: start; }
 .quote-steps li > span { width: 2.7rem; height: 2.7rem; display: grid; place-items: center; border: 1px solid rgba(16,22,19,.18); border-radius: 50%; color: var(--accent-on-light); font-size: .72rem; font-weight: 850; }
