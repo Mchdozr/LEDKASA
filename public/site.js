@@ -113,7 +113,7 @@
     const pauseButton = hero.querySelector('[data-hero-pause]');
     const status = hero.querySelector('[data-hero-status]');
     const announcement = hero.querySelector('[data-hero-announcement]');
-    const transitionMs = 900;
+    const transitionMs = 980;
     let activeIndex = 0;
     let paused = false;
     let timer;

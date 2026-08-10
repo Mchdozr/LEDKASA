@@ -66,7 +66,7 @@ test('desktop hero reserves one stable frame height for every slide image', () =
   assert.match(css, /--hero-slide-height:\s*calc\(100dvh\s*-\s*var\(--header-height\)\)/);
   assert.match(css, /height:\s*var\(--hero-slide-height\)/);
   assert.match(css, /\.hero-media\s*\{[^}]*height:\s*100%/s);
-  assert.match(css, /perspective:\s*1600px/);
+  assert.match(css, /perspective:\s*1800px/);
   assert.match(css, /rotateY\(/);
 });
 
