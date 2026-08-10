@@ -1186,8 +1186,10 @@ p, h1, h2, h3 { margin-top: 0; }
   text-align: center;
 }
 .ledkasa-seo-media img {
+  display: block;
   width: min(100%, 40rem);
   height: auto;
+  margin-inline: auto;
   aspect-ratio: 1;
   object-fit: contain;
   border-radius: var(--radius);
