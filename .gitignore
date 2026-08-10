@@ -5,4 +5,11 @@ dist/
 .astro/
 .plesk-node/
 *.log
+
+# SMTP / local secrets — never commit
 public/contact.local.php
+**/contact.local.php
+!public/contact.local.php.example
+.env
+.env.*
+!.env.example

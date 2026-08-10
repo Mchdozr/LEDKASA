@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import net from 'node:net';
@@ -17,6 +17,22 @@ test('contact.php avoids PHP 8-only syntax for Plesk 7.4 runtimes', () => {
   assert.doesNotMatch(source, /\bstr_starts_with\s*\(/);
   assert.doesNotMatch(source, /\bstr_contains\s*\(/);
   assert.doesNotMatch(source, /\bstr_ends_with\s*\(/);
+});
+
+test('contact.local.php stays untracked and example keeps password placeholder', () => {
+  const gitignore = readFileSync(resolve(projectRoot, '.gitignore'), 'utf8');
+  assert.match(gitignore, /(^|\n)public\/contact\.local\.php(\n|$)/);
+  assert.match(gitignore, /(^|\n)\*\*\/contact\.local\.php(\n|$)/);
+
+  const example = readFileSync(resolve(publicRoot, 'contact.local.php.example'), 'utf8');
+  assert.match(example, /'pass'\s*=>\s*'BURAYA-MAIL-SIFRESI'/);
+
+  const tracked = spawnSync('git', ['ls-files', '--', '**/contact.local.php', 'public/contact.local.php'], {
+    cwd: projectRoot,
+    encoding: 'utf8',
+  });
+  assert.equal(tracked.status, 0, tracked.stderr);
+  assert.equal(tracked.stdout.trim(), '');
 });
 const validSubmission = {
   name: 'Test Kullanıcısı',
