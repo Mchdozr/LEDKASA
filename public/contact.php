@@ -464,10 +464,18 @@ function deliverContactMail(string $recipient, string $subject, string $body, st
         'auth' => false,
     ];
 
+    $remoteError = '';
     foreach ($attempts as $attempt) {
         if (sendViaSmtp($recipient, $subject, $body, $replyTo, $attempt['transport'], $attempt['auth'])) {
             return ['ok' => true, 'channel' => $attempt['channel']];
         }
+        $error = smtpLastError();
+        if ($attempt['auth'] && $remoteError === '' && $error !== '') {
+            $remoteError = $error;
+        }
+    }
+    if ($remoteError !== '') {
+        smtpLastError($remoteError);
     }
 
     $allowPhpMail = getenv('LEDKASA_CONTACT_ALLOW_PHP_MAIL');
@@ -605,7 +613,9 @@ if (!$delivery['ok']) {
     } elseif (strpos($smtpHint, 'connect:') === 0) {
         $message = 'SMTP sunucusuna bağlanılamadı. host/port değerlerini kontrol edin (465/ssl veya 587/tls).';
     } else {
-        $message = 'SMTP ile mail gönderilemedi. contact.local.php içinde Natro ayarlarını kontrol edin (host: mail.kurumsaleposta.com). Telefon/WhatsApp ile de yazabilirsiniz.';
+        $message = 'SMTP ile mail gönderilemedi'
+            . ($smtpHint !== '' ? ' [' . $smtpHint . ']' : '')
+            . '. contact.local.php içinde Natro ayarlarını kontrol edin (host: mail.kurumsaleposta.com). Telefon/WhatsApp ile de yazabilirsiniz.';
     }
     respond(503, false, $message, $wantsJson, 'hata');
 }
