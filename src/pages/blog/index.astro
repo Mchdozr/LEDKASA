@@ -7,7 +7,6 @@ import QuoteCta from '../../components/QuoteCta.astro';
 import {
   blogListCanonical,
   blogPageCount,
-  blogPosts,
   formatBlogDate,
   getBlogPage,
 } from '../../data/blog';
@@ -17,7 +16,7 @@ const currentPage = 1;
 const pagePosts = getBlogPage(currentPage);
 const title = 'LED Ekran Kasa Blogu | LEDKASA';
 const description =
-  'LED ekran kasası, rental kabinet, poster ekran ve bağlantı planlaması üzerine SEO uyumlu blog yazıları. Her sayfada 6 yazı.';
+  'LED ekran kasası, rental kabinet, poster ekran ve bağlantı planlaması üzerine SEO uyumlu blog yazıları.';
 const canonical = '/blog/';
 const schema = {
   '@type': 'Blog',
@@ -42,10 +41,6 @@ const schema = {
   <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">Blog</span>
     <h1>LED ekran kasa blogu</h1>
-    <p>
-      Kasa seçimi, rental planlama, poster yerleşimi ve bağlantı konularında {blogPosts.length} yazı.
-      Bu sayfada {pagePosts.length} yazı görüntüleniyor.
-    </p>
   </header>
 
   <section class="shell blog-directory" aria-label="Blog yazıları">

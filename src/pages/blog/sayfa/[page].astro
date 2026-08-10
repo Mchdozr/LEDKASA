@@ -8,7 +8,6 @@ import QuoteCta from '../../../components/QuoteCta.astro';
 import {
   blogListCanonical,
   blogPageCount,
-  blogPosts,
   formatBlogDate,
   getBlogPage,
 } from '../../../data/blog';
@@ -45,9 +44,6 @@ const schema = {
   <header class="content-hero content-hero-compact shell">
     <span class="eyebrow">Blog</span>
     <h1>LED ekran kasa blogu</h1>
-    <p>
-      Toplam {blogPosts.length} yazı · Sayfa {page} / {blogPageCount}
-    </p>
   </header>
 
   <section class="shell blog-directory" aria-label={`Blog yazıları sayfa ${page}`}>

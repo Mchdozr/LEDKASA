@@ -138,6 +138,9 @@ test('blog data defines 18 posts, page size 6, and local images', async () => {
   const slugs = [...blogSource.matchAll(/^\s+slug: '([^']+)'/gm)].map((match) => match[1]);
   assert.equal(slugs.length, 18);
   assert.equal(new Set(slugs).size, 18);
+  assert.match(blogSource, /summary:/);
+  assert.match(blogSource, /faqs:/);
+  assert.match(blogSource, /table:/);
   const images = [...blogSource.matchAll(/^\s+image: images\.(\w+)/gm)].map((match) => match[1]);
   assert.equal(images.length, 18);
   const imagePaths = [...blogSource.matchAll(/^\s+\w+: '(\/assets\/images\/[^']+)'/gm)].map((match) => match[1]);

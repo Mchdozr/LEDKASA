@@ -146,14 +146,19 @@ test('build emits paginated blog listing and SEO blog posts with cards and schem
   const page3 = builtHtml('blog/sayfa/3');
   assert.equal((page2.match(/class="blog-card"/g) ?? []).length, 6);
   assert.equal((page3.match(/class="blog-card"/g) ?? []).length, 6);
-  assert.match(page2, /Sayfa 2 \/ 3/);
-  assert.match(page3, /Sayfa 3 \/ 3/);
+  assert.match(page2, /aria-label="Blog sayfaları"/);
+  assert.match(page3, /aria-label="Blog sayfaları"/);
 
   const sample = builtHtml('blog/led-kasa-seciminde-ilk-sorular');
   assert.match(sample, /<meta property="og:type" content="article">/);
   assert.match(sample, /"@type":"BlogPosting"/);
+  assert.match(sample, /"@type":"FAQPage"/);
+  assert.match(sample, /ledkasa-seo-article/);
+  assert.match(sample, /İçindekiler/);
+  assert.match(sample, /Sık sorulan sorular/);
   assert.match(sample, /https:\/\/ledkasa\.com\.tr\/blog\/led-kasa-seciminde-ilk-sorular\//);
   assert.match(sample, /href="\/teklif-al\/"/);
+  assert.doesNotMatch(builtHtml('blog'), /Bu sayfada \d+ yazı görüntüleniyor/);
 });
 
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {
