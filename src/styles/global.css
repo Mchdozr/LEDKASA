@@ -472,15 +472,15 @@ p, h1, h2, h3 { margin-top: 0; }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 .hero-copy h1, .hero-copy h2 {
-  max-width: 12ch;
+  max-width: 14ch;
   margin: .65rem 0 1.1rem;
   color: var(--white);
-  font-size: clamp(2.7rem, 7vw, 6rem);
-  line-height: .94;
-  letter-spacing: -.065em;
+  line-height: .96;
+  letter-spacing: -.055em;
   text-wrap: balance;
 }
-.hero-copy h2 { font-size: clamp(2.4rem, 6vw, 5rem); }
+.hero-copy h1 { font-size: clamp(2.25rem, 5.2vw, 4.25rem); }
+.hero-copy h2 { font-size: clamp(2.15rem, 4.8vw, 3.9rem); }
 .hero-copy p {
   max-width: 38rem;
   margin-bottom: 1.7rem;
