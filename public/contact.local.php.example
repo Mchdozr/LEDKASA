@@ -14,8 +14,9 @@ if (!defined('LEDKASA_CONTACT_BOOTSTRAP')) {
 }
 
 return [
-    // Plesk'te dış host çalışmazsa 'localhost' veya '127.0.0.1' deneyin
-    'host' => 'mail.ledkasa.com.tr',
+    // Natro kurumsal e-posta: mail.kurumsaleposta.com
+    // Mail Plesk'teyse: localhost
+    'host' => 'mail.kurumsaleposta.com',
     'port' => 465,
     'encryption' => 'ssl', // ssl (465) | tls (587)
     'user' => 'info@ledkasa.com.tr',
