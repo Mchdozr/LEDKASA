@@ -753,7 +753,7 @@ p, h1, h2, h3 { margin-top: 0; }
 .about-brand-copy {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding-block: 0.4rem;
 }
 .about-brand-copy h1 {
