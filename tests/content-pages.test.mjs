@@ -45,10 +45,9 @@ test('homepage renders one heading and exactly three progressively enhanced, use
   assert.match(html, /<meta property="og:type" content="website">/);
   assert.equal(slideMarkup.length, 3);
   for (const [, slide] of slideMarkup) {
-    const imagePath = slide.match(/<img[^>]+src="(\/assets\/images\/hero\/[^"]+)"/)?.[1];
-    assert.ok(imagePath, 'each hero slide must use a local hero studio image');
+    const imagePath = slide.match(/<img[^>]+src="(\/assets\/images\/products\/[^"]+)"/)?.[1];
+    assert.ok(imagePath, 'each hero slide must use a local product image');
     assert.equal(existsSync(resolve(projectRoot, 'public', imagePath.slice(1))), true, `missing hero image: ${imagePath}`);
-    assert.doesNotMatch(slide, /\/assets\/images\/products\//);
   }
   assert.match(html, /data-hero-previous/);
   assert.match(html, /data-hero-next/);
