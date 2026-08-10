@@ -2,7 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-import { businessContact, organizationLogo, siteUrl } from '../data/site';
+import { businessContact, companyProfile, organizationLogo, siteUrl } from '../data/site';
 
 interface Props {
   title: string;
@@ -39,11 +39,26 @@ const structuredData = {
       '@type': 'Organization',
       '@id': `${siteUrl}/#organization`,
       name: 'LEDKASA',
+      legalName: companyProfile.legalName,
       url: `${siteUrl}/`,
       email: businessContact.email,
+      telephone: businessContact.phoneTel,
       logo: logoUrl,
       description:
         'LED ekran kasaları ile güç ve bağlantı ekipmanlarını kullanım alanı, kurulum biçimi ve proje kapsamı üzerinden değerlendiren ürün platformu.',
+      parentOrganization: {
+        '@type': 'Organization',
+        name: companyProfile.parentBrand,
+        url: companyProfile.parentUrl,
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: companyProfile.office.line1,
+        addressLocality: 'Şişli',
+        addressRegion: 'İstanbul',
+        postalCode: '34382',
+        addressCountry: 'TR',
+      },
       knowsAbout: [
         'LED ekran kasası',
         'Rental LED kabinet',

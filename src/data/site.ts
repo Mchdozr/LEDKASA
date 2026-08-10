@@ -9,6 +9,39 @@ export const businessContact = {
 
 export const organizationLogo = '/favicon.svg';
 
+/** LEDKASA, Ledajans grubunun kasa / kabinet odaklı markasıdır. */
+export const companyProfile = {
+  brandName: 'LEDKASA',
+  legalName: 'TAHA LED DIŞ TİCARET ANONİM ŞİRKETİ',
+  parentBrand: 'Ledajans',
+  parentUrl: 'https://ledajans.com/',
+  parentEmail: 'info@ledajans.com',
+  relationship:
+    'LEDKASA; Ledajans grubu bünyesinde LED ekran kasa, kabinet ve bağlantı ekipmanlarına odaklanan ürün markasıdır. Satış ve proje iletişimi LEDKASA kanallarından, grup operasyonu ise Ledajans çatısı altında yürütülür.',
+  taxOffice: 'Şişli',
+  taxNumber: '816 060 6453',
+  tradeRegistryNo: '79014-5',
+  officePhoneDisplay: '+90 212 220 40 04',
+  officePhoneTel: '+902122204004',
+  office: {
+    label: 'Merkez ofis',
+    line1: 'Halide Edip Adıvar Mah. Gül 2 Sokak No: 10a',
+    line2: '34382 Şişli / İstanbul',
+    mapQuery: 'Halide Edip Adıvar Mah. Gül 2 Sokak No: 10a, 34382 Şişli/İstanbul',
+  },
+  production: {
+    label: 'Kasa üretim yeri',
+    line1: 'Bakırcılar ve Pirinçciler Sanayi Sitesi',
+    line2: 'Beylikdüzü Organize Sanayi Bölgesi, 34524 Beylikdüzü / İstanbul',
+    latitude: 40.998306,
+    longitude: 28.667111,
+    coordinatesDisplay: `40°59'53.9"N 28°40'01.6"E`,
+    mapEmbedUrl:
+      'https://www.openstreetmap.org/export/embed.html?bbox=28.662111%2C40.995306%2C28.672111%2C41.001306&layer=mapnik&marker=40.998306%2C28.667111',
+    mapLinkUrl: 'https://www.openstreetmap.org/?mlat=40.998306&mlon=28.667111#map=17/40.998306/28.667111',
+  },
+} as const;
+
 export interface ProductSpec {
   label: string;
   value: string;

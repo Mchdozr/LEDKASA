@@ -2,30 +2,201 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import QuoteCta from '../components/QuoteCta.astro';
-import { businessContact, siteUrl } from '../data/site';
+import { businessContact, companyProfile, siteUrl } from '../data/site';
 
 const title = 'Hakkımızda ve Çalışma Yaklaşımımız | LEDKASA';
-const description = 'LEDKASA’nın LED ekran kasaları ve bağlantı ekipmanları için proje odaklı değerlendirme yaklaşımını tanıyın.';
-const schema = {
-  '@type': 'AboutPage',
-  '@id': `${siteUrl}/hakkimizda/#about`,
-  url: `${siteUrl}/hakkimizda/`,
-  name: title,
-  description,
-  inLanguage: 'tr-TR',
-  isPartOf: { '@id': `${siteUrl}/#website` },
-  about: { '@id': `${siteUrl}/#organization` },
-  mainEntity: { '@id': `${siteUrl}/#organization` },
-};
+const description =
+  'LEDKASA; Ledajans grubunun LED ekran kasa markasıdır. Şişli ofis, Beylikdüzü üretim koordinatı ve proje odaklı çalışma yaklaşımımızı tanıyın.';
+const schema = [
+  {
+    '@type': 'AboutPage',
+    '@id': `${siteUrl}/hakkimizda/#about`,
+    url: `${siteUrl}/hakkimizda/`,
+    name: title,
+    description,
+    inLanguage: 'tr-TR',
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    about: { '@id': `${siteUrl}/#organization` },
+    mainEntity: { '@id': `${siteUrl}/#organization` },
+  },
+  {
+    '@type': 'Organization',
+    '@id': `${siteUrl}/#ledkasa-brand`,
+    name: companyProfile.brandName,
+    legalName: companyProfile.legalName,
+    url: siteUrl,
+    email: businessContact.email,
+    telephone: businessContact.phoneTel,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: companyProfile.parentBrand,
+      url: companyProfile.parentUrl,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: companyProfile.office.line1,
+      addressLocality: 'Şişli',
+      addressRegion: 'İstanbul',
+      postalCode: '34382',
+      addressCountry: 'TR',
+    },
+    location: {
+      '@type': 'Place',
+      name: companyProfile.production.label,
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: companyProfile.production.latitude,
+        longitude: companyProfile.production.longitude,
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: companyProfile.production.line1,
+        addressLocality: 'Beylikdüzü',
+        addressRegion: 'İstanbul',
+        postalCode: '34524',
+        addressCountry: 'TR',
+      },
+    },
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} canonical="/hakkimizda/" image="/assets/images/editorial/electronics-workshop.webp" schema={schema}>
   <Breadcrumbs items={[{ label: 'Hakkımızda' }]} />
-  <header class="content-hero content-hero-compact shell">
-    <span class="eyebrow">LEDKASA</span>
-    <h1>Projeyi anlayan ürün yaklaşımı</h1>
-    <p>LED ekran kasaları ile güç ve bağlantı ekipmanlarını; kullanım alanı, kurulum biçimi ve proje kapsamı üzerinden değerlendiren bir ürün platformuyuz.</p>
+
+  <header class="about-brand-hero shell" data-reveal>
+    <div class="about-brand-lockup">
+      <span class="brand-mark about-brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <p class="about-brand-name">LED<span>KASA</span></p>
+        <p class="about-brand-tag">{companyProfile.parentBrand} grubunun LED ekran kasa markası</p>
+      </div>
+    </div>
+    <div class="about-brand-copy">
+      <span class="eyebrow">Hakkımızda</span>
+      <h1>Projeyi anlayan ürün yaklaşımı</h1>
+      <p>
+        LED ekran kasaları ile güç ve bağlantı ekipmanlarını; kullanım alanı, kurulum biçimi ve proje
+        kapsamı üzerinden değerlendiren bir ürün platformuyuz. Merkez ofisimiz Şişli’de, kasa üretim
+        yerimiz Beylikdüzü OSB’dedir.
+      </p>
+    </div>
   </header>
+
+  <section class="shell about-company-section" aria-labelledby="company-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Şirket bilgileri</span>
+        <h2 id="company-heading">LEDKASA ve Ledajans ilişkisi</h2>
+      </div>
+      <p>{companyProfile.relationship}</p>
+    </div>
+
+    <div class="about-company-grid">
+      <article class="about-fact-panel" data-reveal>
+        <span class="eyebrow">Yasal ünvan</span>
+        <h3>{companyProfile.legalName}</h3>
+        <dl class="about-fact-list">
+          <div>
+            <dt>Marka</dt>
+            <dd>{companyProfile.brandName}</dd>
+          </div>
+          <div>
+            <dt>Grup</dt>
+            <dd>
+              <a href={companyProfile.parentUrl} rel="noopener noreferrer" target="_blank">{companyProfile.parentBrand}</a>
+            </dd>
+          </div>
+          <div>
+            <dt>Vergi dairesi</dt>
+            <dd>{companyProfile.taxOffice}</dd>
+          </div>
+          <div>
+            <dt>Vergi no</dt>
+            <dd>{companyProfile.taxNumber}</dd>
+          </div>
+          <div>
+            <dt>Ticaret sicil no</dt>
+            <dd>{companyProfile.tradeRegistryNo}</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="about-fact-panel" data-reveal>
+        <span class="eyebrow">İletişim</span>
+        <h3>Proje ve satış hattı</h3>
+        <ul class="about-contact-list">
+          <li>
+            <span>E-posta</span>
+            <a href={`mailto:${businessContact.email}`}>{businessContact.email}</a>
+          </li>
+          <li>
+            <span>Mobil / WhatsApp</span>
+            <a href={`tel:${businessContact.phoneTel}`}>{businessContact.phoneDisplay}</a>
+          </li>
+          <li>
+            <span>Merkez hat</span>
+            <a href={`tel:${companyProfile.officePhoneTel}`}>{companyProfile.officePhoneDisplay}</a>
+          </li>
+          <li>
+            <span>Grup</span>
+            <a href={companyProfile.parentUrl} rel="noopener noreferrer" target="_blank">{companyProfile.parentUrl.replace('https://', '')}</a>
+          </li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="shell about-locations" aria-labelledby="locations-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Konumlar</span>
+        <h2 id="locations-heading">Ofis ve kasa üretim yeri</h2>
+      </div>
+      <p>Satış ve proje görüşmeleri Şişli ofisinde; kasa üretimi Beylikdüzü Organize Sanayi Bölgesi’ndeki tesisimizde yürütülür.</p>
+    </div>
+
+    <div class="about-location-grid">
+      <article class="about-location-card" data-reveal>
+        <span class="eyebrow">{companyProfile.office.label}</span>
+        <h3>Şişli / İstanbul</h3>
+        <p>{companyProfile.office.line1}</p>
+        <p>{companyProfile.office.line2}</p>
+        <a
+          class="text-link"
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(companyProfile.office.mapQuery)}`}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Haritada aç <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+
+      <article class="about-location-card is-production" data-reveal>
+        <span class="eyebrow">{companyProfile.production.label}</span>
+        <h3>Beylikdüzü OSB</h3>
+        <p>{companyProfile.production.line1}</p>
+        <p>{companyProfile.production.line2}</p>
+        <p class="about-coordinates">Koordinat: {companyProfile.production.coordinatesDisplay}</p>
+        <a class="text-link" href={companyProfile.production.mapLinkUrl} rel="noopener noreferrer" target="_blank">
+          Haritada aç <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+    </div>
+
+    <div class="about-map" data-reveal>
+      <iframe
+        title="LEDKASA kasa üretim yeri haritası"
+        src={companyProfile.production.mapEmbedUrl}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+      <p class="about-map-caption">
+        Üretim noktası: {companyProfile.production.coordinatesDisplay}
+        ({companyProfile.production.latitude.toFixed(6)}, {companyProfile.production.longitude.toFixed(6)})
+      </p>
+    </div>
+  </section>
 
   <section class="shell" aria-labelledby="mission-heading">
     <div class="mission-band" data-reveal>
@@ -45,6 +216,7 @@ const schema = {
       <a href="/bilgi-merkezi/">Bilgi merkezi</a>
       <a href="/sss/">Sık sorulan sorular</a>
       <a href="/teklif-al/">Teklif Al</a>
+      <a href="/iletisim/">İletişim</a>
       <a href="/site-haritasi/">Site haritası</a>
     </nav>
   </section>

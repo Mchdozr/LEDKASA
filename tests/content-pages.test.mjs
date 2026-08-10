@@ -136,8 +136,14 @@ test('build emits evergreen articles with unique metadata, breadcrumbs and conte
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {
   const routes = ['', 'hakkimizda', 'uygulama-alanlari', 'bilgi-merkezi', 'sss'];
   const combinedHtml = routes.map((route) => builtHtml(route)).join('\n');
+  const aboutHtml = builtHtml('hakkimizda');
 
-  assert.match(builtHtml('hakkimizda'), /Çalışma yaklaşımımız/);
+  assert.match(aboutHtml, /Çalışma yaklaşımımız/);
+  assert.match(aboutHtml, /TAHA LED DIŞ TİCARET ANONİM ŞİRKETİ/);
+  assert.match(aboutHtml, /Ledajans/);
+  assert.match(aboutHtml, /Beylikdüzü/);
+  assert.match(aboutHtml, /40°59(?:'|&#39;)53\.9(?:"|&quot;)N 28°40(?:'|&#39;)01\.6(?:"|&quot;)E/);
+  assert.match(aboutHtml, /brand-mark/);
   assert.match(builtHtml('uygulama-alanlari'), /Etkinlik ve Sahne/);
   assert.match(builtHtml('bilgi-merkezi'), /LED Ekran Kasası Nasıl Seçilir\?/);
   assert.match(builtHtml('sss'), /<details[\s\S]*?<summary>/);

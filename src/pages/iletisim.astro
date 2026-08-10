@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import QuoteCta from '../components/QuoteCta.astro';
-import { businessContact, siteUrl } from '../data/site';
+import { businessContact, companyProfile, siteUrl } from '../data/site';
 
 const title = 'İletişim | LEDKASA';
 const description = 'LED ekran kasa, kabinet ve bağlantı ekipmanı projeleriniz için LEDKASA ile iletişime geçin veya teklif talebi gönderin.';
@@ -94,9 +94,13 @@ const channels = [
       </div>
       <nav class="hub-links" aria-label="İletişim sonrası adımlar">
         <a href="/urunler/">Ürün kataloğu</a>
+        <a href="/hakkimizda/">Hakkımızda</a>
         <a href="/site-haritasi/">Site haritası</a>
       </nav>
-      <p class="contact-note">Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
+      <div class="contact-address-block">
+        <p><strong>{companyProfile.office.label}</strong><br />{companyProfile.office.line1}<br />{companyProfile.office.line2}</p>
+        <p><strong>{companyProfile.production.label}</strong><br />{companyProfile.production.line1}<br />{companyProfile.production.line2}<br /><span>{companyProfile.production.coordinatesDisplay}</span></p>
+      </div>
     </aside>
   </section>
 
