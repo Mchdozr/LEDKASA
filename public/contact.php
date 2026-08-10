@@ -233,6 +233,7 @@ function smtpRead($socket): string
 function smtpExpect($socket, array $codes): bool
 {
     $response = smtpRead($socket);
+    smtpLastError('smtp-response:' . trim(preg_replace('/\s+/', ' ', $response)));
     foreach ($codes as $code) {
         if (strpos($response, (string) $code) === 0) {
             return true;
