@@ -16,39 +16,89 @@ const schema = {
   description,
   inLanguage: 'tr-TR',
 };
+
+const channels = [
+  {
+    label: 'Telefon',
+    value: businessContact.phoneDisplay,
+    hint: 'Mesai saatlerinde hızlı dönüş',
+    href: `tel:${businessContact.phoneTel}`,
+    action: 'Ara',
+    primary: true,
+    external: false,
+  },
+  {
+    label: 'WhatsApp',
+    value: businessContact.phoneDisplay,
+    hint: 'Kısa proje notu bırakın',
+    href: whatsappHref,
+    action: 'Yazın',
+    primary: false,
+    external: true,
+  },
+  {
+    label: 'E-posta',
+    value: businessContact.email,
+    hint: 'Detaylı talep ve dosya paylaşımı',
+    href: `mailto:${businessContact.email}`,
+    action: 'Mail atın',
+    primary: false,
+    external: false,
+  },
+] as const;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
   <Breadcrumbs items={[{ label: 'İletişim' }]} />
+
   <header class="content-hero content-hero-compact shell">
-    <span class="eyebrow">Projeyi birlikte netleştirelim</span>
+    <span class="eyebrow">İletişim</span>
     <h1>LEDKASA ile iletişime geçin</h1>
     <p>Ürün grubu, kullanım alanı ve kurulum biçimini paylaşın; kapsamı teklif sürecinde birlikte değerlendirelim.</p>
-    <div class="hero-inline-actions">
-      <a class="button" href="/teklif-al/">Teklif formu</a>
-      <a class="text-link" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">→</span></a>
-    </div>
   </header>
-  <section class="story-section shell" aria-labelledby="contact-heading">
-    <div class="story-statement">
-      <span class="eyebrow">Doğrudan iletişim</span>
-      <h2 id="contact-heading">{businessContact.phoneDisplay}</h2>
-      <div class="direct-contact-actions contact-channel-actions">
-        <a class="button" href={`tel:${businessContact.phoneTel}`}>Telefonla ara</a>
-        <a class="button button-secondary" href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      </div>
-      <p class="contact-email-line"><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></p>
+
+  <section class="contact-page shell" aria-labelledby="contact-channels-heading">
+    <div class="contact-page-intro">
+      <span class="eyebrow">Kanallar</span>
+      <h2 id="contact-channels-heading">Size uygun yolu seçin</h2>
+      <p>Telefon ve WhatsApp ile hızlı ulaşabilir; kapsamlı talepler için teklif formunu kullanabilirsiniz.</p>
     </div>
-    <div class="story-copy">
-      <p>Mesai saatlerinde gelen taleplere genelde aynı iş günü içinde dönüş yapılır. Ürün seçimi veya teklif kapsamı için formu doldurmanız süreci hızlandırır.</p>
-      <p>Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
+
+    <ul class="contact-channel-list">
+      {channels.map((channel) => (
+        <li class="contact-channel-card">
+          <div class="contact-channel-copy">
+            <span class="contact-channel-label">{channel.label}</span>
+            <strong class="contact-channel-value">{channel.value}</strong>
+            <span class="contact-channel-hint">{channel.hint}</span>
+          </div>
+          <a
+            class:list={['button', 'button-small', !channel.primary && 'button-secondary']}
+            href={channel.href}
+            target={channel.external ? '_blank' : undefined}
+            rel={channel.external ? 'noopener noreferrer' : undefined}
+          >
+            {channel.action}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <aside class="contact-page-aside" aria-labelledby="contact-next-heading">
+      <span class="eyebrow">Önerilen adım</span>
+      <h2 id="contact-next-heading">Teklif formunu doldurun</h2>
+      <p>Ürün seçimi, kurulum tipi ve proje notlarını tek yerde paylaşmanız değerlendirmeyi hızlandırır. Mesai saatlerinde gelen taleplere genelde aynı iş günü içinde dönüş yapılır.</p>
+      <div class="hero-inline-actions">
+        <a class="button" href="/teklif-al/">Teklif formuna geçin <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/sss/">SSS <span aria-hidden="true">→</span></a>
+      </div>
       <nav class="hub-links" aria-label="İletişim sonrası adımlar">
-        <a href="/teklif-al/">Teklif formu</a>
-        <a href="/sss/">Sık sorulan sorular</a>
         <a href="/urunler/">Ürün kataloğu</a>
         <a href="/site-haritasi/">Site haritası</a>
       </nav>
-    </div>
+      <p class="contact-note">Fiziksel konum bilgisi doğrulandığında bu sayfada ayrıca yayımlanacaktır.</p>
+    </aside>
   </section>
+
   <QuoteCta title="LED ekran projenizi değerlendirmeye başlayalım." />
 </BaseLayout>
