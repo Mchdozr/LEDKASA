@@ -1,11 +1,17 @@
 <?php
 /**
- * Plesk sunucusuna bir kez yükleyin: public/contact.local.php
- * Bu dosyayı Git'e eklemeyin. SMTP bilgileriyle mail gönderimini garanti eder.
+ * Plesk sunucusuna bir kez yükleyin: httpdocs/contact.local.php (veya dist ile aynı klasör)
+ * Bu dosyayı Git'e eklemeyin.
  *
- * Not: contact.php PHP 7.4+ ile uyumludur (Plesk varsayılanı).
+ * Plesk: Mail > info@ledkasa.com.tr > şifre ile doldurun.
+ * Dosya web’den doğrudan açılırsa 404 döner; sadece contact.php include eder.
  */
-declare(strict_types=1);
+if (!defined('LEDKASA_CONTACT_BOOTSTRAP')) {
+    http_response_code(404);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo 'Not found';
+    exit;
+}
 
 return [
     'host' => 'mail.ledkasa.com.tr',

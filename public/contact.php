@@ -184,6 +184,9 @@ function mailTransportConfig(): array
     $localConfigPath = __DIR__ . '/contact.local.php';
     $local = [];
     if (is_file($localConfigPath)) {
+        if (!defined('LEDKASA_CONTACT_BOOTSTRAP')) {
+            define('LEDKASA_CONTACT_BOOTSTRAP', true);
+        }
         $loaded = include $localConfigPath;
         if (is_array($loaded)) {
             $local = $loaded;
@@ -244,23 +247,30 @@ function smtpCommand($socket, string $command, array $codes): bool
     return smtpExpect($socket, $codes);
 }
 
-function sendViaSmtp(string $recipient, string $subject, string $body, string $replyTo, array $transport): bool
+function sendViaSmtp(string $recipient, string $subject, string $body, string $replyTo, array $transport, bool $requireAuth = true): bool
 {
     $host = $transport['host'] ?? null;
-    $user = $transport['user'] ?? null;
-    $pass = $transport['pass'] ?? null;
-    if (!is_string($host) || $host === '' || !is_string($user) || $user === '' || !is_string($pass) || $pass === '') {
+    if (!is_string($host) || $host === '') {
         return false;
     }
 
-    $encryption = $transport['encryption'] ?? 'ssl';
-    $port = (int) ($transport['port'] ?? 465);
+    $user = $transport['user'] ?? null;
+    $pass = $transport['pass'] ?? null;
+    if ($requireAuth && (!is_string($user) || $user === '' || !is_string($pass) || $pass === '')) {
+        return false;
+    }
+
+    $encryption = strtolower((string) ($transport['encryption'] ?? ($requireAuth ? 'ssl' : 'none')));
+    $port = (int) ($transport['port'] ?? ($encryption === 'ssl' ? 465 : 25));
     $from = is_string($transport['from'] ?? null) && filter_var($transport['from'], FILTER_VALIDATE_EMAIL)
         ? $transport['from']
-        : 'no-reply@ledkasa.com.tr';
+        : 'info@ledkasa.com.tr';
 
-    $remote = ($encryption === 'ssl' ? 'ssl://' : '') . $host . ':' . $port;
-    $socket = @stream_socket_client($remote, $errno, $errstr, 20, STREAM_CLIENT_CONNECT);
+    $remoteHost = $host;
+    if ($encryption === 'ssl') {
+        $remoteHost = 'ssl://' . $host;
+    }
+    $socket = @stream_socket_client($remoteHost . ':' . $port, $errno, $errstr, 20, STREAM_CLIENT_CONNECT);
     if ($socket === false) {
         return false;
     }
@@ -287,15 +297,18 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
             }
         }
 
-        if (!smtpCommand($socket, 'AUTH LOGIN', [334])) {
-            return false;
+        if ($requireAuth) {
+            if (!smtpCommand($socket, 'AUTH LOGIN', [334])) {
+                return false;
+            }
+            if (!smtpCommand($socket, base64_encode((string) $user), [334])) {
+                return false;
+            }
+            if (!smtpCommand($socket, base64_encode((string) $pass), [235])) {
+                return false;
+            }
         }
-        if (!smtpCommand($socket, base64_encode($user), [334])) {
-            return false;
-        }
-        if (!smtpCommand($socket, base64_encode($pass), [235])) {
-            return false;
-        }
+
         if (!smtpCommand($socket, 'MAIL FROM:<' . $from . '>', [250])) {
             return false;
         }
@@ -307,6 +320,8 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
         }
 
         $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+        $normalizedBody = str_replace(["\r\n", "\r"], "\n", $body);
+        $normalizedBody = preg_replace('/^\./m', '..', $normalizedBody);
         $payload = [
             'Date: ' . date('r'),
             'From: LEDKASA Web Sitesi <' . $from . '>',
@@ -317,7 +332,7 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
             'Content-Type: text/plain; charset=UTF-8',
             'Content-Transfer-Encoding: 8bit',
             '',
-            str_replace(["\r\n", "\r"], "\n", $body),
+            $normalizedBody,
             '.',
         ];
         fwrite($socket, implode("\r\n", $payload) . "\r\n");
@@ -353,16 +368,44 @@ function sendViaPhpMail(string $recipient, string $subject, string $body, string
     );
 }
 
-function deliverContactMail(string $recipient, string $subject, string $body, string $replyTo): bool
+/**
+ * @return array{ok:bool,channel:string}
+ */
+function deliverContactMail(string $recipient, string $subject, string $body, string $replyTo): array
 {
     $transport = mailTransportConfig();
-    $from = filter_var($transport['from'], FILTER_VALIDATE_EMAIL) ? $transport['from'] : 'no-reply@ledkasa.com.tr';
+    $from = filter_var($transport['from'], FILTER_VALIDATE_EMAIL) ? $transport['from'] : 'info@ledkasa.com.tr';
+    $transport['from'] = $from;
 
-    if (sendViaSmtp($recipient, $subject, $body, $replyTo, $transport)) {
-        return true;
+    $hasRemoteSmtp = is_string($transport['host'] ?? null)
+        && trim((string) $transport['host']) !== ''
+        && is_string($transport['user'] ?? null)
+        && trim((string) $transport['user']) !== ''
+        && is_string($transport['pass'] ?? null)
+        && trim((string) $transport['pass']) !== '';
+
+    if ($hasRemoteSmtp && sendViaSmtp($recipient, $subject, $body, $replyTo, $transport, true)) {
+        return ['ok' => true, 'channel' => 'smtp'];
     }
 
-    return sendViaPhpMail($recipient, $subject, $body, $replyTo, $from);
+    // Plesk yerel MTA (auth gerekmez) — aynı sunucudaki info@ kutusuna teslim için
+    $localTransport = [
+        'host' => '127.0.0.1',
+        'port' => 25,
+        'encryption' => 'none',
+        'from' => $from,
+    ];
+    if (sendViaSmtp($recipient, $subject, $body, $replyTo, $localTransport, false)) {
+        return ['ok' => true, 'channel' => 'local-smtp'];
+    }
+
+    $allowPhpMail = getenv('LEDKASA_CONTACT_ALLOW_PHP_MAIL');
+    $phpMailAllowed = is_string($allowPhpMail) && in_array(strtolower(trim($allowPhpMail)), ['1', 'true', 'yes', 'on'], true);
+    if ($phpMailAllowed && sendViaPhpMail($recipient, $subject, $body, $replyTo, $from)) {
+        return ['ok' => true, 'channel' => 'php-mail'];
+    }
+
+    return ['ok' => false, 'channel' => $hasRemoteSmtp ? 'smtp-failed' : 'smtp-missing'];
 }
 
 $accept = is_string($_SERVER['HTTP_ACCEPT'] ?? null) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
@@ -481,9 +524,12 @@ $bodyLines = [
     $message,
 ];
 
-$sent = deliverContactMail($recipient, $subject, implode("\n", $bodyLines), $email);
-if (!$sent) {
-    respond(503, false, 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin.', $wantsJson, 'hata');
+$delivery = deliverContactMail($recipient, $subject, implode("\n", $bodyLines), $email);
+if (!$delivery['ok']) {
+    $message = $delivery['channel'] === 'smtp-missing'
+        ? 'Mail gönderimi için sunucu SMTP ayarı eksik. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.'
+        : 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.';
+    respond(503, false, $message, $wantsJson, 'hata');
 }
 
 respond(200, true, 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.', $wantsJson, 'basarili');

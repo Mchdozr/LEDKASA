@@ -107,6 +107,7 @@ const startPhpEndpoint = async (smtpPort, rateLimitDirectory) => {
       ...globalThis.process.env,
       LEDKASA_CONTACT_RATE_LIMIT_DIR: rateLimitDirectory,
       LEDKASA_CONTACT_RECIPIENT: 'quotes@example.com',
+      LEDKASA_CONTACT_ALLOW_PHP_MAIL: '1',
       LEDKASA_TEST_SMTP_HOST: '127.0.0.1',
       LEDKASA_TEST_SMTP_PORT: String(smtpPort),
       LEDKASA_TEST_NODE: globalThis.process.execPath,
