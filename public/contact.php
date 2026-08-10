@@ -247,16 +247,27 @@ function smtpCommand($socket, string $command, array $codes): bool
     return smtpExpect($socket, $codes);
 }
 
+function smtpLastError(?string $set = null): string
+{
+    static $error = '';
+    if ($set !== null) {
+        $error = $set;
+    }
+    return $error;
+}
+
 function sendViaSmtp(string $recipient, string $subject, string $body, string $replyTo, array $transport, bool $requireAuth = true): bool
 {
     $host = $transport['host'] ?? null;
     if (!is_string($host) || $host === '') {
+        smtpLastError('host-missing');
         return false;
     }
 
     $user = $transport['user'] ?? null;
     $pass = $transport['pass'] ?? null;
     if ($requireAuth && (!is_string($user) || $user === '' || !is_string($pass) || $pass === '')) {
+        smtpLastError('auth-missing');
         return false;
     }
 
@@ -266,12 +277,38 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
         ? $transport['from']
         : 'info@ledkasa.com.tr';
 
-    $remoteHost = $host;
-    if ($encryption === 'ssl') {
-        $remoteHost = 'ssl://' . $host;
+    $remote = ($encryption === 'ssl' ? 'ssl://' : '') . $host . ':' . $port;
+    $contexts = [
+        stream_context_create([
+            'ssl' => [
+                'crypto_method' => STREAM_CRYPTO_METHOD_TLS_CLIENT,
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'peer_name' => $host,
+                'SNI_enabled' => true,
+            ],
+        ]),
+        stream_context_create([
+            'ssl' => [
+                'crypto_method' => STREAM_CRYPTO_METHOD_TLS_CLIENT,
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true,
+                'peer_name' => $host,
+                'SNI_enabled' => true,
+            ],
+        ]),
+    ];
+
+    $socket = false;
+    foreach ($contexts as $context) {
+        $socket = @stream_socket_client($remote, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $context);
+        if ($socket !== false) {
+            break;
+        }
     }
-    $socket = @stream_socket_client($remoteHost . ':' . $port, $errno, $errstr, 20, STREAM_CLIENT_CONNECT);
     if ($socket === false) {
+        smtpLastError('connect:' . $host . ':' . $port);
         return false;
     }
 
@@ -279,43 +316,55 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
 
     try {
         if (!smtpExpect($socket, [220])) {
+            smtpLastError('banner');
             return false;
         }
         if (!smtpCommand($socket, 'EHLO ledkasa.com.tr', [250])) {
+            smtpLastError('ehlo');
             return false;
         }
 
         if ($encryption === 'tls') {
             if (!smtpCommand($socket, 'STARTTLS', [220])) {
+                smtpLastError('starttls');
                 return false;
             }
-            if (!stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+            $cryptoOk = @stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+            if (!$cryptoOk) {
+                smtpLastError('tls-handshake');
                 return false;
             }
             if (!smtpCommand($socket, 'EHLO ledkasa.com.tr', [250])) {
+                smtpLastError('ehlo-tls');
                 return false;
             }
         }
 
         if ($requireAuth) {
             if (!smtpCommand($socket, 'AUTH LOGIN', [334])) {
+                smtpLastError('auth-login');
                 return false;
             }
             if (!smtpCommand($socket, base64_encode((string) $user), [334])) {
+                smtpLastError('auth-user');
                 return false;
             }
             if (!smtpCommand($socket, base64_encode((string) $pass), [235])) {
+                smtpLastError('auth-pass');
                 return false;
             }
         }
 
         if (!smtpCommand($socket, 'MAIL FROM:<' . $from . '>', [250])) {
+            smtpLastError('mail-from');
             return false;
         }
         if (!smtpCommand($socket, 'RCPT TO:<' . $recipient . '>', [250, 251])) {
+            smtpLastError('rcpt-to');
             return false;
         }
         if (!smtpCommand($socket, 'DATA', [354])) {
+            smtpLastError('data');
             return false;
         }
 
@@ -337,10 +386,12 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
         ];
         fwrite($socket, implode("\r\n", $payload) . "\r\n");
         if (!smtpExpect($socket, [250])) {
+            smtpLastError('data-end');
             return false;
         }
 
         smtpCommand($socket, 'QUIT', [221]);
+        smtpLastError('');
         return true;
     } finally {
         fclose($socket);
@@ -546,9 +597,16 @@ $bodyLines = [
 
 $delivery = deliverContactMail($recipient, $subject, implode("\n", $bodyLines), $email);
 if (!$delivery['ok']) {
-    $message = $delivery['channel'] === 'smtp-missing'
-        ? 'Mail gönderimi için sunucu SMTP ayarı eksik. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.'
-        : 'SMTP ile mail gönderilemedi. contact.local.php içinde şifreyi ve host bilgisini kontrol edin (Plesk’te çoğu zaman host: localhost). Telefon/WhatsApp ile de yazabilirsiniz.';
+    $smtpHint = smtpLastError();
+    if ($delivery['channel'] === 'smtp-missing') {
+        $message = 'Mail gönderimi için sunucu SMTP ayarı eksik. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.';
+    } elseif ($smtpHint === 'auth-pass' || $smtpHint === 'auth-user' || $smtpHint === 'auth-login') {
+        $message = 'SMTP girişi reddedildi. contact.local.php içinde user/pass değerlerini kontrol edin (Natro: mail.kurumsaleposta.com).';
+    } elseif (strpos($smtpHint, 'connect:') === 0) {
+        $message = 'SMTP sunucusuna bağlanılamadı. host/port değerlerini kontrol edin (465/ssl veya 587/tls).';
+    } else {
+        $message = 'SMTP ile mail gönderilemedi. contact.local.php içinde Natro ayarlarını kontrol edin (host: mail.kurumsaleposta.com). Telefon/WhatsApp ile de yazabilirsiniz.';
+    }
     respond(503, false, $message, $wantsJson, 'hata');
 }
 
