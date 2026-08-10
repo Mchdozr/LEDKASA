@@ -150,10 +150,11 @@ test('quote page renders a consent-gated validated form without recipient config
   assert.match(html, /class="consent-field"[\s\S]*?href="\/kvkk-aydinlatma\/"/);
   assert.match(html, /href="\/kvkk-aydinlatma\/">KVKK Aydınlatma/);
   assert.doesNotMatch(html, /\/kvkk-aydinlatma-metni\//);
-  assert.match(html, /id="durum-basarili"[^>]+data-submission-feedback[^>]+role="status"[^>]+tabindex="-1"/);
-  assert.match(html, /id="durum-hata"[^>]+data-submission-feedback[^>]+role="alert"[^>]+tabindex="-1"/);
+  assert.match(html, /id="durum-basarili"[^>]+data-submission-feedback[^>]+role="status"[^>]+hidden/);
+  assert.match(html, /id="durum-hata"[^>]+data-submission-feedback[^>]+role="alert"[^>]+hidden/);
   assert.match(html, /Talebiniz başarıyla alındı\./);
   assert.match(html, /Form gönderilemedi\./);
+  assert.match(html, /Teklif talebi gönder/);
   assert.doesNotMatch(html, /test-recipient@example\.com/);
 });
 
@@ -201,7 +202,7 @@ describePhp('contact handler redirects normal browser submissions to safe quote 
     redirect: 'manual',
   });
   assert.equal(invalidResponse.status, 303);
-  assert.equal(invalidResponse.headers.get('location'), '/teklif-al/?durum=hata#durum-hata');
+  assert.equal(invalidResponse.headers.get('location'), '/teklif-al/?durum=hata#quote-form-heading');
 
   const honeypotResponse = await fetch(`${phpBaseUrl}/contact.php`, {
     method: 'POST',
@@ -216,6 +217,6 @@ describePhp('contact handler redirects normal browser submissions to safe quote 
     redirect: 'manual',
   });
   assert.equal(honeypotResponse.status, 303);
-  assert.equal(honeypotResponse.headers.get('location'), '/teklif-al/?durum=basarili#durum-basarili');
+  assert.equal(honeypotResponse.headers.get('location'), '/teklif-al/?durum=basarili#quote-form-heading');
   assert.doesNotMatch(honeypotResponse.headers.get('location'), /Spam|bot@example|message/);
 });

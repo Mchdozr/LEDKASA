@@ -1,0 +1,15 @@
+<?php
+/**
+ * Plesk sunucusuna bir kez yükleyin: public/contact.local.php
+ * Bu dosyayı Git'e eklemeyin. SMTP bilgileriyle mail gönderimini garanti eder.
+ */
+declare(strict_types=1);
+
+return [
+    'host' => 'mail.ledkasa.com.tr',
+    'port' => 465,
+    'encryption' => 'ssl', // ssl | tls
+    'user' => 'info@ledkasa.com.tr',
+    'pass' => 'BURAYA-MAIL-SIFRESI',
+    'from' => 'info@ledkasa.com.tr',
+];

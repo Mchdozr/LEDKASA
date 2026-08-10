@@ -45,16 +45,16 @@ const schema = {
         <p><span aria-hidden="true">*</span> işaretli alanlar zorunludur.</p>
       </div>
 
-      <div id="durum-basarili" class="submission-feedback is-success" data-submission-feedback role="status" aria-live="polite" tabindex="-1">
+      <div id="durum-basarili" class="submission-feedback is-success" data-submission-feedback role="status" aria-live="polite" hidden>
         <strong>Talebiniz başarıyla alındı.</strong>
         <span>Ekibimiz en kısa sürede sizinle iletişime geçecek.</span>
       </div>
-      <div id="durum-hata" class="submission-feedback is-error" data-submission-feedback role="alert" tabindex="-1">
+      <div id="durum-hata" class="submission-feedback is-error" data-submission-feedback role="alert" hidden>
         <strong>Form gönderilemedi.</strong>
         <span>Lütfen bilgilerinizi kontrol edip yeniden deneyin.</span>
       </div>
 
-      <form action="/contact.php" method="post" class="quote-form" data-quote-form>
+      <form action="/contact.php" method="post" class="quote-form" data-quote-form novalidate>
         <div class="form-row">
           <label>
             Ad soyad <span aria-hidden="true">*</span>
@@ -126,7 +126,7 @@ const schema = {
         </label>
 
         <div class="form-submit-row">
-          <button class="button" type="submit" data-submit-button>Teklif talebini gönder <span aria-hidden="true">→</span></button>
+          <button class="button" type="submit" data-submit-button>Teklif talebi gönder <span aria-hidden="true">→</span></button>
           <p class="form-status" role="status" aria-live="polite" data-form-status></p>
         </div>
       </form>
@@ -141,62 +141,63 @@ const schema = {
     const searchParams = new URLSearchParams(window.location.search);
     const requestedProduct = searchParams.get('urun');
     const submissionState = searchParams.get('durum');
-    const submissionFeedback = submissionState === 'basarili' || submissionState === 'hata'
-      ? document.getElementById(`durum-${submissionState}`)
-      : null;
 
-    if (submissionFeedback instanceof HTMLElement) {
-      submissionFeedback.classList.add('is-active');
-      submissionFeedback.focus();
+    if (submissionState === 'basarili' || submissionState === 'hata') {
+      const feedback = document.getElementById(`durum-${submissionState}`);
+      if (feedback instanceof HTMLElement) {
+        feedback.hidden = false;
+      }
+      if (status instanceof HTMLElement) {
+        status.textContent = submissionState === 'basarili'
+          ? 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.'
+          : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
+        status.className = submissionState === 'basarili' ? 'form-status is-success' : 'form-status is-error';
+      }
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('durum');
+      cleanUrl.hash = '';
+      window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search);
     }
 
     if (productSelect instanceof HTMLSelectElement && requestedProduct && validProductSlugs.includes(requestedProduct)) {
       productSelect.value = requestedProduct;
     }
 
-    if (form instanceof HTMLFormElement && status && submitButton instanceof HTMLButtonElement) {
+    if (form instanceof HTMLFormElement && status instanceof HTMLElement && submitButton instanceof HTMLButtonElement) {
       form.addEventListener('submit', async (event) => {
+        event.preventDefault();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
 
-        event.preventDefault();
         submitButton.disabled = true;
         submitButton.setAttribute('aria-busy', 'true');
         status.textContent = 'Talebiniz gönderiliyor…';
         status.className = 'form-status';
+        document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
+          if (node instanceof HTMLElement) node.hidden = true;
+        });
 
         try {
           const response = await fetch(form.action, {
             method: 'POST',
             body: new FormData(form),
             headers: { Accept: 'application/json' },
+            credentials: 'same-origin',
           });
-          const result = await response.json();
-          if (!response.ok || !result.ok) throw new Error('request-failed');
+          const result = await response.json().catch(() => ({ ok: false, message: '' }));
+          if (!response.ok || !result.ok) {
+            throw new Error(typeof result.message === 'string' && result.message ? result.message : 'request-failed');
+          }
 
           form.reset();
-          document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
-            node.classList.remove('is-active');
-          });
-          const successFeedback = document.getElementById('durum-basarili');
-          if (successFeedback instanceof HTMLElement) {
-            successFeedback.classList.add('is-active');
-            successFeedback.focus();
-          }
-          status.textContent = result.message;
+          status.textContent = result.message || 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.';
           status.className = 'form-status is-success';
-        } catch {
-          document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
-            node.classList.remove('is-active');
-          });
-          const errorFeedback = document.getElementById('durum-hata');
-          if (errorFeedback instanceof HTMLElement) {
-            errorFeedback.classList.add('is-active');
-            errorFeedback.focus();
-          }
-          status.textContent = 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
+        } catch (error) {
+          status.textContent = error instanceof Error && error.message && error.message !== 'request-failed'
+            ? error.message
+            : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
           status.className = 'form-status is-error';
         } finally {
           submitButton.disabled = false;

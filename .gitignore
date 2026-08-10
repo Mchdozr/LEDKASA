@@ -5,3 +5,4 @@ dist/
 .astro/
 .plesk-node/
 *.log
+public/contact.local.php

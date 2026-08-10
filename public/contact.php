@@ -9,7 +9,7 @@ function respond(int $status, bool $ok, string $message, bool $wantsJson, ?strin
 {
     if (!$wantsJson && $redirectState !== null) {
         $safeState = $redirectState === 'basarili' ? 'basarili' : 'hata';
-        header('Location: /teklif-al/?durum=' . $safeState . '#durum-' . $safeState, true, 303);
+        header('Location: /teklif-al/?durum=' . $safeState . '#quote-form-heading', true, 303);
         exit;
     }
 
@@ -169,6 +169,195 @@ function consumeRateLimit(int $maximumRequests = 5, int $windowSeconds = 600): s
     }
 }
 
+/**
+ * @return array{host:?string,port:int,user:?string,pass:?string,encryption:string,from:string}
+ */
+function mailTransportConfig(): array
+{
+    $localConfigPath = __DIR__ . '/contact.local.php';
+    $local = [];
+    if (is_file($localConfigPath)) {
+        $loaded = include $localConfigPath;
+        if (is_array($loaded)) {
+            $local = $loaded;
+        }
+    }
+
+    $envOrLocal = static function (string $envKey, string $localKey, ?string $default = null) use ($local): ?string {
+        $envValue = getenv($envKey);
+        if (is_string($envValue) && trim($envValue) !== '') {
+            return trim($envValue);
+        }
+        $localValue = $local[$localKey] ?? null;
+        if (is_string($localValue) && trim($localValue) !== '') {
+            return trim($localValue);
+        }
+        return $default;
+    };
+
+    $portRaw = $envOrLocal('LEDKASA_SMTP_PORT', 'port', '465');
+    $port = is_numeric($portRaw) ? (int) $portRaw : 465;
+
+    return [
+        'host' => $envOrLocal('LEDKASA_SMTP_HOST', 'host'),
+        'port' => $port > 0 ? $port : 465,
+        'user' => $envOrLocal('LEDKASA_SMTP_USER', 'user'),
+        'pass' => $envOrLocal('LEDKASA_SMTP_PASS', 'pass'),
+        'encryption' => strtolower($envOrLocal('LEDKASA_SMTP_ENCRYPTION', 'encryption', 'ssl') ?? 'ssl'),
+        'from' => $envOrLocal('LEDKASA_MAIL_FROM', 'from', 'no-reply@ledkasa.com.tr') ?? 'no-reply@ledkasa.com.tr',
+    ];
+}
+
+function smtpRead($socket): string
+{
+    $data = '';
+    while (($line = fgets($socket, 515)) !== false) {
+        $data .= $line;
+        if (isset($line[3]) && $line[3] === ' ') {
+            break;
+        }
+    }
+    return $data;
+}
+
+function smtpExpect($socket, array $codes): bool
+{
+    $response = smtpRead($socket);
+    foreach ($codes as $code) {
+        if (str_starts_with($response, (string) $code)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function smtpCommand($socket, string $command, array $codes): bool
+{
+    fwrite($socket, $command . "\r\n");
+    return smtpExpect($socket, $codes);
+}
+
+function sendViaSmtp(string $recipient, string $subject, string $body, string $replyTo, array $transport): bool
+{
+    $host = $transport['host'] ?? null;
+    $user = $transport['user'] ?? null;
+    $pass = $transport['pass'] ?? null;
+    if (!is_string($host) || $host === '' || !is_string($user) || $user === '' || !is_string($pass) || $pass === '') {
+        return false;
+    }
+
+    $encryption = $transport['encryption'] ?? 'ssl';
+    $port = (int) ($transport['port'] ?? 465);
+    $from = is_string($transport['from'] ?? null) && filter_var($transport['from'], FILTER_VALIDATE_EMAIL)
+        ? $transport['from']
+        : 'no-reply@ledkasa.com.tr';
+
+    $remote = ($encryption === 'ssl' ? 'ssl://' : '') . $host . ':' . $port;
+    $socket = @stream_socket_client($remote, $errno, $errstr, 20, STREAM_CLIENT_CONNECT);
+    if ($socket === false) {
+        return false;
+    }
+
+    stream_set_timeout($socket, 20);
+
+    try {
+        if (!smtpExpect($socket, [220])) {
+            return false;
+        }
+        if (!smtpCommand($socket, 'EHLO ledkasa.com.tr', [250])) {
+            return false;
+        }
+
+        if ($encryption === 'tls') {
+            if (!smtpCommand($socket, 'STARTTLS', [220])) {
+                return false;
+            }
+            if (!stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+                return false;
+            }
+            if (!smtpCommand($socket, 'EHLO ledkasa.com.tr', [250])) {
+                return false;
+            }
+        }
+
+        if (!smtpCommand($socket, 'AUTH LOGIN', [334])) {
+            return false;
+        }
+        if (!smtpCommand($socket, base64_encode($user), [334])) {
+            return false;
+        }
+        if (!smtpCommand($socket, base64_encode($pass), [235])) {
+            return false;
+        }
+        if (!smtpCommand($socket, 'MAIL FROM:<' . $from . '>', [250])) {
+            return false;
+        }
+        if (!smtpCommand($socket, 'RCPT TO:<' . $recipient . '>', [250, 251])) {
+            return false;
+        }
+        if (!smtpCommand($socket, 'DATA', [354])) {
+            return false;
+        }
+
+        $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+        $payload = [
+            'Date: ' . date('r'),
+            'From: LEDKASA Web Sitesi <' . $from . '>',
+            'To: <' . $recipient . '>',
+            'Reply-To: ' . $replyTo,
+            'Subject: ' . $encodedSubject,
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8',
+            'Content-Transfer-Encoding: 8bit',
+            '',
+            str_replace(["\r\n", "\r"], "\n", $body),
+            '.',
+        ];
+        fwrite($socket, implode("\r\n", $payload) . "\r\n");
+        if (!smtpExpect($socket, [250])) {
+            return false;
+        }
+
+        smtpCommand($socket, 'QUIT', [221]);
+        return true;
+    } finally {
+        fclose($socket);
+    }
+}
+
+function sendViaPhpMail(string $recipient, string $subject, string $body, string $replyTo, string $from): bool
+{
+    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: 8bit',
+        'From: LEDKASA Web Sitesi <' . $from . '>',
+        'Reply-To: ' . $replyTo,
+        'X-Mailer: LEDKASA-Contact/1.0',
+    ];
+
+    return @mail(
+        $recipient,
+        $encodedSubject,
+        $body,
+        implode("\r\n", $headers),
+        '-f' . $from
+    );
+}
+
+function deliverContactMail(string $recipient, string $subject, string $body, string $replyTo): bool
+{
+    $transport = mailTransportConfig();
+    $from = filter_var($transport['from'], FILTER_VALIDATE_EMAIL) ? $transport['from'] : 'no-reply@ledkasa.com.tr';
+
+    if (sendViaSmtp($recipient, $subject, $body, $replyTo, $transport)) {
+        return true;
+    }
+
+    return sendViaPhpMail($recipient, $subject, $body, $replyTo, $from);
+}
+
 $accept = is_string($_SERVER['HTTP_ACCEPT'] ?? null) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
 $wantsJson = str_contains($accept, 'application/json');
 
@@ -189,9 +378,6 @@ if ($honeypot !== '') {
 $rateLimitState = consumeRateLimit();
 if ($rateLimitState === 'throttled') {
     respond(429, false, 'Çok fazla istek gönderildi. Lütfen daha sonra yeniden deneyin.', $wantsJson, 'hata');
-}
-if ($rateLimitState !== 'allowed') {
-    respond(503, false, 'Talebiniz şu anda işlenemedi. Lütfen daha sonra yeniden deneyin.', $wantsJson, 'hata');
 }
 
 $readField = static function (string $key): string {
@@ -288,16 +474,9 @@ $bodyLines = [
     $message,
 ];
 
-$headers = [
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'From: LEDKASA Web Sitesi <no-reply@ledkasa.com.tr>',
-    'Reply-To: ' . $email,
-];
-
-$sent = mail($recipient, $subject, implode("\n", $bodyLines), implode("\r\n", $headers));
+$sent = deliverContactMail($recipient, $subject, implode("\n", $bodyLines), $email);
 if (!$sent) {
     respond(503, false, 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin.', $wantsJson, 'hata');
 }
 
-respond(200, true, 'Talebiniz alınmıştır.', $wantsJson, 'basarili');
+respond(200, true, 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.', $wantsJson, 'basarili');

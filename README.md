@@ -62,8 +62,14 @@ Yanıt durumunun `404` ve gövdenin `Aradığınız sayfa bulunamadı` metnini i
    env[LEDKASA_CONTACT_RECIPIENT] = info@ledkasa.com.tr
    ```
 
-3. Bu alan panelde görünmüyorsa sunucu yöneticisinden aynı ortam değişkenini alan adına ait PHP-FPM havuzunda tanımlamasını isteyin. İşleyiciye özgü ayar bilinmeden `.htaccess` veya genel PHP yapılandırması eklemeyin.
-4. Plesk posta günlüğü ve gerçek bir test formuyla teslimatı doğrulayın. Gönderen alanı `no-reply@ledkasa.com.tr` olduğundan SPF/DKIM ve alan adına ait posta hizmeti de kontrol edilmelidir.
+3. Plesk `mail()` güvenilir değilse SMTP kullanın. İki yol:
+
+   - FPM ortam değişkenleri: `LEDKASA_SMTP_HOST`, `LEDKASA_SMTP_PORT`, `LEDKASA_SMTP_USER`, `LEDKASA_SMTP_PASS`, `LEDKASA_SMTP_ENCRYPTION` (`ssl` veya `tls`), isteğe bağlı `LEDKASA_MAIL_FROM`
+   - veya `public/contact.local.php.example` dosyasını sunucuda `contact.local.php` olarak kopyalayıp gerçek şifreyi yazın (Git’e eklenmez)
+
+4. Plesk posta günlüğü ve gerçek bir test formuyla teslimatı doğrulayın. Gönderen alanı alan adı posta kutusu olmalıdır (SPF/DKIM).
+
+Rate limit dizini yazılamazsa form artık tamamen kilitlenmez; yalnızca gerçek throttle (`429`) engeller.
 
 ## Teklif formu kötüye kullanım koruması
 
