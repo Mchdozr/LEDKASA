@@ -377,26 +377,46 @@ function deliverContactMail(string $recipient, string $subject, string $body, st
     $from = filter_var($transport['from'], FILTER_VALIDATE_EMAIL) ? $transport['from'] : 'info@ledkasa.com.tr';
     $transport['from'] = $from;
 
-    $hasRemoteSmtp = is_string($transport['host'] ?? null)
-        && trim((string) $transport['host']) !== ''
-        && is_string($transport['user'] ?? null)
-        && trim((string) $transport['user']) !== ''
-        && is_string($transport['pass'] ?? null)
-        && trim((string) $transport['pass']) !== '';
+    $user = is_string($transport['user'] ?? null) ? trim((string) $transport['user']) : '';
+    $pass = is_string($transport['pass'] ?? null) ? trim((string) $transport['pass']) : '';
+    $configuredHost = is_string($transport['host'] ?? null) ? trim((string) $transport['host']) : '';
+    $hasRemoteSmtp = $configuredHost !== '' && $user !== '' && $pass !== '';
 
-    if ($hasRemoteSmtp && sendViaSmtp($recipient, $subject, $body, $replyTo, $transport, true)) {
-        return ['ok' => true, 'channel' => 'smtp'];
+    $attempts = [];
+    if ($hasRemoteSmtp) {
+        $attempts[] = ['channel' => 'smtp', 'transport' => $transport, 'auth' => true];
+        $attempts[] = [
+            'channel' => 'smtp-587-tls',
+            'transport' => array_merge($transport, ['host' => $configuredHost, 'port' => 587, 'encryption' => 'tls']),
+            'auth' => true,
+        ];
+        $attempts[] = [
+            'channel' => 'smtp-local-465',
+            'transport' => array_merge($transport, ['host' => '127.0.0.1', 'port' => 465, 'encryption' => 'ssl']),
+            'auth' => true,
+        ];
+        $attempts[] = [
+            'channel' => 'smtp-local-587',
+            'transport' => array_merge($transport, ['host' => '127.0.0.1', 'port' => 587, 'encryption' => 'tls']),
+            'auth' => true,
+        ];
+        $attempts[] = [
+            'channel' => 'smtp-localhost-465',
+            'transport' => array_merge($transport, ['host' => 'localhost', 'port' => 465, 'encryption' => 'ssl']),
+            'auth' => true,
+        ];
     }
 
-    // Plesk yerel MTA (auth gerekmez) — aynı sunucudaki info@ kutusuna teslim için
-    $localTransport = [
-        'host' => '127.0.0.1',
-        'port' => 25,
-        'encryption' => 'none',
-        'from' => $from,
+    $attempts[] = [
+        'channel' => 'local-smtp',
+        'transport' => ['host' => '127.0.0.1', 'port' => 25, 'encryption' => 'none', 'from' => $from],
+        'auth' => false,
     ];
-    if (sendViaSmtp($recipient, $subject, $body, $replyTo, $localTransport, false)) {
-        return ['ok' => true, 'channel' => 'local-smtp'];
+
+    foreach ($attempts as $attempt) {
+        if (sendViaSmtp($recipient, $subject, $body, $replyTo, $attempt['transport'], $attempt['auth'])) {
+            return ['ok' => true, 'channel' => $attempt['channel']];
+        }
     }
 
     $allowPhpMail = getenv('LEDKASA_CONTACT_ALLOW_PHP_MAIL');
