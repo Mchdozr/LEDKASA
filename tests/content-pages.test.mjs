@@ -63,9 +63,11 @@ test('homepage renders one heading and exactly three progressively enhanced, use
 test('desktop hero reserves one stable frame height for every slide image', () => {
   const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
 
-  assert.match(css, /--hero-slide-height:\s*clamp\(34rem,\s*62vw,\s*43rem\)/);
+  assert.match(css, /--hero-slide-height:\s*calc\(100dvh\s*-\s*var\(--header-height\)\)/);
   assert.match(css, /height:\s*var\(--hero-slide-height\)/);
   assert.match(css, /\.hero-media\s*\{[^}]*height:\s*100%/s);
+  assert.match(css, /perspective:\s*1600px/);
+  assert.match(css, /rotateY\(/);
 });
 
 test('desktop header centers the primary navigation between the brand and quote action', () => {
@@ -150,11 +152,23 @@ const bootHero = ({ reduced = false } = {}) => {
   const makeElement = () => {
     const attributes = new Map();
     const elementListeners = new Map();
+    const classes = new Set();
     return {
       hidden: false,
       disabled: false,
       textContent: '',
-      classList: { add() {}, remove() {}, toggle() {} },
+      offsetWidth: 120,
+      classList: {
+        add(...names) { names.forEach((name) => classes.add(name)); },
+        remove(...names) { names.forEach((name) => classes.delete(name)); },
+        toggle(name, force) {
+          if (force === true) classes.add(name);
+          else if (force === false) classes.delete(name);
+          else if (classes.has(name)) classes.delete(name);
+          else classes.add(name);
+        },
+        contains(name) { return classes.has(name); },
+      },
       addEventListener(type, listener) { elementListeners.set(type, listener); },
       dispatch(type) { if (!this.disabled) elementListeners.get(type)?.({}); },
       getAttribute(name) { return attributes.get(name) ?? null; },
@@ -209,7 +223,9 @@ const bootHero = ({ reduced = false } = {}) => {
   let intervalCallback;
   const window = {
     clearInterval() { intervalCallback = undefined; },
+    clearTimeout() {},
     setInterval(callback) { intervalStarts += 1; intervalCallback = callback; return 1; },
+    setTimeout(callback) { callback(); return 1; },
     matchMedia(query) {
       return query.includes('prefers-reduced-motion') ? reducedMotion : desktopMedia;
     },
@@ -231,15 +247,28 @@ const bootHero = ({ reduced = false } = {}) => {
   };
 };
 
+const slideVisibility = (slides) => slides.map((slide) => ({
+  active: slide.classList.contains('is-active'),
+  hiddenFromAssistive: slide.getAttribute('aria-hidden'),
+}));
+
 test('hero autoplay changes the visible counter without generating a live-region announcement', () => {
   const hero = bootHero();
 
-  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [false, true, true]);
+  assert.deepEqual(slideVisibility(hero.slides), [
+    { active: true, hiddenFromAssistive: 'false' },
+    { active: false, hiddenFromAssistive: 'true' },
+    { active: false, hiddenFromAssistive: 'true' },
+  ]);
   assert.equal(hero.intervalStarts(), 1);
   assert.equal(hero.announcement.textContent, '');
 
   hero.runAutoplay();
-  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [true, false, true]);
+  assert.deepEqual(slideVisibility(hero.slides), [
+    { active: false, hiddenFromAssistive: 'true' },
+    { active: true, hiddenFromAssistive: 'false' },
+    { active: false, hiddenFromAssistive: 'true' },
+  ]);
   assert.equal(hero.status.textContent, '2 / 3');
   assert.equal(hero.announcement.textContent, '');
 });
@@ -269,14 +298,22 @@ test('hero manual navigation and pause changes announce once and expose an accur
 test('hero disables autoplay control under reduced motion while manual controls remain available', () => {
   const hero = bootHero({ reduced: true });
 
-  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [false, true, true]);
+  assert.deepEqual(slideVisibility(hero.slides), [
+    { active: true, hiddenFromAssistive: 'false' },
+    { active: false, hiddenFromAssistive: 'true' },
+    { active: false, hiddenFromAssistive: 'true' },
+  ]);
   assert.equal(hero.pause.disabled, true);
   assert.equal(hero.pause.getAttribute('aria-label'), 'Otomatik geçiş azaltılmış hareket tercihi nedeniyle kapalı');
   assert.equal(hero.pause.getAttribute('aria-pressed'), null);
   assert.equal(hero.intervalStarts(), 0);
 
   hero.next.dispatch('click');
-  assert.deepEqual(hero.slides.map((slide) => slide.hidden), [true, false, true]);
+  assert.deepEqual(slideVisibility(hero.slides), [
+    { active: false, hiddenFromAssistive: 'true' },
+    { active: true, hiddenFromAssistive: 'false' },
+    { active: false, hiddenFromAssistive: 'true' },
+  ]);
   assert.equal(hero.status.textContent, '2 / 3');
   assert.equal(hero.announcement.textContent, '2 / 3. slayt gösteriliyor.');
   assert.equal(hero.intervalStarts(), 0);
