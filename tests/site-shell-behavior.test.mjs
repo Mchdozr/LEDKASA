@@ -28,7 +28,11 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
       listeners.push(listener);
       documentListeners.set(type, listeners);
     },
-    querySelector() { return header; },
+    querySelector(selector) {
+      if (selector === '[data-site-header]') return header;
+      if (selector === '[data-product-spin]') return null;
+      return header;
+    },
     querySelectorAll(selector) { return selector === '[data-reveal]' ? revealItems : []; },
   };
 
@@ -66,8 +70,19 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
   header.querySelectorAll = () => [];
 
   const mediaQueries = new Map();
+  const windowListeners = new Map();
   const window = {
     IntersectionObserver: Observer,
+    innerHeight: 800,
+    requestAnimationFrame(callback) {
+      callback(0);
+      return 1;
+    },
+    addEventListener(type, listener) {
+      const listeners = windowListeners.get(type) ?? [];
+      listeners.push(listener);
+      windowListeners.set(type, listeners);
+    },
     matchMedia(query) {
       const mediaQuery = {
         matches: false,

@@ -75,34 +75,86 @@ const schema = {
     { label: product.name },
   ]} />
 
-  <article class="product-detail shell">
-    <div class="product-detail-media" data-reveal>
-      <span class="product-detail-category">{category.shortName}</span>
-      <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
-    </div>
-    <div class="product-detail-copy">
-      <span class="eyebrow">{category.name}</span>
-      <h1>{product.name}</h1>
-      <p class="product-lead">{product.description}</p>
-      <ul class="feature-list" aria-label="Ürün öne çıkanları">
-        {product.highlights.map((highlight) => (
-          <li><span aria-hidden="true">✓</span>{highlight}</li>
-        ))}
-      </ul>
-      <div class="product-actions">
-        <a class="button" href={`/teklif-al/?urun=${encodeURIComponent(product.slug)}`}>Bu ürün için teklif alın</a>
-        <a class="text-link" href={category.url}>Kategoriye dön <span aria-hidden="true">→</span></a>
+  {product.slug === 'cnc-led-kasa' ? (
+    <section class="product-spin" data-product-spin aria-label={`${product.name} 360 derece görünüm`}>
+      <div class="product-spin-track">
+        <div class="product-spin-sticky shell">
+          <div class="product-spin-stage" data-spin-stage>
+            <span class="product-detail-category">{category.shortName}</span>
+            <div class="product-spin-scene">
+              <div class="product-spin-object" data-spin-object>
+                <div class="product-spin-face product-spin-face-front">
+                  <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
+                </div>
+                <div class="product-spin-face product-spin-face-back" aria-hidden="true">
+                  <span>CNC LED Kasa</span>
+                </div>
+                <div class="product-spin-face product-spin-face-left" aria-hidden="true"></div>
+                <div class="product-spin-face product-spin-face-right" aria-hidden="true"></div>
+                <div class="product-spin-face product-spin-face-top" aria-hidden="true"></div>
+                <div class="product-spin-face product-spin-face-bottom" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="product-spin-meter" aria-hidden="true">
+              <span data-spin-degrees>0°</span>
+              <small>Kaydırarak 360° inceleyin</small>
+            </div>
+          </div>
+          <div class="product-detail-copy product-spin-copy">
+            <span class="eyebrow">{category.name}</span>
+            <h1>{product.name}</h1>
+            <p class="product-lead">{product.description}</p>
+            <ul class="feature-list" aria-label="Ürün öne çıkanları">
+              {product.highlights.map((highlight) => (
+                <li><span aria-hidden="true">✓</span>{highlight}</li>
+              ))}
+            </ul>
+            <div class="product-actions">
+              <a class="button" href={`/teklif-al/?urun=${encodeURIComponent(product.slug)}`}>Bu ürün için teklif alın</a>
+              <a class="text-link" href={category.url}>Kategoriye dön <span aria-hidden="true">→</span></a>
+            </div>
+            {product.datasheetUrl && (
+              <p class="product-datasheet">
+                <a class="text-link" href={product.datasheetUrl} download>
+                  {product.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
+                </a>
+              </p>
+            )}
+            <p class="product-note">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
+          </div>
+        </div>
       </div>
-      {product.datasheetUrl && (
-        <p class="product-datasheet">
-          <a class="text-link" href={product.datasheetUrl} download>
-            {product.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
-          </a>
-        </p>
-      )}
-      <p class="product-note">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
-    </div>
-  </article>
+    </section>
+  ) : (
+    <article class="product-detail shell">
+      <div class="product-detail-media" data-reveal>
+        <span class="product-detail-category">{category.shortName}</span>
+        <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
+      </div>
+      <div class="product-detail-copy">
+        <span class="eyebrow">{category.name}</span>
+        <h1>{product.name}</h1>
+        <p class="product-lead">{product.description}</p>
+        <ul class="feature-list" aria-label="Ürün öne çıkanları">
+          {product.highlights.map((highlight) => (
+            <li><span aria-hidden="true">✓</span>{highlight}</li>
+          ))}
+        </ul>
+        <div class="product-actions">
+          <a class="button" href={`/teklif-al/?urun=${encodeURIComponent(product.slug)}`}>Bu ürün için teklif alın</a>
+          <a class="text-link" href={category.url}>Kategoriye dön <span aria-hidden="true">→</span></a>
+        </div>
+        {product.datasheetUrl && (
+          <p class="product-datasheet">
+            <a class="text-link" href={product.datasheetUrl} download>
+              {product.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
+            </a>
+          </p>
+        )}
+        <p class="product-note">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
+      </div>
+    </article>
+  )}
 
   {product.specs && product.specs.length > 0 && (
     <section class="product-specs shell" aria-labelledby="specs-heading">

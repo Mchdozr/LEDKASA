@@ -207,4 +207,45 @@
       revealItems.forEach((item) => item.classList.add('is-visible'));
     }
   }
+
+  const productSpin = document.querySelector('[data-product-spin]');
+  if (productSpin) {
+    const spinTrack = productSpin.querySelector('.product-spin-track') || productSpin;
+    const spinObject = productSpin.querySelector('[data-spin-object]');
+    const spinDegrees = productSpin.querySelector('[data-spin-degrees]');
+    const desktopSpin = window.matchMedia('(min-width: 64rem)');
+    let spinFrame = 0;
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const updateSpin = () => {
+      spinFrame = 0;
+      if (!spinObject || !desktopSpin.matches || prefersReducedMotion.matches) {
+        if (spinObject) spinObject.style.setProperty('--spin-y', '0deg');
+        if (spinDegrees) spinDegrees.textContent = '0°';
+        return;
+      }
+
+      const rect = spinTrack.getBoundingClientRect();
+      const travel = Math.max(rect.height - window.innerHeight, 1);
+      const progress = clamp((-rect.top) / travel, 0, 1);
+      const degrees = Math.round(progress * 360);
+      spinObject.style.setProperty('--spin-y', `${degrees}deg`);
+      if (spinDegrees) spinDegrees.textContent = `${degrees}°`;
+    };
+
+    const requestSpin = () => {
+      if (spinFrame) return;
+      spinFrame = window.requestAnimationFrame(() => {
+        spinFrame = 0;
+        updateSpin();
+      });
+    };
+
+    updateSpin();
+    window.addEventListener('scroll', requestSpin, { passive: true });
+    window.addEventListener('resize', requestSpin);
+    desktopSpin.addEventListener?.('change', updateSpin);
+    prefersReducedMotion.addEventListener?.('change', updateSpin);
+  }
 })();
