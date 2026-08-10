@@ -280,6 +280,20 @@ p, h1, h2, h3 { margin-top: 0; }
 .quote-form { display: grid; gap: 1.15rem; padding-top: 1.5rem; }
 .form-row { display: grid; gap: 1.15rem; }
 .quote-form label:not(.consent-field) { display: grid; gap: .45rem; font-size: .8rem; font-weight: 750; }
+.product-preselect-note {
+  margin: 0;
+  padding: .55rem .75rem;
+  border: 1px solid rgba(67, 109, 0, 0.28);
+  border-radius: .7rem;
+  background: rgba(184, 242, 54, 0.18);
+  color: #355800;
+  font-size: .82rem;
+  font-weight: 700;
+}
+.product-field.is-preselected select {
+  border-color: rgba(67, 109, 0, 0.45);
+  box-shadow: 0 0 0 3px rgba(67, 109, 0, 0.12);
+}
 .quote-form input:not([type="checkbox"]), .quote-form select, .quote-form textarea { width: 100%; border: 1px solid rgba(16,22,19,.18); border-radius: .8rem; background: #fff; color: var(--ink); padding: .82rem .9rem; transition: border-color 180ms ease, box-shadow 180ms ease; }
 .quote-form textarea { resize: vertical; min-height: 9.5rem; }
 .quote-form input:not([type="checkbox"]):focus, .quote-form select:focus, .quote-form textarea:focus { border-color: var(--focus-on-light); box-shadow: 0 0 0 3px rgba(67,109,0,.16); }

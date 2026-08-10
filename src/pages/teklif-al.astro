@@ -14,6 +14,7 @@ const schema = {
   url: `${siteUrl}/teklif-al/`,
   inLanguage: 'tr-TR',
 };
+const productOptions = products.map((product) => ({ slug: product.slug, name: product.name }));
 ---
 
 <BaseLayout title={title} description={description} canonical="/teklif-al/" schema={schema} bodyClass="quote-page">
@@ -75,13 +76,16 @@ const schema = {
             <input name="company" type="text" autocomplete="organization" maxlength="160" />
           </label>
         </div>
-        <label>
+        <label class="product-field" data-product-field>
           İlgilendiğiniz ürün
-          <select name="product" data-product-select>
+          <p class="product-preselect-note" data-product-preselect-note hidden></p>
+          <select name="product" data-product-select aria-describedby="product-preselect-note">
             <option value="">Henüz karar vermedim</option>
             {productCategories.map((category) => (
               <optgroup label={category.name}>
-                {category.products.map((product) => <option value={product.slug}>{product.name}</option>)}
+                {category.products.map((product) => (
+                  <option value={product.slug}>{product.name}</option>
+                ))}
               </optgroup>
             ))}
           </select>
@@ -133,77 +137,118 @@ const schema = {
     </section>
   </div>
 
-  <script define:vars={{ validProductSlugs: products.map((product) => product.slug) }}>
-    const form = document.querySelector('[data-quote-form]');
-    const productSelect = document.querySelector('[data-product-select]');
-    const status = document.querySelector('[data-form-status]');
-    const submitButton = document.querySelector('[data-submit-button]');
-    const searchParams = new URLSearchParams(window.location.search);
-    const requestedProduct = searchParams.get('urun');
-    const submissionState = searchParams.get('durum');
+  <script define:vars={{ productOptions }} is:inline>
+    (() => {
+      const form = document.querySelector('[data-quote-form]');
+      const productSelect = document.querySelector('[data-product-select]');
+      const productField = document.querySelector('[data-product-field]');
+      const preselectNote = document.querySelector('[data-product-preselect-note]');
+      const status = document.querySelector('[data-form-status]');
+      const submitButton = document.querySelector('[data-submit-button]');
+      const searchParams = new URLSearchParams(window.location.search);
+      const requestedProduct = searchParams.get('urun');
+      const submissionState = searchParams.get('durum');
+      const productNames = Object.fromEntries(
+        (Array.isArray(productOptions) ? productOptions : []).map((entry) => [entry.slug, entry.name]),
+      );
 
-    if (submissionState === 'basarili' || submissionState === 'hata') {
-      const feedback = document.getElementById(`durum-${submissionState}`);
-      if (feedback instanceof HTMLElement) {
-        feedback.hidden = false;
-      }
-      if (status instanceof HTMLElement) {
-        status.textContent = submissionState === 'basarili'
-          ? 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.'
-          : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
-        status.className = submissionState === 'basarili' ? 'form-status is-success' : 'form-status is-error';
-      }
-      const cleanUrl = new URL(window.location.href);
-      cleanUrl.searchParams.delete('durum');
-      cleanUrl.hash = '';
-      window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search);
-    }
+      const applyProductSelection = (slug) => {
+        if (!(productSelect instanceof HTMLSelectElement) || !slug || !productNames[slug]) return false;
 
-    if (productSelect instanceof HTMLSelectElement && requestedProduct && validProductSlugs.includes(requestedProduct)) {
-      productSelect.value = requestedProduct;
-    }
-
-    if (form instanceof HTMLFormElement && status instanceof HTMLElement && submitButton instanceof HTMLButtonElement) {
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
+        for (const option of productSelect.options) {
+          option.selected = option.value === slug;
         }
+        productSelect.value = slug;
 
-        submitButton.disabled = true;
-        submitButton.setAttribute('aria-busy', 'true');
-        status.textContent = 'Talebiniz gönderiliyor…';
-        status.className = 'form-status';
-        document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
-          if (node instanceof HTMLElement) node.hidden = true;
+        if (preselectNote instanceof HTMLElement) {
+          preselectNote.id = 'product-preselect-note';
+          preselectNote.hidden = false;
+          preselectNote.textContent = `Seçili ürün: ${productNames[slug]}`;
+        }
+        if (productField instanceof HTMLElement) {
+          productField.classList.add('is-preselected');
+        }
+        return productSelect.value === slug;
+      };
+
+      if (submissionState === 'basarili' || submissionState === 'hata') {
+        const feedback = document.getElementById(`durum-${submissionState}`);
+        if (feedback instanceof HTMLElement) feedback.hidden = false;
+        if (status instanceof HTMLElement) {
+          status.textContent = submissionState === 'basarili'
+            ? 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.'
+            : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
+          status.className = submissionState === 'basarili' ? 'form-status is-success' : 'form-status is-error';
+        }
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete('durum');
+        cleanUrl.hash = '';
+        window.history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.search}`);
+      }
+
+      applyProductSelection(requestedProduct);
+
+      if (productSelect instanceof HTMLSelectElement) {
+        productSelect.addEventListener('change', () => {
+          const selected = productSelect.value;
+          if (preselectNote instanceof HTMLElement) {
+            if (selected && productNames[selected]) {
+              preselectNote.hidden = false;
+              preselectNote.textContent = `Seçili ürün: ${productNames[selected]}`;
+              productField?.classList.add('is-preselected');
+            } else {
+              preselectNote.hidden = true;
+              preselectNote.textContent = '';
+              productField?.classList.remove('is-preselected');
+            }
+          }
         });
+      }
 
-        try {
-          const response = await fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' },
-            credentials: 'same-origin',
-          });
-          const result = await response.json().catch(() => ({ ok: false, message: '' }));
-          if (!response.ok || !result.ok) {
-            throw new Error(typeof result.message === 'string' && result.message ? result.message : 'request-failed');
+      if (form instanceof HTMLFormElement && status instanceof HTMLElement && submitButton instanceof HTMLButtonElement) {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
           }
 
-          form.reset();
-          status.textContent = result.message || 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.';
-          status.className = 'form-status is-success';
-        } catch (error) {
-          status.textContent = error instanceof Error && error.message && error.message !== 'request-failed'
-            ? error.message
-            : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
-          status.className = 'form-status is-error';
-        } finally {
-          submitButton.disabled = false;
-          submitButton.removeAttribute('aria-busy');
-        }
-      });
-    }
+          submitButton.disabled = true;
+          submitButton.setAttribute('aria-busy', 'true');
+          status.textContent = 'Talebiniz gönderiliyor…';
+          status.className = 'form-status';
+          document.querySelectorAll('[data-submission-feedback]').forEach((node) => {
+            if (node instanceof HTMLElement) node.hidden = true;
+          });
+
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: new FormData(form),
+              headers: { Accept: 'application/json' },
+              credentials: 'same-origin',
+            });
+            const result = await response.json().catch(() => ({ ok: false, message: '' }));
+            if (!response.ok || !result.ok) {
+              throw new Error(typeof result.message === 'string' && result.message ? result.message : 'request-failed');
+            }
+
+            const previousProduct = productSelect instanceof HTMLSelectElement ? productSelect.value : '';
+            form.reset();
+            if (previousProduct) applyProductSelection(previousProduct);
+            status.textContent = result.message || 'Talebiniz alınmıştır. En kısa sürede size dönüş yapacağız.';
+            status.className = 'form-status is-success';
+          } catch (error) {
+            status.textContent = error instanceof Error && error.message && error.message !== 'request-failed'
+              ? error.message
+              : 'Talebiniz gönderilemedi. Lütfen bilgilerinizi kontrol edip yeniden deneyin.';
+            status.className = 'form-status is-error';
+          } finally {
+            submitButton.disabled = false;
+            submitButton.removeAttribute('aria-busy');
+          }
+        });
+      }
+    })();
   </script>
 </BaseLayout>

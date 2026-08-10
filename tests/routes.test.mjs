@@ -155,6 +155,9 @@ test('quote page renders a consent-gated validated form without recipient config
   assert.match(html, /Talebiniz başarıyla alındı\./);
   assert.match(html, /Form gönderilemedi\./);
   assert.match(html, /Teklif talebi gönder/);
+  assert.match(html, /data-product-select/);
+  assert.match(html, /data-product-preselect-note/);
+  assert.match(html, /Seçili ürün:/);
   assert.doesNotMatch(html, /test-recipient@example\.com/);
 });
 
