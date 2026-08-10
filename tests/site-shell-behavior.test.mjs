@@ -30,7 +30,6 @@ const bootSiteScript = ({ revealItems = [], Observer = class { observe() {} unob
     },
     querySelector(selector) {
       if (selector === '[data-site-header]') return header;
-      if (selector === '[data-product-spin]') return null;
       return header;
     },
     querySelectorAll(selector) { return selector === '[data-reveal]' ? revealItems : []; },
