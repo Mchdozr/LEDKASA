@@ -1,0 +1,12 @@
+---
+description: Git branch workflow — develop on test, deploy to master only on explicit request
+alwaysApply: true
+---
+
+# Branch workflow (LEDKASA)
+
+- **All code changes** must be made on the `test` branch (`git checkout test` if not already there).
+- Commit and push feature work to **`origin/test` only**.
+- **Do not** merge, fast-forward, or push to `master` unless the user explicitly asks to go live (e.g. “canlıya al”, “canlıya pushla”, “master’a al”).
+- When the user asks to go live: fast-forward `master` from `test`, push `origin/master`, then return to `test`.
+- Do not invent other deployment paths; live deploy is triggered by push to `master`.
