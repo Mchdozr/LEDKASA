@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import BlogPagination from '../../components/BlogPagination.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import {
+  blogListCanonical,
+  blogPageCount,
+  blogPosts,
+  formatBlogDate,
+  getBlogPage,
+} from '../../data/blog';
+import { siteUrl } from '../../data/site';
+
+const currentPage = 1;
+const pagePosts = getBlogPage(currentPage);
+const title = 'LED Ekran Kasa Blogu | LEDKASA';
+const description =
+  'LED ekran kasası, rental kabinet, poster ekran ve bağlantı planlaması üzerine SEO uyumlu blog yazıları. Her sayfada 6 yazı.';
+const canonical = '/blog/';
+const schema = {
+  '@type': 'Blog',
+  '@id': `${siteUrl}/blog/#blog`,
+  url: blogListCanonical(1),
+  name: 'LEDKASA Blog',
+  description,
+  inLanguage: 'tr-TR',
+  publisher: { '@id': `${siteUrl}/#organization` },
+  blogPost: pagePosts.map((post) => ({
+    '@type': 'BlogPosting',
+    headline: post.title,
+    url: `${siteUrl}/blog/${post.slug}/`,
+    datePublished: post.publishedAt,
+    image: new URL(post.image, siteUrl).toString(),
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema}>
+  <Breadcrumbs items={[{ label: 'Blog' }]} />
+  <header class="content-hero content-hero-compact shell">
+    <span class="eyebrow">Blog</span>
+    <h1>LED ekran kasa blogu</h1>
+    <p>
+      Kasa seçimi, rental planlama, poster yerleşimi ve bağlantı konularında {blogPosts.length} yazı.
+      Bu sayfada {pagePosts.length} yazı görüntüleniyor.
+    </p>
+  </header>
+
+  <section class="shell blog-directory" aria-label="Blog yazıları">
+    <div class="blog-card-grid">
+      {pagePosts.map((post, index) => (
+        <BlogCard post={post} dateLabel={formatBlogDate(post.publishedAt)} priority={index < 2} />
+      ))}
+    </div>
+    <BlogPagination currentPage={currentPage} totalPages={blogPageCount} />
+  </section>
+  <QuoteCta title="Blogdan projenize: kapsamı birlikte netleştirelim." />
+</BaseLayout>

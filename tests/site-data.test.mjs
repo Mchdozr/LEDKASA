@@ -130,3 +130,20 @@ test('every product carries qualitative specs, guide and application cross-links
     }
   }
 });
+
+test('blog data defines 18 posts, page size 6, and local images', async () => {
+  const { readFileSync } = await import('node:fs');
+  const blogSource = readFileSync(resolve(process.cwd(), 'src/data/blog.ts'), 'utf8');
+  assert.match(blogSource, /export const BLOG_PAGE_SIZE = 6;/);
+  const slugs = [...blogSource.matchAll(/^\s+slug: '([^']+)'/gm)].map((match) => match[1]);
+  assert.equal(slugs.length, 18);
+  assert.equal(new Set(slugs).size, 18);
+  const images = [...blogSource.matchAll(/^\s+image: images\.(\w+)/gm)].map((match) => match[1]);
+  assert.equal(images.length, 18);
+  const imagePaths = [...blogSource.matchAll(/^\s+\w+: '(\/assets\/images\/[^']+)'/gm)].map((match) => match[1]);
+  assert.ok(imagePaths.length >= 10);
+  for (const image of imagePaths) {
+    const publicFile = resolve(process.cwd(), 'public', image.replace(/^\//, ''));
+    assert.equal(existsSync(publicFile), true, `missing blog image asset: ${image}`);
+  }
+});

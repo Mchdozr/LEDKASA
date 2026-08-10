@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { applicationAreas, articles } from '../data/articles';
+import { blogPosts } from '../data/blog';
 import { productCategories, products, siteUrl } from '../data/site';
 
 const title = 'Site Haritası | LEDKASA';
@@ -46,6 +47,18 @@ const groups = [
       ...articles.map((article) => ({
         name: article.title,
         url: `/bilgi-merkezi/${article.slug}/`,
+      })),
+    ],
+  },
+  {
+    title: 'Blog',
+    links: [
+      { name: 'Tüm Blog Yazıları', url: '/blog/' },
+      { name: 'Blog Sayfa 2', url: '/blog/sayfa/2/' },
+      { name: 'Blog Sayfa 3', url: '/blog/sayfa/3/' },
+      ...blogPosts.map((post) => ({
+        name: post.title,
+        url: `/blog/${post.slug}/`,
       })),
     ],
   },

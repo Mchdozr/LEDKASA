@@ -1,0 +1,103 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteCta from '../../components/QuoteCta.astro';
+import { blogCanonical, blogPosts, formatBlogDate, type BlogPost } from '../../data/blog';
+import { siteUrl } from '../../data/site';
+
+export const getStaticPaths = (() =>
+  blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const canonical = `/blog/${post.slug}/`;
+const schema = {
+  '@type': 'BlogPosting',
+  '@id': `${blogCanonical(post)}#post`,
+  mainEntityOfPage: blogCanonical(post),
+  headline: post.title,
+  description: post.seoDescription,
+  datePublished: post.publishedAt,
+  dateModified: post.publishedAt,
+  image: new URL(post.image, siteUrl).toString(),
+  inLanguage: 'tr-TR',
+  articleSection: post.category,
+  author: { '@id': `${siteUrl}/#organization` },
+  publisher: { '@id': `${siteUrl}/#organization` },
+  isPartOf: { '@id': `${siteUrl}/blog/#blog` },
+};
+---
+
+<BaseLayout
+  title={post.seoTitle}
+  description={post.seoDescription}
+  canonical={canonical}
+  image={post.image}
+  imageAlt={post.imageAlt}
+  schema={schema}
+  openGraphType="article"
+>
+  <Breadcrumbs items={[{ label: 'Blog', url: '/blog/' }, { label: post.title }]} />
+
+  <article class="knowledge-article">
+    <header class="article-hero shell">
+      <div>
+        <span class="eyebrow">{post.category}</span>
+        <h1>{post.title}</h1>
+        <p>{post.excerpt}</p>
+        <p class="blog-post-date">
+          <time datetime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time>
+        </p>
+      </div>
+      <figure>
+        <img
+          src={post.image}
+          alt={post.imageAlt}
+          width="800"
+          height="800"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
+    </header>
+
+    <div class="article-layout shell">
+      <div class="prose-content article-prose">
+        {post.sections.map((section) => (
+          <section data-reveal>
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
+          </section>
+        ))}
+        <section data-reveal>
+          <h2>Sonraki adım</h2>
+          <p>
+            Proje girdilerinizi <a href="/teklif-al/">teklif formunda</a> paylaşın veya
+            <a href="/bilgi-merkezi/">bilgi merkezi</a> rehberleriyle ürün ailesini daraltın.
+          </p>
+        </section>
+      </div>
+      <aside class="article-aside" aria-labelledby="blog-related">
+        <span class="eyebrow">İlgili bağlantılar</span>
+        <h2 id="blog-related">Katalogdan devam edin</h2>
+        <nav>
+          {post.relatedProducts.map((product) => (
+            <a href={product.url}>{product.name}<span aria-hidden="true">→</span></a>
+          ))}
+          <a href="/blog/">Tüm blog yazıları<span aria-hidden="true">→</span></a>
+        </nav>
+        <a class="button" href="/teklif-al/">Teklif alın</a>
+      </aside>
+    </div>
+  </article>
+  <QuoteCta />
+</BaseLayout>

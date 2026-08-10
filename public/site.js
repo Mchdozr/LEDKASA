@@ -14,6 +14,7 @@
   const megaWrap = header.querySelector('[data-mega-wrap]');
   const megaToggle = header.querySelector('[data-mega-toggle]');
   const megaMenu = header.querySelector('[data-mega-menu]');
+  const desktopMedia = window.matchMedia('(min-width: 64rem)');
 
   const setMegaOpen = (open, returnFocus = false) => {
     if (!megaToggle || !megaMenu) return;
@@ -31,6 +32,21 @@
     setMegaOpen(true);
     megaMenu?.querySelector(focusableSelector)?.focus();
   });
+
+  let megaHoverTimer;
+  const openMegaOnHover = () => {
+    if (!desktopMedia.matches) return;
+    window.clearTimeout(megaHoverTimer);
+    setMegaOpen(true);
+  };
+  const closeMegaOnHoverLeave = () => {
+    if (!desktopMedia.matches) return;
+    megaHoverTimer = window.setTimeout(() => setMegaOpen(false), 160);
+  };
+  megaWrap?.addEventListener('mouseenter', openMegaOnHover);
+  megaWrap?.addEventListener('mouseleave', closeMegaOnHoverLeave);
+  megaWrap?.addEventListener('focusin', openMegaOnHover);
+
   megaWrap?.addEventListener('focusout', (event) => {
     if (event.relatedTarget && !megaWrap.contains(event.relatedTarget)) setMegaOpen(false);
   });
@@ -97,7 +113,6 @@
     if (mobileToggle?.getAttribute('aria-expanded') === 'true') setMobileOpen(false, true);
   });
 
-  const desktopMedia = window.matchMedia('(min-width: 64rem)');
   desktopMedia.addEventListener?.('change', (event) => {
     const mobileWasOpen = event.matches && mobileToggle?.getAttribute('aria-expanded') === 'true';
     if (mobileWasOpen) (responsiveFocusTarget ?? mobileToggle)?.focus();

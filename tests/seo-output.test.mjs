@@ -20,6 +20,27 @@ const expectedIndexablePaths = [
   '/bilgi-merkezi/modul-pitch-ve-kasa-uyumu/',
   '/bilgi-merkezi/poster-led-ekran-kullanim-alanlari/',
   '/bilgi-merkezi/rental-led-ekran-kurulum-rehberi/',
+  '/blog/',
+  '/blog/cable-set-proje-kapsami/',
+  '/blog/cat6-veri-hatti-ipuclari/',
+  '/blog/etkinlik-kurulum-kontrol-listesi/',
+  '/blog/flat-kablo-duzeni/',
+  '/blog/indoor-outdoor-kasa-farki/',
+  '/blog/kapaksiz-kabinet-bakim-erisimi/',
+  '/blog/kasa-ve-baglantiyi-birlikte-planlamak/',
+  '/blog/katlanabilir-poster-kasa-ne-zaman/',
+  '/blog/kurumsal-lobide-led-ekran/',
+  '/blog/led-ekran-guc-dagitimi/',
+  '/blog/led-kasa-seciminde-ilk-sorular/',
+  '/blog/modul-olcusu-kabinet-uyumu/',
+  '/blog/pitch-ve-goruntu-mesafesi/',
+  '/blog/poster-led-kasa-magaza-yerlesimi/',
+  '/blog/rental-kabinet-sahne-planlama/',
+  '/blog/sabit-kurulumda-cnc-led-kasa/',
+  '/blog/sayfa/2/',
+  '/blog/sayfa/3/',
+  '/blog/showroom-dijital-yuzeyler/',
+  '/blog/teklif-oncesi-paylasilacak-bilgiler/',
   '/cerez-politikasi/',
   '/gizlilik-politikasi/',
   '/hakkimizda/',
@@ -137,6 +158,19 @@ test('article mainEntityOfPage relationships resolve to the canonical URL or an 
       reference === canonical || nodes.some((node) => node['@id'] === reference && ['WebPage', 'ArticlePage'].includes(node['@type'])),
       `${route} mainEntityOfPage must be the canonical URL or reference an emitted WebPage/ArticlePage node.`,
     );
+  }
+});
+
+test('blog posts expose BlogPosting schema with canonical mainEntityOfPage', () => {
+  for (const route of expectedIndexablePaths.filter((entry) => entry.startsWith('/blog/') && entry !== '/blog/' && !entry.startsWith('/blog/sayfa/'))) {
+    const html = readFileSync(outputPathForRoute(route), 'utf8');
+    const nodes = structuredDataNodes(html);
+    const post = nodes.find((node) => node['@type'] === 'BlogPosting');
+    assert.ok(post, `missing BlogPosting schema: ${route}`);
+    assert.equal(post.mainEntityOfPage, `${siteUrl}${route}`);
+    assert.ok(post.headline);
+    assert.ok(post.datePublished);
+    assert.match(html, /<meta property="og:type" content="article">/);
   }
 });
 

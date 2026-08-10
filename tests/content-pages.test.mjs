@@ -133,6 +133,29 @@ test('build emits evergreen articles with unique metadata, breadcrumbs and conte
   assert.equal(descriptions.size, articleRoutes.length);
 });
 
+test('build emits paginated blog listing and SEO blog posts with cards and schema', () => {
+  const blogIndex = builtHtml('blog');
+  assert.match(blogIndex, /<h1[^>]*>\s*LED ekran kasa blogu\s*<\/h1>/);
+  assert.match(blogIndex, /"@type":"Blog"/);
+  assert.match(blogIndex, /class="blog-card"/);
+  assert.equal((blogIndex.match(/class="blog-card"/g) ?? []).length, 6);
+  assert.match(blogIndex, /href="\/blog\/sayfa\/2\/"/);
+  assert.match(blogIndex, /aria-label="Blog sayfaları"/);
+
+  const page2 = builtHtml('blog/sayfa/2');
+  const page3 = builtHtml('blog/sayfa/3');
+  assert.equal((page2.match(/class="blog-card"/g) ?? []).length, 6);
+  assert.equal((page3.match(/class="blog-card"/g) ?? []).length, 6);
+  assert.match(page2, /Sayfa 2 \/ 3/);
+  assert.match(page3, /Sayfa 3 \/ 3/);
+
+  const sample = builtHtml('blog/led-kasa-seciminde-ilk-sorular');
+  assert.match(sample, /<meta property="og:type" content="article">/);
+  assert.match(sample, /"@type":"BlogPosting"/);
+  assert.match(sample, /https:\/\/ledkasa\.com\.tr\/blog\/led-kasa-seciminde-ilk-sorular\//);
+  assert.match(sample, /href="\/teklif-al\/"/);
+});
+
 test('corporate, discovery and FAQ pages publish evidence-neutral content and email-only contact', () => {
   const routes = ['', 'hakkimizda', 'uygulama-alanlari', 'bilgi-merkezi', 'sss'];
   const combinedHtml = routes.map((route) => builtHtml(route)).join('\n');

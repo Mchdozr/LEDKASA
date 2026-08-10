@@ -1,0 +1,36 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const { currentPage, totalPages } = Astro.props;
+const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+const hrefFor = (page: number) => (page <= 1 ? '/blog/' : `/blog/sayfa/${page}/`);
+---
+
+{totalPages > 1 && (
+  <nav class="blog-pagination" aria-label="Blog sayfaları">
+    {currentPage > 1 ? (
+      <a href={hrefFor(currentPage - 1)}>← Önceki</a>
+    ) : (
+      <span class="is-disabled">← Önceki</span>
+    )}
+    <ol>
+      {pages.map((page) => (
+        <li>
+          {page === currentPage ? (
+            <span aria-current="page">{page}</span>
+          ) : (
+            <a href={hrefFor(page)}>{page}</a>
+          )}
+        </li>
+      ))}
+    </ol>
+    {currentPage < totalPages ? (
+      <a href={hrefFor(currentPage + 1)}>Sonraki →</a>
+    ) : (
+      <span class="is-disabled">Sonraki →</span>
+    )}
+  </nav>
+)}

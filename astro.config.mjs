@@ -6,7 +6,13 @@ function sitemapPriority(page) {
   const path = new URL(page).pathname;
   if (path === '/') return 1.0;
   if (path.startsWith('/urunler/')) return 0.9;
-  if (path.startsWith('/uygulama-alanlari/') || path.startsWith('/bilgi-merkezi/')) return 0.8;
+  if (
+    path.startsWith('/uygulama-alanlari/') ||
+    path.startsWith('/bilgi-merkezi/') ||
+    path.startsWith('/blog/')
+  ) {
+    return 0.8;
+  }
   if (
     path.startsWith('/hakkimizda/') ||
     path.startsWith('/sss/') ||
@@ -30,7 +36,7 @@ function sitemapPriority(page) {
 function sitemapChangeFreq(page) {
   const path = new URL(page).pathname;
   if (path === '/') return 'weekly';
-  if (path.startsWith('/urunler/') || path.startsWith('/bilgi-merkezi/') || path.startsWith('/uygulama-alanlari/')) {
+  if (path.startsWith('/urunler/') || path.startsWith('/bilgi-merkezi/') || path.startsWith('/uygulama-alanlari/') || path.startsWith('/blog/')) {
     return 'monthly';
   }
   if (
