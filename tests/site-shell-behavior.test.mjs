@@ -167,6 +167,8 @@ test('desktop mega menu opens on hover and has a pointer bridge', () => {
   assert.match(siteScript, /megaWrap\?\.addEventListener\('mouseenter'/);
   assert.match(siteScript, /megaWrap\?\.addEventListener\('mouseleave'/);
   assert.match(globalCss, /\.mega-menu-wrap::after/);
+  assert.match(globalCss, /\.mega-menu\s*\{[^}]*left:\s*0/s);
+  assert.doesNotMatch(globalCss, /\.mega-menu\s*\{[^}]*transform:\s*translateX\(-50%\)/s);
 });
 
 test('reveal content remains visible until JavaScript enables enhancement', () => {
