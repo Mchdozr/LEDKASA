@@ -548,7 +548,7 @@ $delivery = deliverContactMail($recipient, $subject, implode("\n", $bodyLines), 
 if (!$delivery['ok']) {
     $message = $delivery['channel'] === 'smtp-missing'
         ? 'Mail gönderimi için sunucu SMTP ayarı eksik. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.'
-        : 'Talebiniz şu anda gönderilemedi. Lütfen daha sonra yeniden deneyin veya telefon/WhatsApp ile yazın.';
+        : 'SMTP ile mail gönderilemedi. contact.local.php içinde şifreyi ve host bilgisini kontrol edin (Plesk’te çoğu zaman host: localhost). Telefon/WhatsApp ile de yazabilirsiniz.';
     respond(503, false, $message, $wantsJson, 'hata');
 }
 
