@@ -23,12 +23,13 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy dist via FTP
+      - name: Deploy dist via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
           local-dir: ./dist/
           server-dir: ./
           dangerous-clean-slate: false
