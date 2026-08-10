@@ -228,7 +228,10 @@ const productOptions = products.map((product) => ({ slug: product.slug, name: pr
               headers: { Accept: 'application/json' },
               credentials: 'same-origin',
             });
-            const result = await response.json().catch(() => ({ ok: false, message: '' }));
+            const contentType = response.headers.get('content-type') || '';
+            const result = contentType.includes('application/json')
+              ? await response.json().catch(() => ({ ok: false, message: '' }))
+              : { ok: false, message: 'Sunucu yanıtı alınamadı. Lütfen daha sonra yeniden deneyin.' };
             if (!response.ok || !result.ok) {
               throw new Error(typeof result.message === 'string' && result.message ? result.message : 'request-failed');
             }

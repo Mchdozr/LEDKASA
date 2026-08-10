@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store');
 
-function respond(int $status, bool $ok, string $message, bool $wantsJson, ?string $redirectState = null): never
+function respond(int $status, bool $ok, string $message, bool $wantsJson, ?string $redirectState = null): void
 {
     if (!$wantsJson && $redirectState !== null) {
         $safeState = $redirectState === 'basarili' ? 'basarili' : 'hata';
@@ -95,7 +95,7 @@ function rateLimitDirectory(): ?string
     if ($resolvedDocumentRoot !== false) {
         $rootPrefix = rtrim(strtolower($resolvedDocumentRoot), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $directoryPrefix = rtrim(strtolower($resolvedDirectory), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        if (str_starts_with($directoryPrefix, $rootPrefix)) {
+        if (strpos($directoryPrefix, $rootPrefix) === 0) {
             return null;
         }
     }
@@ -224,7 +224,7 @@ function smtpExpect($socket, array $codes): bool
 {
     $response = smtpRead($socket);
     foreach ($codes as $code) {
-        if (str_starts_with($response, (string) $code)) {
+        if (strpos($response, (string) $code) === 0) {
             return true;
         }
     }
@@ -359,7 +359,7 @@ function deliverContactMail(string $recipient, string $subject, string $body, st
 }
 
 $accept = is_string($_SERVER['HTTP_ACCEPT'] ?? null) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
-$wantsJson = str_contains($accept, 'application/json');
+$wantsJson = strpos($accept, 'application/json') !== false;
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');

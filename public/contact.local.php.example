@@ -2,6 +2,8 @@
 /**
  * Plesk sunucusuna bir kez yükleyin: public/contact.local.php
  * Bu dosyayı Git'e eklemeyin. SMTP bilgileriyle mail gönderimini garanti eder.
+ *
+ * Not: contact.php PHP 7.4+ ile uyumludur (Plesk varsayılanı).
  */
 declare(strict_types=1);
 
