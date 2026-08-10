@@ -90,6 +90,24 @@
       "sourceFile": "assets/generated/cable-set-source.png",
       "origin": "original-project-render",
       "sha256": "1bb6c7e406ad879ee71b327179477f3d19f8b7e9926dfb6dd87c1035d666bef9"
+    },
+    {
+      "publicPath": "/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/uploads/960960PDF.pdf",
+      "origin": "manufacturer-datasheet",
+      "sha256": "a0a827217510a9e8da19c65cd8b71b83cf79c24930d4c8caf9cad987a8ed97c7"
+    },
+    {
+      "publicPath": "/assets/docs/poster-led-cabinet-overview.pdf",
+      "sourceFile": "manufacturer-poster-overview-sheet",
+      "origin": "manufacturer-datasheet-summary",
+      "sha256": "e8bfc3e128a9b1da7d09821cf2ce42a39b0a1d3355303dc961d997765705d5e0"
+    },
+    {
+      "publicPath": "/assets/docs/foldable-poster-cabinet-640x1920.pdf",
+      "sourceFile": "manufacturer-640x1920-foldable-sheet",
+      "origin": "manufacturer-datasheet-summary",
+      "sha256": "a3edad9090eafc9ed9695c8eef026950c947f13572df493d3af72036490ac478"
     }
   ]
 }

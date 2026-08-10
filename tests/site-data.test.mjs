@@ -90,7 +90,30 @@ test('CNC product exposes verified datasheet specs without inventing offers', ()
     true,
     `missing datasheet: ${cnc.datasheetUrl}`,
   );
-  assert.match(cnc.specs.map((spec) => spec.value).join(' '), /960/);
+  const joined = cnc.specs.map((spec) => `${spec.label} ${spec.value}`).join(' ');
+  assert.match(joined, /960/);
+  assert.match(joined, /320/);
+  assert.match(joined, /Flight case/i);
+});
+
+test('poster products expose datasheet-backed example sizes', () => {
+  const poster = products.find((product) => product.slug === 'poster-led-kasa');
+  const foldable = products.find((product) => product.slug === 'katlanabilir-poster-led-kasa');
+
+  assert.ok(poster?.datasheetUrl);
+  assert.ok(foldable?.datasheetUrl);
+  assert.equal(existsSync(resolve(process.cwd(), 'public', poster.datasheetUrl.replace(/^\//, ''))), true);
+  assert.equal(existsSync(resolve(process.cwd(), 'public', foldable.datasheetUrl.replace(/^\//, ''))), true);
+
+  const posterJoined = poster.specs.map((spec) => spec.value).join(' ');
+  assert.match(posterJoined, /640/);
+  assert.match(posterJoined, /1920/);
+  assert.match(posterJoined, /2000/);
+
+  const foldableJoined = foldable.specs.map((spec) => spec.value).join(' ');
+  assert.match(foldableJoined, /640/);
+  assert.match(foldableJoined, /26 kg/);
+  assert.match(foldableJoined, /ön/i);
 });
 
 test('every product carries qualitative specs, guide and application cross-links', () => {

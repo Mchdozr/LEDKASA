@@ -20,6 +20,14 @@ Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalo
 - Yerel dosya: `/assets/docs/mg-alloy-cabinet-960x960.pdf`
 - Kullanım: CNC LED Kasa ürün sayfasında örnek teknik özellik ve indirme bağlantısı
 
+- Kaynak: Advertising machine / poster screen üretici föyü (ince / modüler / geniş dikey)
+- Yerel dosya: `/assets/docs/poster-led-cabinet-overview.pdf`
+- Kullanım: Poster LED Kasa ürün sayfasında örnek ölçü ve pitch özeti
+
+- Kaynak: 640×1920 Al Alloy Die Casting Cabinet (front maintenance, foldable) üretici föyü
+- Yerel dosya: `/assets/docs/foldable-poster-cabinet-640x1920.pdf`
+- Kullanım: Katlanabilir Poster LED Kasa ürün sayfasında örnek teknik özellik
+
 ## Etkinlik sahnesi
 
 - Fotoğraf: Araceli Magaña
