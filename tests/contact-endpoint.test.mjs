@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import net from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -10,6 +10,14 @@ import { phpAvailable } from './php-available.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
 const publicRoot = resolve(projectRoot, 'public');
+
+test('contact.php avoids PHP 8-only syntax for Plesk 7.4 runtimes', () => {
+  const source = readFileSync(resolve(publicRoot, 'contact.php'), 'utf8');
+  assert.doesNotMatch(source, /:\s*never\b/);
+  assert.doesNotMatch(source, /\bstr_starts_with\s*\(/);
+  assert.doesNotMatch(source, /\bstr_contains\s*\(/);
+  assert.doesNotMatch(source, /\bstr_ends_with\s*\(/);
+});
 const validSubmission = {
   name: 'Test Kullanıcısı',
   email: 'test@example.com',
