@@ -233,12 +233,13 @@ function smtpRead($socket): string
 function smtpExpect($socket, array $codes): bool
 {
     $response = smtpRead($socket);
-    smtpLastError('smtp-response:' . trim(preg_replace('/\s+/', ' ', $response)));
+    $normalized = trim(preg_replace('/\s+/', ' ', $response));
     foreach ($codes as $code) {
         if (strpos($response, (string) $code) === 0) {
             return true;
         }
     }
+    smtpLastError($normalized !== '' ? $normalized : 'empty-smtp-response');
     return false;
 }
 
@@ -371,8 +372,9 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
 
         $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
         $normalizedBody = str_replace(["\r\n", "\r"], "\n", $body);
+        $normalizedBody = str_replace("\n", "\r\n", $normalizedBody);
         $normalizedBody = preg_replace('/^\./m', '..', $normalizedBody);
-        $payload = [
+        $headers = [
             'Date: ' . date('r'),
             'From: LEDKASA Web Sitesi <' . $from . '>',
             'To: <' . $recipient . '>',
@@ -381,13 +383,14 @@ function sendViaSmtp(string $recipient, string $subject, string $body, string $r
             'MIME-Version: 1.0',
             'Content-Type: text/plain; charset=UTF-8',
             'Content-Transfer-Encoding: 8bit',
-            '',
-            $normalizedBody,
-            '.',
         ];
-        fwrite($socket, implode("\r\n", $payload) . "\r\n");
+        $message = implode("\r\n", $headers) . "\r\n\r\n" . $normalizedBody . "\r\n.\r\n";
+        fwrite($socket, $message);
         if (!smtpExpect($socket, [250])) {
-            smtpLastError('data-end');
+            // smtpExpect already stored the server reply
+            if (smtpLastError() === '' || smtpLastError() === 'data-end') {
+                smtpLastError('data-end');
+            }
             return false;
         }
 
