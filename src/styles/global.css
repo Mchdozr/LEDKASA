@@ -499,6 +499,22 @@ p, h1, h2, h3 { margin-top: 0; }
 .footer-grid ul { display: grid; gap: .65rem; margin: 0; padding: 0; list-style: none; }
 .footer-grid nav a { font-size: .9rem; }
 .footer-grid nav a:hover { color: var(--green); }
+.footer-product-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+}
+.footer-product-list a span:last-child {
+  color: #718078;
+  opacity: .7;
+  transition: opacity 180ms ease, transform 180ms ease, color 180ms ease;
+}
+.footer-product-list a:hover span:last-child {
+  color: var(--green);
+  opacity: 1;
+  transform: translate(.15rem, -.1rem);
+}
 .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; padding-block: 1.25rem; border-top: 1px solid rgba(255,255,255,.11); color: #7f8c84; font-size: .76rem; }
 .footer-bottom p { margin: 0; }
 
