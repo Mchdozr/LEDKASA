@@ -113,9 +113,20 @@
     const pauseButton = hero.querySelector('[data-hero-pause]');
     const status = hero.querySelector('[data-hero-status]');
     const announcement = hero.querySelector('[data-hero-announcement]');
+    const transitionMs = 900;
     let activeIndex = 0;
     let paused = false;
     let timer;
+    let animating = false;
+    let clearExitTimer;
+
+    const transitionClasses = [
+      'is-active',
+      'is-exit-left',
+      'is-exit-right',
+      'is-enter-from-left',
+      'is-enter-from-right',
+    ];
 
     const updatePauseButton = () => {
       if (!pauseButton) return;
@@ -136,15 +147,67 @@
       if (announcement) announcement.textContent = message;
     };
 
-    const showSlide = (nextIndex, shouldAnnounce = false) => {
-      activeIndex = (nextIndex + slides.length) % slides.length;
+    const syncSlideState = (nextIndex) => {
       slides.forEach((slide, index) => {
-        const isActive = index === activeIndex;
-        slide.hidden = !isActive;
+        const isActive = index === nextIndex;
+        transitionClasses.forEach((name) => slide.classList.remove(name));
+        slide.hidden = false;
+        slide.classList.toggle('is-active', isActive);
         slide.setAttribute('aria-hidden', String(!isActive));
       });
+    };
+
+    const showSlide = (nextIndex, { shouldAnnounce = false, direction = 1, instant = false } = {}) => {
+      const normalized = (nextIndex + slides.length) % slides.length;
+      if (normalized === activeIndex && slides[normalized]?.classList?.contains?.('is-active')) {
+        if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+        return;
+      }
+
+      const reduceMotion = prefersReducedMotion.matches || instant;
+      const previousIndex = activeIndex;
+
+      if (reduceMotion || previousIndex === normalized || !slides[previousIndex]?.classList?.contains?.('is-active')) {
+        activeIndex = normalized;
+        syncSlideState(activeIndex);
+        if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+        if (shouldAnnounce) announce(`${activeIndex + 1} / ${slides.length}. slayt gösteriliyor.`);
+        animating = false;
+        return;
+      }
+
+      if (animating) return;
+
+      animating = true;
+      window.clearTimeout(clearExitTimer);
+
+      const outgoing = slides[previousIndex];
+      const incoming = slides[normalized];
+      const exitClass = direction > 0 ? 'is-exit-left' : 'is-exit-right';
+      const enterClass = direction > 0 ? 'is-enter-from-right' : 'is-enter-from-left';
+
+      transitionClasses.forEach((name) => {
+        outgoing.classList.remove(name);
+        incoming.classList.remove(name);
+      });
+
+      outgoing.classList.add(exitClass);
+      outgoing.setAttribute('aria-hidden', 'true');
+
+      incoming.classList.add(enterClass);
+      incoming.setAttribute('aria-hidden', 'false');
+      void incoming.offsetWidth;
+      incoming.classList.remove(enterClass);
+      incoming.classList.add('is-active');
+
+      activeIndex = normalized;
       if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
       if (shouldAnnounce) announce(`${activeIndex + 1} / ${slides.length}. slayt gösteriliyor.`);
+
+      clearExitTimer = window.setTimeout(() => {
+        outgoing.classList.remove(exitClass);
+        animating = false;
+      }, transitionMs);
     };
 
     const stopAutoplay = () => {
@@ -155,16 +218,16 @@
     const startAutoplay = () => {
       stopAutoplay();
       if (paused || prefersReducedMotion.matches || document.hidden) return;
-      timer = window.setInterval(() => showSlide(activeIndex + 1), 7000);
+      timer = window.setInterval(() => showSlide(activeIndex + 1, { direction: 1 }), 7000);
     };
 
-    const selectSlide = (nextIndex) => {
-      showSlide(nextIndex, true);
+    const selectSlide = (nextIndex, direction) => {
+      showSlide(nextIndex, { shouldAnnounce: true, direction });
       startAutoplay();
     };
 
-    previousButton?.addEventListener('click', () => selectSlide(activeIndex - 1));
-    nextButton?.addEventListener('click', () => selectSlide(activeIndex + 1));
+    previousButton?.addEventListener('click', () => selectSlide(activeIndex - 1, -1));
+    nextButton?.addEventListener('click', () => selectSlide(activeIndex + 1, 1));
     pauseButton?.addEventListener('click', () => {
       paused = !paused;
       updatePauseButton();
@@ -177,13 +240,14 @@
       else startAutoplay();
     });
 
-    prefersReducedMotion.addEventListener?.('change', (event) => {
+    prefersReducedMotion.addEventListener?.('change', () => {
       updatePauseButton();
+      showSlide(activeIndex, { instant: true });
       startAutoplay();
     });
 
     hero.classList.add('hero-ready');
-    showSlide(0);
+    showSlide(0, { instant: true });
     updatePauseButton();
     startAutoplay();
   }

@@ -67,8 +67,9 @@ const schema = [
 ---
 
 <BaseLayout title={title} description={description} canonical="/" schema={schema} bodyClass="home-page">
-  <section class="hero shell" data-hero aria-roledescription="carousel" aria-label="Öne çıkan LED ekran çözümleri">
+  <section class="hero" data-hero aria-roledescription="carousel" aria-label="Öne çıkan LED ekran çözümleri">
     <div class="hero-track" data-hero-track aria-live="off">
+      <div class="hero-ambiance" aria-hidden="true"></div>
       {heroSlides.map((slide, index) => (
         <article
           class="hero-slide"
