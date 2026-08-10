@@ -139,7 +139,9 @@ function consumeRateLimit(int $maximumRequests = 5, int $windowSeconds = 600): s
             }
             $timestamps = array_values(array_filter(
                 $decoded,
-                static fn ($timestamp): bool => is_int($timestamp)
+                static function ($timestamp) {
+                    return is_int($timestamp);
+                }
             ));
         }
 
@@ -147,21 +149,26 @@ function consumeRateLimit(int $maximumRequests = 5, int $windowSeconds = 600): s
         $windowStart = $now - $windowSeconds;
         $timestamps = array_values(array_filter(
             $timestamps,
-            static fn (int $timestamp): bool => $timestamp > $windowStart && $timestamp <= $now
+            static function ($timestamp) use ($windowStart, $now) {
+                return is_int($timestamp) && $timestamp > $windowStart && $timestamp <= $now;
+            }
         ));
         if (count($timestamps) >= $maximumRequests) {
             return 'throttled';
         }
 
         $timestamps[] = $now;
-        $encoded = json_encode($timestamps, JSON_THROW_ON_ERROR);
+        $encoded = json_encode($timestamps);
+        if ($encoded === false) {
+            return 'unavailable';
+        }
         rewind($handle);
         if (!ftruncate($handle, 0) || fwrite($handle, $encoded) === false || !fflush($handle)) {
             return 'unavailable';
         }
 
         return 'allowed';
-    } catch (JsonException) {
+    } catch (Exception $exception) {
         return 'unavailable';
     } finally {
         flock($handle, LOCK_UN);
