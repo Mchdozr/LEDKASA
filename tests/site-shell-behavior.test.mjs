@@ -163,10 +163,13 @@ test('switching to the desktop breakpoint restores focus before hiding the mobil
   assert.equal(shell.document.activeElement, shell.responsiveFocusTarget);
 });
 
-test('desktop mega menu opens on hover and has a pointer bridge', () => {
-  assert.match(siteScript, /megaWrap\?\.addEventListener\('mouseenter'/);
-  assert.match(siteScript, /megaWrap\?\.addEventListener\('mouseleave'/);
-  assert.match(globalCss, /\.mega-menu-wrap::after/);
+test('desktop mega menu opens on hover of the products toggle only', () => {
+  assert.match(siteScript, /megaToggle\?\.addEventListener\('mouseenter',\s*openMegaOnHover/);
+  assert.match(siteScript, /megaMenu\?\.addEventListener\('mouseenter',\s*openMegaOnHover/);
+  assert.match(siteScript, /megaToggle\?\.addEventListener\('mouseleave',\s*closeMegaOnHoverLeave/);
+  assert.match(siteScript, /megaMenu\?\.addEventListener\('mouseleave',\s*closeMegaOnHoverLeave/);
+  assert.doesNotMatch(siteScript, /megaWrap\?\.addEventListener\('mouseenter'/);
+  assert.doesNotMatch(globalCss, /\.mega-menu-wrap::after/);
   assert.match(globalCss, /\.mega-menu\s*\{[^}]*left:\s*0/s);
   assert.doesNotMatch(globalCss, /\.mega-menu\s*\{[^}]*transform:\s*translateX\(-50%\)/s);
 });

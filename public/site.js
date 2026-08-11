@@ -43,8 +43,11 @@
     if (!desktopMedia.matches) return;
     megaHoverTimer = window.setTimeout(() => setMegaOpen(false), 160);
   };
-  megaWrap?.addEventListener('mouseenter', openMegaOnHover);
-  megaWrap?.addEventListener('mouseleave', closeMegaOnHoverLeave);
+  // Sadece Ürünler butonuna hover ile aç; wrap'taki tam genişlik hit-area kullanma
+  megaToggle?.addEventListener('mouseenter', openMegaOnHover);
+  megaMenu?.addEventListener('mouseenter', openMegaOnHover);
+  megaToggle?.addEventListener('mouseleave', closeMegaOnHoverLeave);
+  megaMenu?.addEventListener('mouseleave', closeMegaOnHoverLeave);
   megaWrap?.addEventListener('focusin', openMegaOnHover);
 
   megaWrap?.addEventListener('focusout', (event) => {
