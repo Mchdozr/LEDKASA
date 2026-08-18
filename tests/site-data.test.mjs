@@ -73,7 +73,10 @@ test('catalog exposes one shared root-relative navigation tree', () => {
 });
 
 test('every catalog image resolves to a committed local public asset', () => {
-  const catalogImages = [...productCategories, ...products].map((entry) => entry.image);
+  const catalogImages = [
+    ...productCategories.map((entry) => entry.image),
+    ...products.flatMap((entry) => [entry.image, ...(entry.gallery?.map((item) => item.src) ?? [])]),
+  ];
 
   for (const image of catalogImages) {
     const publicFile = resolve(process.cwd(), 'public', image.replace(/^\//, ''));
@@ -94,6 +97,29 @@ test('CNC product exposes verified datasheet specs without inventing offers', ()
   assert.match(joined, /960/);
   assert.match(joined, /320/);
   assert.match(joined, /Flight case/i);
+});
+
+test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups', () => {
+  const cnc = products.find((product) => product.slug === 'cnc-led-kasa');
+  assert.ok(cnc?.specGroups?.length === 2);
+  const [mgGroup, pitchGroup] = cnc.specGroups;
+  assert.match(mgGroup.heading, /960/);
+  assert.match(pitchGroup.heading, /640/);
+  const mgJoined = mgGroup.specs.map((spec) => spec.value).join(' ');
+  const pitchJoined = pitchGroup.specs.map((spec) => spec.value).join(' ');
+  assert.match(mgJoined, /960/);
+  assert.doesNotMatch(mgJoined, /4,3 kg/);
+  assert.match(pitchJoined, /W640 × H480/);
+  assert.match(pitchJoined, /4,3 kg/);
+  assert.doesNotMatch(pitchJoined, /960 × 960/);
+  assert.ok(mgGroup.datasheetUrl?.includes('960x960'));
+  assert.ok(pitchGroup.datasheetUrl?.includes('small-pitch-cabinet-640'));
+  assert.equal(existsSync(resolve(process.cwd(), 'public', pitchGroup.datasheetUrl.replace(/^\//, ''))), true);
+  assert.ok(cnc.gallery?.some((item) => item.caption.includes('960×960')));
+  assert.equal(
+    existsSync(resolve(process.cwd(), 'public', cnc.gallery[0].src.replace(/^\//, ''))),
+    true,
+  );
 });
 
 test('poster products expose datasheet-backed example sizes', () => {

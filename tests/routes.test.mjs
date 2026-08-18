@@ -123,7 +123,23 @@ test('product pages include breadcrumbs and related products', () => {
   assert.match(html, /Özellik özeti/);
   assert.match(html, /W960 × H960 × D87 mm/);
   assert.match(html, /mg-alloy-cabinet-960x960\.pdf/);
+  assert.match(html, /640×480-B/);
+  assert.match(html, /small-pitch-cabinet-640\.pdf/);
+  assert.match(html, /960×960 mm Mg alaşım döküm/);
+  assert.match(html, /Küçük pitch 640 ailesi/);
+  assert.doesNotMatch(html, /640×1920 mm Mg/);
   assert.match(html, /İlgili rehberler/);
+});
+
+test('rental and poster pages do not inherit the 640 small-pitch CNC table', () => {
+  const rental = builtHtml('urunler/led-ekran-kasalari/rental-led-kabinet');
+  const poster = builtHtml('urunler/led-ekran-kasalari/poster-led-kasa');
+  const foldable = builtHtml('urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa');
+  for (const html of [rental, poster, foldable]) {
+    assert.doesNotMatch(html, /640×480-B/);
+    assert.doesNotMatch(html, /small-pitch-cabinet-640\.pdf/);
+    assert.doesNotMatch(html, /Küçük pitch 640 ailesi/);
+  }
 });
 
 test('cabinet comparison page publishes a decision table', () => {

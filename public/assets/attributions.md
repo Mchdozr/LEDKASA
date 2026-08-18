@@ -18,7 +18,12 @@ Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalo
 - Kaynak: LEDKASA’ya sağlanan üretici teknik föyü (`960960PDF.pdf`)
 - Ürün: Mg Alloy Die Casting Cabinet (W960 × H960 × D87 mm)
 - Yerel dosya: `/assets/docs/mg-alloy-cabinet-960x960.pdf`
-- Kullanım: CNC LED Kasa ürün sayfasında örnek teknik özellik ve indirme bağlantısı
+- Föy görseli: `/assets/images/products/gallery/cnc-960x960-foy.webp`
+- Kullanım: CNC LED Kasa sayfasında yalnızca 960×960 mm örnek teknik özellik, galeri ve indirme
+
+- Kaynak: Küçük pitch kabinet föyü (640×480-B / 640×640, 320×160 mm modül)
+- Yerel dosya: `/assets/docs/small-pitch-cabinet-640.pdf`
+- Kullanım: CNC LED Kasa sayfasında ayrı başlık; 960×960 Mg föyü ve poster 640×1920 ile karıştırılmaz
 
 - Kaynak: Advertising machine / poster screen üretici föyü (ince / modüler / geniş dikey)
 - Yerel dosya: `/assets/docs/poster-led-cabinet-overview.pdf`

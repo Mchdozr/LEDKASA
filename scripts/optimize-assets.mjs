@@ -12,6 +12,7 @@ const copies = [
   ['rental-kabinet.png', 'products/rental-led-kabinet.webp'],
   ['poster-kasa.png', 'products/poster-led-kasa.webp'],
   ['katlanabilir-poster-kasa.png', 'products/katlanabilir-poster-led-kasa.webp'],
+  ['manufacturer/mg-alloy-960x960-datasheet.jpg', 'products/gallery/cnc-960x960-foy.webp'],
   ['generated/cat6-cable-source.png', 'products/cat6-kablo.webp'],
   ['generated/power-plug-source.png', 'products/power-plug.webp'],
   ['generated/flat-cable-source.png', 'products/flat-kablo.webp'],

@@ -47,6 +47,20 @@ export interface ProductSpec {
   value: string;
 }
 
+export interface ProductSpecGroup {
+  heading: string;
+  note?: string;
+  specs: ProductSpec[];
+  datasheetUrl?: string;
+  datasheetLabel?: string;
+}
+
+export interface ProductGalleryItem {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
 export interface ProductCategory {
   slug: 'led-ekran-kasalari' | 'guc-ve-baglanti-ekipmanlari';
   name: string;
@@ -76,12 +90,15 @@ export interface Product {
   description: string;
   highlights: string[];
   specs?: ProductSpec[];
+  specGroups?: ProductSpecGroup[];
+  gallery?: ProductGalleryItem[];
   useCases?: string[];
   relatedGuides?: { name: string; url: string }[];
   applicationLinks?: { name: string; url: string }[];
   complementaryProducts?: Product['slug'][];
   datasheetUrl?: string;
   datasheetLabel?: string;
+  datasheets?: { url: string; label: string }[];
   specsNote?: string;
   url: string;
   image: string;
@@ -103,11 +120,11 @@ export const products: Product[] = [
     name: 'CNC LED Kasa',
     shortDescription: 'Sabit LED ekran projeleri için hassas üretimli, düzenli kabinet çözümü.',
     description:
-      'CNC LED Kasa, sabit LED ekran kurulumlarında düzenli kabin mimarisi, modül uyumu ve profesyonel görünüm aranan projeler için değerlendirilir. Teklif aşamasında ekran ölçüsü, pitch ve montaj yüzeyi netleştirilir.',
+      'CNC LED Kasa, sabit LED ekran kurulumlarında düzenli kabin mimarisi, modül uyumu ve profesyonel görünüm aranan projeler için değerlendirilir. 960×960 mm Mg alaşım ve 640 mm küçük pitch örnek gövdeler ayrı föylerde tutulur; teklifte ekran ölçüsü, pitch ve montaj yüzeyi netleşir.',
     highlights: [
       'Sabit kurulum ve kalıcı ekran yüzeyleri',
-      'Mg alaşım döküm: alüminyuma göre daha hafif / ince gövde yaklaşımı',
-      'Hassas birleşim için CNC destekli üretim',
+      '960×960 mm Mg alaşım döküm örnek gövde',
+      '640 mm küçük pitch (320×160 modül) ayrı örnek aile',
       'Modül pitch ve proje ölçüsüne göre değerlendirme',
     ],
     specs: [
@@ -124,8 +141,57 @@ export const products: Product[] = [
       { label: 'Örnek güç konektörü', value: '20A 3×2,5 mm²' },
       { label: 'Flight case (örnek)', value: '5 veya 6 kabinet kapasitesi' },
     ],
+    specGroups: [
+      {
+        heading: '960×960 mm Mg alaşım döküm',
+        note: 'Bu tablo yalnızca 960×960×87 mm Mg alaşım kabinet föyüne aittir. 640 mm küçük pitch gövdeler aşağıdaki ayrı başlıktadır.',
+        datasheetUrl: '/assets/docs/mg-alloy-cabinet-960x960.pdf',
+        datasheetLabel: '960×960 mm teknik föyü (PDF)',
+        specs: [
+          { label: 'Kabinet ölçüsü', value: 'W960 × H960 × D87 mm' },
+          { label: 'Ağırlık (standart / court)', value: '11,8 kg / 15,8 kg' },
+          { label: 'Malzeme', value: 'Magnezyum alaşım döküm' },
+          { label: 'Modül uyumu', value: 'P4 / P5 / P6.67 / P8 / P10 / P13.33' },
+          { label: 'Suite / modül', value: '320 × 160 mm (veya 320 × 320 mm)' },
+          { label: 'Kurulum', value: 'Askı veya sabit kurulum' },
+          { label: 'Ortam', value: 'İç mekân IP30 / dış mekân IP65 (föy örneği)' },
+          { label: 'Renk', value: 'Siyah, gümüş' },
+          { label: 'Aksesuar', value: 'Tutamak, sistem/güç plakası, birleştirme parçası' },
+          { label: 'Örnek PSU', value: '200W-5V 40A / 300W-5V 60A / 350W-5V 70A / 400W-5V 80A' },
+          { label: 'Güç konektörü', value: '20A 3×2,5 mm²' },
+          { label: 'Flight case', value: '4 / 5 / 6 kabinet kapasitesi' },
+        ],
+      },
+      {
+        heading: 'Küçük pitch 640 ailesi',
+        note: 'Bu tablo 640×480-B ve 640×640 küçük pitch föylerinedir. 960×960 Mg kabinet ile karıştırılmaz; poster 640×1920 gövdesi de bu aile değildir.',
+        datasheetUrl: '/assets/docs/small-pitch-cabinet-640.pdf',
+        datasheetLabel: '640 mm küçük pitch föy özeti (PDF)',
+        specs: [
+          { label: '640×480-B ölçü', value: 'W640 × H480 × D50 mm' },
+          { label: '640×480-B ağırlık', value: '4,3 kg' },
+          { label: '640×480-B modül', value: 'P2.5 / P2 / P1.83 / P1.86 / P1.667 / P1.538 / P1.37 / P1.25' },
+          { label: '640×640 ölçü', value: 'W640 × H640 × D48 mm' },
+          { label: '640×640 modül', value: 'P2.5 / P2 / P1.8 / P1.667 / P1.5 / P1.37 / P1.25 / P1' },
+          { label: 'Aile ölçü seçenekleri', value: '320×480 / 640×480 / 320×640 / 640×640 mm' },
+          { label: 'Suite / modül', value: '320 × 160 mm' },
+          { label: 'Malzeme', value: 'Alüminyum alaşım' },
+          { label: 'Bakım', value: 'Önden bakım' },
+          { label: 'Kurulum', value: 'Askı veya sabit' },
+          { label: 'Ortam', value: 'İç mekân IP30' },
+          { label: 'Renk', value: 'Siyah, gümüş' },
+        ],
+      },
+    ],
+    gallery: [
+      {
+        src: '/assets/images/products/gallery/cnc-960x960-foy.webp',
+        alt: '960×960 mm magnezyum alaşım LED kabinet üretici föyü',
+        caption: '960×960 mm Mg alaşım döküm — üretici föyü (küçük pitch 640 gövdesi değil)',
+      },
+    ],
     specsNote:
-      'Aşağıdaki teknik değerler doğrulanmış üretici föyüne (960×960 mm Mg alaşım döküm kabinet) aittir. Projenize özel ölçü, pitch ve aksesuar kapsamı teklifte netleştirilir.',
+      'Teknik değerler doğrulanmış üretici föylerine aittir. 960×960 Mg alaşım ile 640 mm küçük pitch tabloları ayrı tutulur. Projenize özel ölçü ve pitch teklifte netleşir.',
     useCases: [
       'Kurumsal lobi ve kalıcı reklam yüzeyleri',
       'Mağaza / showroom sabit LED duvarları',
@@ -142,13 +208,17 @@ export const products: Product[] = [
     complementaryProducts: ['kapaksiz-led-kabinet', 'cat6-kablo', 'power-plug'],
     datasheetUrl: '/assets/docs/mg-alloy-cabinet-960x960.pdf',
     datasheetLabel: '960×960 mm teknik föyü (PDF)',
+    datasheets: [
+      { url: '/assets/docs/mg-alloy-cabinet-960x960.pdf', label: '960×960 mm Mg alaşım föyü (PDF)' },
+      { url: '/assets/docs/small-pitch-cabinet-640.pdf', label: '640 mm küçük pitch föy özeti (PDF)' },
+    ],
     url: productPath('led-ekran-kasalari', 'cnc-led-kasa'),
     image: '/assets/images/products/cnc-led-kasa.webp',
     imageAlt: 'CNC üretim LED ekran kasası',
     canonicalUrl: canonicalPath(productPath('led-ekran-kasalari', 'cnc-led-kasa')),
     seoTitle: 'CNC LED Kasa | LEDKASA',
     seoDescription:
-      'Sabit LED ekran projeleri için CNC LED kasa. 960×960 mm Mg alaşım örnek föyü, pitch uyumu ve teklif süreci LEDKASA’da.',
+      'Sabit LED ekran için CNC LED kasa. 960×960 mm Mg alaşım ve 640 mm küçük pitch örnek föyleri ayrı ayrı, teklif süreci LEDKASA’da.',
   },
   {
     slug: 'kapaksiz-led-kabinet',
@@ -482,7 +552,7 @@ export const cabinetComparisonRows = [
   },
   {
     criterion: 'Örnek ölçü (föy)',
-    cnc: '960×960×87 mm',
+    cnc: '960×960×87 mm; küçük pitch 640×480 / 640×640',
     kapaksiz: 'Proje özelinde',
     rental: 'Proje / set özelinde',
     poster: '640×1920, 500/1000×2000, 960×1920',

@@ -108,6 +108,18 @@
       "sourceFile": "manufacturer-640x1920-foldable-sheet",
       "origin": "manufacturer-datasheet-summary",
       "sha256": "a3edad9090eafc9ed9695c8eef026950c947f13572df493d3af72036490ac478"
+    },
+    {
+      "publicPath": "/assets/docs/small-pitch-cabinet-640.pdf",
+      "sourceFile": "manufacturer-640-small-pitch-sheet",
+      "origin": "manufacturer-datasheet-summary",
+      "sha256": "61823dfb7072124fde4d9eb3a139d239c40364f52169a6ba02899b9311f808cc"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960x960-foy.webp",
+      "sourceFile": "assets/manufacturer/mg-alloy-960x960-datasheet.jpg",
+      "origin": "manufacturer-datasheet",
+      "sha256": "045e93c6249d87ee59a876cc7922adec56b00ec8fd03ac6f2a44cc325e11a9c6"
     }
   ]
 }

@@ -31,6 +31,12 @@ const complementaryProducts = (product.complementaryProducts ?? [])
   .map((slug) => products.find((entry) => entry.slug === slug))
   .filter((entry): entry is Product => Boolean(entry));
 const isCabinet = category.slug === 'led-ekran-kasalari';
+const specGroups = product.specGroups?.length
+  ? product.specGroups
+  : product.specs?.length
+    ? [{ heading: 'Özellik özeti', note: product.specsNote, specs: product.specs }]
+    : [];
+const schemaSpecs = specGroups.flatMap((group) => group.specs);
 const hasContext =
   Boolean(product.useCases?.length) ||
   Boolean(product.relatedGuides?.length) ||
@@ -49,9 +55,9 @@ const schema = {
     '@type': 'Brand',
     name: 'LEDKASA',
   },
-  ...(product.specs && product.specs.length > 0
+  ...(schemaSpecs.length > 0
     ? {
-        additionalProperty: product.specs.map((spec) => ({
+        additionalProperty: schemaSpecs.map((spec) => ({
           '@type': 'PropertyValue',
           name: spec.label,
           value: spec.value,
@@ -93,18 +99,48 @@ const schema = {
         <a class="button" href={`/teklif-al/?urun=${encodeURIComponent(product.slug)}`}>Bu ürün için teklif alın</a>
         <a class="text-link" href={category.url}>Kategoriye dön <span aria-hidden="true">→</span></a>
       </div>
-      {product.datasheetUrl && (
+      {product.datasheets && product.datasheets.length > 0 ? (
+        product.datasheets.map((sheet) => (
+          <p class="product-datasheet">
+            <a class="text-link" href={sheet.url} download>
+              {sheet.label} <span aria-hidden="true">↓</span>
+            </a>
+          </p>
+        ))
+      ) : product.datasheetUrl ? (
         <p class="product-datasheet">
           <a class="text-link" href={product.datasheetUrl} download>
             {product.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
           </a>
         </p>
-      )}
+      ) : null}
       <p class="product-note">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
     </div>
   </article>
 
-  {product.specs && product.specs.length > 0 && (
+  {product.gallery && product.gallery.length > 0 && (
+    <section class="product-gallery shell" aria-labelledby="gallery-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Doğrulanmış görseller</span>
+          <h2 id="gallery-heading">Föy ile eşleşen görseller</h2>
+        </div>
+        <p>Her görsel altındaki ölçü başlığı, ilgili kabinet ailesine aittir; 960 ve 640 gövdeler karıştırılmaz.</p>
+      </div>
+      <ul class="product-gallery-grid">
+        {product.gallery.map((item) => (
+          <li>
+            <figure>
+              <img src={item.src} alt={item.alt} width="1200" height="1224" loading="lazy" decoding="async" />
+              <figcaption>{item.caption}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {specGroups.length > 0 && (
     <section class="product-specs shell" aria-labelledby="specs-heading">
       <div class="section-heading">
         <div>
@@ -113,14 +149,29 @@ const schema = {
         </div>
         {product.specsNote && <p>{product.specsNote}</p>}
       </div>
-      <dl class="spec-table">
-        {product.specs.map((spec) => (
-          <div class="spec-row">
-            <dt>{spec.label}</dt>
-            <dd>{spec.value}</dd>
+      {specGroups.map((group) => (
+        <div class="spec-group">
+          <div class="spec-group-heading">
+            <h3>{group.heading}</h3>
+            {group.note && <p>{group.note}</p>}
+            {group.datasheetUrl && (
+              <p>
+                <a class="text-link" href={group.datasheetUrl} download>
+                  {group.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
+                </a>
+              </p>
+            )}
           </div>
-        ))}
-      </dl>
+          <dl class="spec-table">
+            {group.specs.map((spec) => (
+              <div class="spec-row">
+                <dt>{spec.label}</dt>
+                <dd>{spec.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
     </section>
   )}
 

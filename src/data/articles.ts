@@ -422,7 +422,7 @@ export const articles: Article[] = [
       'Piksel aralığı (pitch), modül ölçüsü ve kabinet boyutunun nasıl birlikte okunacağını teklif öncesi netleştirmek için pratik çerçeve.',
     seoTitle: 'Modül Pitch ve LED Kasa Uyumu | LEDKASA',
     seoDescription:
-      'LED ekranda pitch, modül ölçüsü ve kasa boyutunu nasıl eşleştireceğinizi öğrenin. Örnek 960×960 kabinet ve P4–P13.33 uyumu.',
+      'LED ekranda pitch, modül ölçüsü ve kasa boyutunu nasıl eşleştireceğinizi öğrenin. 960×960 Mg ve 640 küçük pitch örnekleri ayrı tutulur.',
     decisionLabel: 'Pitch ve kabinet uyumunu kontrol ediyorsanız',
     image: '/assets/images/editorial/electronics-workshop.webp',
     imageAlt: 'Elektronik devre üzerinde çalışan teknik uzman',
@@ -440,6 +440,13 @@ export const articles: Article[] = [
         paragraphs: [
           'Doğrulanmış üretici föyündeki 960×960×87 mm Mg alaşım döküm kabinet örneği; P4, P5, P6.67, P8, P10 ve P13.33 modül aileleriyle birlikte değerlendirilebilir.',
           'Bu liste yönlendirme amaçlıdır. Kullandığınız modül markası, PCB ölçüsü (örnek 320×160 mm suite) ve receiving card düzeni teklif aşamasında ayrıca doğrulanır.',
+        ],
+      },
+      {
+        heading: 'Örnek: 640 mm küçük pitch ailesi',
+        paragraphs: [
+          'Ayrı bir üretici föyünde 640×480-B (50 mm derinlik, 4,3 kg) ve 640×640 (48 mm) küçük pitch gövdeler; 320×160 mm modül kiti ile P1–P2.5 aralığında değerlendirilir.',
+          'Bu aile 960×960 Mg kabinet ile aynı tabloya yazılmaz. 320×480 / 640×480 / 320×640 / 640×640 ölçü seçenekleri küçük pitch föyüne aittir; poster 640×1920 gövdesi değildir.',
         ],
       },
       {
@@ -548,7 +555,7 @@ export const faqItems = [
   {
     question: 'Teknik föy veya datasheet indirebilir miyim?',
     answer:
-      'CNC LED Kasa sayfasında 960×960 mm Mg alaşım kabinet için doğrulanmış PDF föyü yayımlanır. Diğer ürünlerin proje özelindeki kapsamı teklifte paylaşılır.',
+      'CNC LED Kasa sayfasında 960×960 mm Mg alaşım föyü ve 640 mm küçük pitch föy özeti ayrı ayrı yayımlanır. Ölçü başlıkları karıştırılmaz.',
   },
   {
     question: 'Indoor ve outdoor farkı teklifi nasıl etkiler?',
