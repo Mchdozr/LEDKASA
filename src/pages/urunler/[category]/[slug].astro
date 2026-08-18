@@ -38,21 +38,6 @@ const specGroups = product.specGroups?.length
     ? [{ heading: 'Özellik özeti', note: product.specsNote, specs: product.specs }]
     : [];
 const productSheetFeatures = featuresForProductGroup(product.slug);
-const galleryByGroup = (product.gallery ?? []).reduce<Map<string | undefined, typeof product.gallery>>(
-  (map, item) => {
-    const key = item.groupKey;
-    const bucket = map.get(key) ?? [];
-    bucket.push(item);
-    map.set(key, bucket);
-    return map;
-  },
-  new Map(),
-);
-const galleryGroupLabels: Record<string, string> = {
-  '960-mg': '960×960 mm Mg alaşım döküm',
-  '640-small-pitch-480': '640×480-B küçük pitch',
-  '640-small-pitch-family': '640 mm küçük pitch aile',
-};
 const schemaSpecs = specGroups.flatMap((group) => group.specs);
 const hasContext =
   Boolean(product.useCases?.length) ||
@@ -135,35 +120,6 @@ const schema = {
     </div>
   </article>
 
-  {product.gallery && product.gallery.length > 0 && (
-    <section class="product-gallery shell" aria-labelledby="gallery-heading">
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">Doğrulanmış görseller</span>
-          <h2 id="gallery-heading">Föy ile eşleşen görseller</h2>
-        </div>
-        <p>Her blok yalnızca ilgili kabinet ailesine aittir; 960×960 Mg ile 640×480-B karıştırılmaz.</p>
-      </div>
-      {[...galleryByGroup.entries()].map(([groupKey, items]) => (
-        <div class="gallery-group">
-          {groupKey && galleryGroupLabels[groupKey] && (
-            <h3 class="gallery-group-title">{galleryGroupLabels[groupKey]}</h3>
-          )}
-          <ul class="product-gallery-grid">
-            {items?.map((item) => (
-              <li>
-                <figure>
-                  <img src={item.src} alt={item.alt} width="1200" height="1224" loading="lazy" decoding="async" />
-                  <figcaption>{item.caption}</figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </section>
-  )}
-
   {specGroups.length > 0 && (
     <section class="product-specs shell" aria-labelledby="specs-heading">
       <div class="section-heading">
@@ -177,6 +133,7 @@ const schema = {
         const sheetFeatures = group.groupKey
           ? featuresForProductGroup(product.slug, group.groupKey).flatMap((sheet) => sheet.features)
           : featuresForProductGroup(product.slug).flatMap((sheet) => sheet.features);
+        const groupImages = (product.gallery ?? []).filter((item) => item.groupKey === group.groupKey);
         return (
         <div class="spec-group">
           <div class="spec-group-heading">
@@ -190,6 +147,18 @@ const schema = {
               </p>
             )}
           </div>
+          {groupImages.length > 0 && (
+            <ul class="spec-group-gallery product-gallery-grid" aria-label={`${group.heading} föy görselleri`}>
+              {groupImages.map((item) => (
+                <li>
+                  <figure>
+                    <img src={item.src} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" />
+                    <figcaption>{item.caption}</figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          )}
           {sheetFeatures.length > 0 && (
             <ul class="manufacturer-feature-grid" aria-label={`${group.heading} föy özellikleri`}>
               {sheetFeatures.map((feature) => (

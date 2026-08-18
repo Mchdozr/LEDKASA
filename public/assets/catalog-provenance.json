@@ -152,28 +152,28 @@
       "sha256": "7a1d21979f75f264d0163cb2699bb38b75f1c30d40fdeb56cb1fe953c8043a16"
     },
     {
-      "publicPath": "/assets/images/products/gallery/cnc-640-on-gorunum.webp",
-      "sourceFile": "assets/manufacturer/crops/cnc-640-on-gorunum.png",
+      "publicPath": "/assets/images/products/gallery/cnc-640-urun-fotolari.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-urun-fotolari.png",
       "origin": "manufacturer-datasheet",
-      "sha256": "6a5a93ad8e32fc1e415ff48a1f303bb1cf89ce5bee557ac6e699ab7f1f306a72"
+      "sha256": "234909bc26a21bbedcab9c093c1f1c3121239a2b2a193b364061ae5df49a4ef4"
     },
     {
-      "publicPath": "/assets/images/products/gallery/cnc-640-arka-gorunum.webp",
-      "sourceFile": "assets/manufacturer/crops/cnc-640-arka-gorunum.png",
+      "publicPath": "/assets/images/products/gallery/cnc-640-ozellik-seridi.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-ozellik-seridi.png",
       "origin": "manufacturer-datasheet",
-      "sha256": "1341d44ebc8a012767684444bdf41b43c5ee3c2fc24bec592af7bff52dbc8496"
+      "sha256": "144b705d046c15f7cc80ac56af52dae5d82a0d3d71f9fba622514c225e9a1766"
     },
     {
-      "publicPath": "/assets/images/products/gallery/cnc-640-ondan-bakim.webp",
-      "sourceFile": "assets/manufacturer/crops/cnc-640-ondan-bakim.png",
+      "publicPath": "/assets/images/products/gallery/cnc-640-spec-tablo.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-spec-tablo.png",
       "origin": "manufacturer-datasheet",
-      "sha256": "05792884b213d1a217f11f607e5fc162180ba763bf6d069726f6c3590d9d68e2"
+      "sha256": "6ced5d61f7ef464f9f27d415b63f1d32b4ee488378565892435adabbbbfd7557"
     },
     {
-      "publicPath": "/assets/images/products/gallery/cnc-640-ozellik-ikonlari.webp",
-      "sourceFile": "assets/manufacturer/crops/cnc-640-ozellik-ikonlari.png",
+      "publicPath": "/assets/images/products/gallery/cnc-640-eslestirilmis-urunler.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-eslestirilmis-urunler.png",
       "origin": "manufacturer-datasheet",
-      "sha256": "96d74ea923de92edb4b12810b51146b078383b2375a94cd33db364542011133c"
+      "sha256": "fd8fb994f29ba1d1fac856dd6d53610e4be5cf5f91dd2cf263389463d114adcb"
     },
     {
       "publicPath": "/assets/images/products/gallery/cnc-640x480-foy.webp",
