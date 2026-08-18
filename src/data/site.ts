@@ -1,3 +1,5 @@
+import type { ManufacturerGroupKey } from './manufacturer-sheets';
+
 export const siteUrl = 'https://ledkasa.com.tr';
 
 export const businessContact = {
@@ -50,6 +52,7 @@ export interface ProductSpec {
 export interface ProductSpecGroup {
   heading: string;
   note?: string;
+  groupKey?: ManufacturerGroupKey;
   specs: ProductSpec[];
   datasheetUrl?: string;
   datasheetLabel?: string;
@@ -59,6 +62,7 @@ export interface ProductGalleryItem {
   src: string;
   alt: string;
   caption: string;
+  groupKey?: ManufacturerGroupKey;
 }
 
 export interface ProductCategory {
@@ -144,6 +148,7 @@ export const products: Product[] = [
     specGroups: [
       {
         heading: '960×960 mm Mg alaşım döküm',
+        groupKey: '960-mg',
         note: 'Bu tablo yalnızca 960×960×87 mm Mg alaşım kabinet föyüne aittir. 640 mm küçük pitch gövdeler aşağıdaki ayrı başlıktadır.',
         datasheetUrl: '/assets/docs/mg-alloy-cabinet-960x960.pdf',
         datasheetLabel: '960×960 mm teknik föyü (PDF)',
@@ -163,31 +168,69 @@ export const products: Product[] = [
         ],
       },
       {
-        heading: 'Küçük pitch 640 ailesi',
-        note: 'Bu tablo 640×480-B ve 640×640 küçük pitch föylerinedir. 960×960 Mg kabinet ile karıştırılmaz; poster 640×1920 gövdesi de bu aile değildir.',
+        heading: '640×480-B küçük pitch',
+        groupKey: '640-small-pitch-480',
+        note: '640×480-B föyü. 960×960 Mg kabinet ve poster 640×1920 ile karıştırılmaz.',
         datasheetUrl: '/assets/docs/small-pitch-cabinet-640.pdf',
-        datasheetLabel: '640 mm küçük pitch föy özeti (PDF)',
+        datasheetLabel: '640 mm küçük pitch föyü (PDF)',
         specs: [
-          { label: '640×480-B ölçü', value: 'W640 × H480 × D50 mm' },
-          { label: '640×480-B ağırlık', value: '4,3 kg' },
-          { label: '640×480-B modül', value: 'P2.5 / P2 / P1.83 / P1.86 / P1.667 / P1.538 / P1.37 / P1.25' },
-          { label: '640×640 ölçü', value: 'W640 × H640 × D48 mm' },
-          { label: '640×640 modül', value: 'P2.5 / P2 / P1.8 / P1.667 / P1.5 / P1.37 / P1.25 / P1' },
-          { label: 'Aile ölçü seçenekleri', value: '320×480 / 640×480 / 320×640 / 640×640 mm' },
+          { label: 'Kabinet ölçüsü', value: 'W640 × H480 × D50 mm' },
+          { label: 'Ağırlık', value: '4,3 kg' },
+          { label: 'Modül uyumu', value: 'P2.5 / P2 / P1.83 / P1.86 / P1.667 / P1.538 / P1.37 / P1.25' },
           { label: 'Suite / modül', value: '320 × 160 mm' },
           { label: 'Malzeme', value: 'Alüminyum alaşım' },
-          { label: 'Bakım', value: 'Önden bakım' },
+          { label: 'Bakım', value: 'Önden bakım (vakum aparatı — föy)' },
           { label: 'Kurulum', value: 'Askı veya sabit' },
           { label: 'Ortam', value: 'İç mekân IP30' },
           { label: 'Renk', value: 'Siyah, gümüş' },
+          { label: 'Aksesuar', value: 'Hızlı kilit, tutamak, sistem/güç kartı, birleştirme parçası' },
+        ],
+      },
+      {
+        heading: '640 mm küçük pitch aile (640×640 vb.)',
+        groupKey: '640-small-pitch-family',
+        note: '320×480 / 640×480 / 320×640 / 640×640 mm aile föyü. 960×960 Mg gövde değildir.',
+        specs: [
+          { label: '640×640 ölçü', value: 'W640 × H640 × D48 mm' },
+          { label: '640×640 modül', value: 'P2.5 / P2 / P1.8 / P1.667 / P1.5 / P1.37 / P1.25 / P1' },
+          { label: 'Aile ölçü seçenekleri', value: '320×480 / 640×480 / 320×640 / 640×640 mm' },
+          { label: 'Ortak kalınlık', value: '48 mm (aile föyü)' },
+          { label: 'Suite / modül', value: '320 × 160 mm' },
+          { label: 'Bakım', value: 'Önden bakım' },
+          { label: 'Evrenellik', value: 'Standart sistem kartı / PSU; çift yedekleme (föy)' },
         ],
       },
     ],
     gallery: [
       {
+        src: '/assets/images/products/gallery/cnc-960-arka-gorunum.webp',
+        alt: '960×960 mm magnezyum alaşım LED kabinet arka görünümü',
+        caption: '960×960 mm Mg alaşım döküm — arka görünüm',
+        groupKey: '960-mg',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-960-olcu-diyagram.webp',
+        alt: '960×960 mm LED kabinet modül yerleşim diyagramı',
+        caption: '960×960 mm modül yerleşim diyagramı',
+        groupKey: '960-mg',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-960-ip65-arka.webp',
+        alt: '960×960 mm LED kabinet IP65 dış mekân arka görünüm',
+        caption: '960×960 mm — IP65 / kablo delikleri (föy)',
+        groupKey: '960-mg',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-960-ozellik-ikonlari.webp',
+        alt: '960×960 mm magnezyum alaşım kabinet föy özellik ikonları',
+        caption: '960×960 mm Mg alaşım — föy özellikleri',
+        groupKey: '960-mg',
+      },
+      {
         src: '/assets/images/products/gallery/cnc-960x960-foy.webp',
-        alt: '960×960 mm magnezyum alaşım LED kabinet üretici föyü',
-        caption: '960×960 mm Mg alaşım döküm — üretici föyü (küçük pitch 640 gövdesi değil)',
+        alt: '960×960 mm magnezyum alaşım LED kabinet tam föy sayfası',
+        caption: '960×960 mm tam üretici föy sayfası',
+        groupKey: '960-mg',
       },
     ],
     specsNote:

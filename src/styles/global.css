@@ -190,6 +190,22 @@ p, h1, h2, h3 { margin-top: 0; }
 .product-gallery-grid figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }
 .product-gallery-grid img { width: 100%; height: auto; display: block; background: #f4f2eb; }
 .product-gallery-grid figcaption { padding: .85rem 1rem 1.05rem; color: var(--muted); font-size: .86rem; font-weight: 650; }
+.manufacturer-feature-grid {
+  display: grid;
+  gap: .75rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+}
+.manufacturer-feature-grid li {
+  padding: .85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.manufacturer-feature-grid strong { display: block; margin-bottom: .35rem; font-size: .88rem; }
+.manufacturer-feature-grid p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.45; }
 .spec-group + .spec-group { margin-top: 1.75rem; }
 .spec-group-heading h3 { margin: 0 0 .45rem; font-size: 1.15rem; letter-spacing: -.02em; }
 .spec-group-heading p { margin: 0 0 .75rem; color: var(--muted); font-size: .9rem; }

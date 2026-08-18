@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ProductCard from '../../../components/ProductCard.astro';
 import QuoteCta from '../../../components/QuoteCta.astro';
+import { featuresForProductGroup } from '../../../data/manufacturer-sheets';
 import { productCategories, products, siteUrl, type Product, type ProductCategory } from '../../../data/site';
 
 export const getStaticPaths = (() =>
@@ -36,6 +37,7 @@ const specGroups = product.specGroups?.length
   : product.specs?.length
     ? [{ heading: 'Özellik özeti', note: product.specsNote, specs: product.specs }]
     : [];
+const productSheetFeatures = featuresForProductGroup(product.slug);
 const schemaSpecs = specGroups.flatMap((group) => group.specs);
 const hasContext =
   Boolean(product.useCases?.length) ||
@@ -149,7 +151,11 @@ const schema = {
         </div>
         {product.specsNote && <p>{product.specsNote}</p>}
       </div>
-      {specGroups.map((group) => (
+      {specGroups.map((group) => {
+        const sheetFeatures = group.groupKey
+          ? featuresForProductGroup(product.slug, group.groupKey).flatMap((sheet) => sheet.features)
+          : featuresForProductGroup(product.slug).flatMap((sheet) => sheet.features);
+        return (
         <div class="spec-group">
           <div class="spec-group-heading">
             <h3>{group.heading}</h3>
@@ -162,6 +168,16 @@ const schema = {
               </p>
             )}
           </div>
+          {sheetFeatures.length > 0 && (
+            <ul class="manufacturer-feature-grid" aria-label={`${group.heading} föy özellikleri`}>
+              {sheetFeatures.map((feature) => (
+                <li>
+                  <strong>{feature.title}</strong>
+                  <p>{feature.description}</p>
+                </li>
+              ))}
+            </ul>
+          )}
           <dl class="spec-table">
             {group.specs.map((spec) => (
               <div class="spec-row">
@@ -171,7 +187,27 @@ const schema = {
             ))}
           </dl>
         </div>
-      ))}
+        );
+      })}
+    </section>
+  )}
+
+  {productSheetFeatures.length > 0 && specGroups.every((group) => !group.groupKey) && (
+    <section class="product-specs shell" aria-labelledby="foy-features-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Üretici föyü</span>
+          <h2 id="foy-features-heading">Föyden öne çıkanlar</h2>
+        </div>
+      </div>
+      <ul class="manufacturer-feature-grid">
+        {productSheetFeatures.flatMap((sheet) => sheet.features).map((feature) => (
+          <li>
+            <strong>{feature.title}</strong>
+            <p>{feature.description}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   )}
 

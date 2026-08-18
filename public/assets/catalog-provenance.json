@@ -113,13 +113,37 @@
       "publicPath": "/assets/docs/small-pitch-cabinet-640.pdf",
       "sourceFile": "manufacturer-640-small-pitch-sheet",
       "origin": "manufacturer-datasheet-summary",
-      "sha256": "61823dfb7072124fde4d9eb3a139d239c40364f52169a6ba02899b9311f808cc"
+      "sha256": "627a614359a61a986ff67ce87d9690584865ea96114b965ee1b06baec6f1f6c5"
     },
     {
       "publicPath": "/assets/images/products/gallery/cnc-960x960-foy.webp",
       "sourceFile": "assets/manufacturer/mg-alloy-960x960-datasheet.jpg",
       "origin": "manufacturer-datasheet",
       "sha256": "045e93c6249d87ee59a876cc7922adec56b00ec8fd03ac6f2a44cc325e11a9c6"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-arka-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-foy-ust-gorsel.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "651f704bba662a9f7cd4f9410b36dd0624718df54f8aa72c841e1022592522c4"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-olcu-diyagram.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-olcu-diyagram.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "7a733dc55a42b32b9f97b54f5ceabb8ca188d9f5603b073c48b321a3705a61db"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-ip65-arka.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-ip65-arka.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "49560f1622fde93625cb5a54648413606cf2c432bf152d3f807e91c798c980e4"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-ozellik-ikonlari.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-foy-ozellikler.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "7aa3ac29a61ece999478a2ca48a89024581432d5cecd72d6f895dd8d7d6d0d45"
     }
   ]
 }

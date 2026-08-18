@@ -101,25 +101,25 @@ test('CNC product exposes verified datasheet specs without inventing offers', ()
 
 test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups', () => {
   const cnc = products.find((product) => product.slug === 'cnc-led-kasa');
-  assert.ok(cnc?.specGroups?.length === 2);
-  const [mgGroup, pitchGroup] = cnc.specGroups;
-  assert.match(mgGroup.heading, /960/);
-  assert.match(pitchGroup.heading, /640/);
+  assert.equal(cnc?.specGroups?.length, 3);
+  const mgGroup = cnc.specGroups.find((g) => g.groupKey === '960-mg');
+  const pitch480 = cnc.specGroups.find((g) => g.groupKey === '640-small-pitch-480');
+  const pitchFamily = cnc.specGroups.find((g) => g.groupKey === '640-small-pitch-family');
+  assert.ok(mgGroup && pitch480 && pitchFamily);
   const mgJoined = mgGroup.specs.map((spec) => spec.value).join(' ');
-  const pitchJoined = pitchGroup.specs.map((spec) => spec.value).join(' ');
+  const pitchJoined = [pitch480, pitchFamily].flatMap((g) => g.specs).map((s) => s.value).join(' ');
   assert.match(mgJoined, /960/);
   assert.doesNotMatch(mgJoined, /4,3 kg/);
   assert.match(pitchJoined, /W640 × H480/);
   assert.match(pitchJoined, /4,3 kg/);
   assert.doesNotMatch(pitchJoined, /960 × 960/);
   assert.ok(mgGroup.datasheetUrl?.includes('960x960'));
-  assert.ok(pitchGroup.datasheetUrl?.includes('small-pitch-cabinet-640'));
-  assert.equal(existsSync(resolve(process.cwd(), 'public', pitchGroup.datasheetUrl.replace(/^\//, ''))), true);
-  assert.ok(cnc.gallery?.some((item) => item.caption.includes('960×960')));
-  assert.equal(
-    existsSync(resolve(process.cwd(), 'public', cnc.gallery[0].src.replace(/^\//, ''))),
-    true,
-  );
+  assert.ok(pitch480.datasheetUrl?.includes('small-pitch-cabinet-640'));
+  assert.equal(existsSync(resolve(process.cwd(), 'public', pitch480.datasheetUrl.replace(/^\//, ''))), true);
+  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg').length, 5);
+  for (const item of cnc.gallery ?? []) {
+    assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
+  }
 });
 
 test('poster products expose datasheet-backed example sizes', () => {
