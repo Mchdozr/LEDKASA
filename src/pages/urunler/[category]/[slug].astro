@@ -38,6 +38,21 @@ const specGroups = product.specGroups?.length
     ? [{ heading: 'Özellik özeti', note: product.specsNote, specs: product.specs }]
     : [];
 const productSheetFeatures = featuresForProductGroup(product.slug);
+const galleryByGroup = (product.gallery ?? []).reduce<Map<string | undefined, typeof product.gallery>>(
+  (map, item) => {
+    const key = item.groupKey;
+    const bucket = map.get(key) ?? [];
+    bucket.push(item);
+    map.set(key, bucket);
+    return map;
+  },
+  new Map(),
+);
+const galleryGroupLabels: Record<string, string> = {
+  '960-mg': '960×960 mm Mg alaşım döküm',
+  '640-small-pitch-480': '640×480-B küçük pitch',
+  '640-small-pitch-family': '640 mm küçük pitch aile',
+};
 const schemaSpecs = specGroups.flatMap((group) => group.specs);
 const hasContext =
   Boolean(product.useCases?.length) ||
@@ -127,18 +142,25 @@ const schema = {
           <span class="eyebrow">Doğrulanmış görseller</span>
           <h2 id="gallery-heading">Föy ile eşleşen görseller</h2>
         </div>
-        <p>Her görsel altındaki ölçü başlığı, ilgili kabinet ailesine aittir; 960 ve 640 gövdeler karıştırılmaz.</p>
+        <p>Her blok yalnızca ilgili kabinet ailesine aittir; 960×960 Mg ile 640×480-B karıştırılmaz.</p>
       </div>
-      <ul class="product-gallery-grid">
-        {product.gallery.map((item) => (
-          <li>
-            <figure>
-              <img src={item.src} alt={item.alt} width="1200" height="1224" loading="lazy" decoding="async" />
-              <figcaption>{item.caption}</figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
+      {[...galleryByGroup.entries()].map(([groupKey, items]) => (
+        <div class="gallery-group">
+          {groupKey && galleryGroupLabels[groupKey] && (
+            <h3 class="gallery-group-title">{galleryGroupLabels[groupKey]}</h3>
+          )}
+          <ul class="product-gallery-grid">
+            {items?.map((item) => (
+              <li>
+                <figure>
+                  <img src={item.src} alt={item.alt} width="1200" height="1224" loading="lazy" decoding="async" />
+                  <figcaption>{item.caption}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </section>
   )}
 

@@ -171,8 +171,8 @@ export const products: Product[] = [
         heading: '640×480-B küçük pitch',
         groupKey: '640-small-pitch-480',
         note: '640×480-B föyü. 960×960 Mg kabinet ve poster 640×1920 ile karıştırılmaz.',
-        datasheetUrl: '/assets/docs/small-pitch-cabinet-640.pdf',
-        datasheetLabel: '640 mm küçük pitch föyü (PDF)',
+        datasheetUrl: '/assets/docs/small-pitch-640x480-B.pdf',
+        datasheetLabel: '640×480-B üretici föyü (PDF)',
         specs: [
           { label: 'Kabinet ölçüsü', value: 'W640 × H480 × D50 mm' },
           { label: 'Ağırlık', value: '4,3 kg' },
@@ -232,6 +232,36 @@ export const products: Product[] = [
         caption: '960×960 mm tam üretici föy sayfası',
         groupKey: '960-mg',
       },
+      {
+        src: '/assets/images/products/gallery/cnc-640-on-gorunum.webp',
+        alt: '640×480-B küçük pitch LED kabinet ön görünümü',
+        caption: '640×480-B — ön görünüm',
+        groupKey: '640-small-pitch-480',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-640-arka-gorunum.webp',
+        alt: '640×480-B alüminyum döküm LED kabinet arka görünümü',
+        caption: '640×480-B alüminyum döküm — arka görünüm',
+        groupKey: '640-small-pitch-480',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-640-ondan-bakim.webp',
+        alt: '640×480-B LED kabinet önden bakım iç yapısı',
+        caption: '640×480-B — önden bakım / mıknatıs noktaları',
+        groupKey: '640-small-pitch-480',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-640-ozellik-ikonlari.webp',
+        alt: '640×480-B küçük pitch kabinet föy özellik ikonları',
+        caption: '640×480-B — föy özellikleri',
+        groupKey: '640-small-pitch-480',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-640x480-foy.webp',
+        alt: '640×480-B küçük pitch LED kabinet tam föy sayfası',
+        caption: '640×480-B tam üretici föy sayfası',
+        groupKey: '640-small-pitch-480',
+      },
     ],
     specsNote:
       'Teknik değerler doğrulanmış üretici föylerine aittir. 960×960 Mg alaşım ile 640 mm küçük pitch tabloları ayrı tutulur. Projenize özel ölçü ve pitch teklifte netleşir.',
@@ -253,7 +283,8 @@ export const products: Product[] = [
     datasheetLabel: '960×960 mm teknik föyü (PDF)',
     datasheets: [
       { url: '/assets/docs/mg-alloy-cabinet-960x960.pdf', label: '960×960 mm Mg alaşım föyü (PDF)' },
-      { url: '/assets/docs/small-pitch-cabinet-640.pdf', label: '640 mm küçük pitch föy özeti (PDF)' },
+      { url: '/assets/docs/small-pitch-640x480-B.pdf', label: '640×480-B üretici föyü (PDF)' },
+      { url: '/assets/docs/small-pitch-cabinet-640.pdf', label: '640 mm küçük pitch aile özeti (PDF)' },
     ],
     url: productPath('led-ekran-kasalari', 'cnc-led-kasa'),
     image: '/assets/images/products/cnc-led-kasa.webp',

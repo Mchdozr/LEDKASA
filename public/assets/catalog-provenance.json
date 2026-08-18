@@ -144,6 +144,42 @@
       "sourceFile": "assets/manufacturer/crops/cnc-960-foy-ozellikler.png",
       "origin": "manufacturer-datasheet",
       "sha256": "7aa3ac29a61ece999478a2ca48a89024581432d5cecd72d6f895dd8d7d6d0d45"
+    },
+    {
+      "publicPath": "/assets/docs/small-pitch-640x480-B.pdf",
+      "sourceFile": "assets/uploads/specifications .pdf",
+      "origin": "manufacturer-datasheet",
+      "sha256": "7a1d21979f75f264d0163cb2699bb38b75f1c30d40fdeb56cb1fe953c8043a16"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-640-on-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-on-gorunum.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "6a5a93ad8e32fc1e415ff48a1f303bb1cf89ce5bee557ac6e699ab7f1f306a72"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-640-arka-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-arka-gorunum.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "1341d44ebc8a012767684444bdf41b43c5ee3c2fc24bec592af7bff52dbc8496"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-640-ondan-bakim.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-ondan-bakim.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "05792884b213d1a217f11f607e5fc162180ba763bf6d069726f6c3590d9d68e2"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-640-ozellik-ikonlari.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640-ozellik-ikonlari.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "96d74ea923de92edb4b12810b51146b078383b2375a94cd33db364542011133c"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-640x480-foy.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-640x480-foy.png",
+      "origin": "manufacturer-datasheet",
+      "sha256": "8d9102489868f5fc51f07c23cd1504a045f133793b9170e57f55fd09eb441c38"
     }
   ]
 }

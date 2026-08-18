@@ -114,9 +114,10 @@ test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups
   assert.match(pitchJoined, /4,3 kg/);
   assert.doesNotMatch(pitchJoined, /960 × 960/);
   assert.ok(mgGroup.datasheetUrl?.includes('960x960'));
-  assert.ok(pitch480.datasheetUrl?.includes('small-pitch-cabinet-640'));
+  assert.ok(pitch480.datasheetUrl?.includes('640x480-B'));
   assert.equal(existsSync(resolve(process.cwd(), 'public', pitch480.datasheetUrl.replace(/^\//, ''))), true);
   assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg').length, 5);
+  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '640-small-pitch-480').length, 5);
   for (const item of cnc.gallery ?? []) {
     assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
   }

@@ -190,6 +190,8 @@ p, h1, h2, h3 { margin-top: 0; }
 .product-gallery-grid figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }
 .product-gallery-grid img { width: 100%; height: auto; display: block; background: #f4f2eb; }
 .product-gallery-grid figcaption { padding: .85rem 1rem 1.05rem; color: var(--muted); font-size: .86rem; font-weight: 650; }
+.gallery-group + .gallery-group { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.gallery-group-title { margin: 0 0 1rem; font-size: 1rem; font-weight: 600; }
 .manufacturer-feature-grid {
   display: grid;
   gap: .75rem;
