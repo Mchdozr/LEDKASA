@@ -39,16 +39,16 @@ export const manufacturerGalleryManifest = [
     caption: '640×480-B — önden bakım iç yapı',
   },
   {
-    file: 'rental-960-urun-gorunumu.webp',
+    file: 'rental-960-on-gorunum.webp',
     productSlug: 'rental-led-kabinet' as const,
     groupKey: 'rental-960-mg' as const,
-    caption: '960×960 mm — ön ve arka görünüm',
+    caption: '960×960 mm — ön görünüm',
   },
   {
-    file: 'rental-960-olcu-diyagram.webp',
+    file: 'rental-960-arka-gorunum.webp',
     productSlug: 'rental-led-kabinet' as const,
     groupKey: 'rental-960-mg' as const,
-    caption: '960×960 mm — ölçü diyagramı',
+    caption: '960×960 mm — arka görünüm',
   },
   {
     file: 'rental-960-ultra-hafif.webp',
@@ -61,11 +61,5 @@ export const manufacturerGalleryManifest = [
     productSlug: 'rental-led-kabinet' as const,
     groupKey: 'rental-960-mg' as const,
     caption: 'Üst/alt hava çıkış portları',
-  },
-  {
-    file: 'rental-960-ip65-yapi.webp',
-    productSlug: 'rental-led-kabinet' as const,
-    groupKey: 'rental-960-mg' as const,
-    caption: 'Dış mekân IP65 yapı',
   },
 ] as const;

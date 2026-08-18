@@ -137,7 +137,7 @@ test('rental product exposes 960 Mg datasheet specs and cabinet gallery', () => 
   assert.match(joined, /P5/);
   assert.match(joined, /kabinet kapasitesi/);
   assert.doesNotMatch(joined, /640×480/);
-  assert.equal(rental?.gallery?.filter((item) => item.kind === 'cabinet-photo').length, 5);
+  assert.equal(rental?.gallery?.filter((item) => item.kind === 'cabinet-photo').length, 4);
   for (const item of rental?.gallery ?? []) {
     assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
   }

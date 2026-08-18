@@ -170,34 +170,28 @@
       "sha256": "54c722224fe85a855e5814dfcd556a9f53058d675b5a41c1283a4587c0f4383c"
     },
     {
-      "publicPath": "/assets/images/products/gallery/rental-960-urun-gorunumu.webp",
-      "sourceFile": "assets/manufacturer/crops/rental-960-urun-gorunumu.png",
-      "origin": "manufacturer-datasheet",
-      "note": "Föy gömülü görsel — arka + ön iskelet kompozit"
+      "publicPath": "/assets/images/products/gallery/rental-960-on-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/rental-960-on-gorunum.png",
+      "origin": "manufacturer-product-photo",
+      "note": "U-Motion 960×960-B — ön görünüm"
     },
     {
-      "publicPath": "/assets/images/products/gallery/rental-960-olcu-diyagram.webp",
-      "sourceFile": "assets/manufacturer/crops/rental-960-olcu-diyagram.png",
-      "origin": "manufacturer-datasheet",
-      "note": "Föy gömülü görsel — 960×960 mm ölçü"
+      "publicPath": "/assets/images/products/gallery/rental-960-arka-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/rental-960-arka-gorunum.png",
+      "origin": "manufacturer-product-photo",
+      "note": "U-Motion 960×960-B — arka görünüm"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-ultra-hafif.webp",
       "sourceFile": "assets/manufacturer/crops/rental-960-ultra-hafif.png",
-      "origin": "manufacturer-datasheet",
-      "note": "Föy gömülü görsel — magnezyum gövde arka"
+      "origin": "manufacturer-product-photo",
+      "note": "U-Motion 960×960-B — ultra hafif gövde"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-hava-cikislari.webp",
       "sourceFile": "assets/manufacturer/crops/rental-960-hava-cikislari.png",
-      "origin": "manufacturer-datasheet",
-      "note": "Föy gömülü görsel — kablo geçiş / üst profil"
-    },
-    {
-      "publicPath": "/assets/images/products/gallery/rental-960-ip65-yapi.webp",
-      "sourceFile": "assets/manufacturer/crops/rental-960-ip65-yapi.png",
-      "origin": "manufacturer-datasheet",
-      "note": "Föy gömülü görsel — dış mekân IP65"
+      "origin": "manufacturer-product-photo",
+      "note": "U-Motion 960×960-B — hava çıkış portları"
     }
   ]
 }
