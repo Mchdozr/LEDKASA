@@ -171,33 +171,33 @@
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-urun-gorunumu.webp",
-      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/manufacturer/crops/rental-960-urun-gorunumu.png",
       "origin": "manufacturer-datasheet",
-      "note": "Föy üst bölüm — ön/arka ürün görünümü kırpımı"
+      "note": "Föy gömülü görsel — arka + ön iskelet kompozit"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-olcu-diyagram.webp",
-      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/manufacturer/crops/rental-960-olcu-diyagram.png",
       "origin": "manufacturer-datasheet",
-      "note": "Föy üst bölüm — 960×960 mm ölçü diyagramı kırpımı"
+      "note": "Föy gömülü görsel — 960×960 mm ölçü"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-ultra-hafif.webp",
-      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/manufacturer/crops/rental-960-ultra-hafif.png",
       "origin": "manufacturer-datasheet",
-      "note": "Föy detay — ultra hafif gövde"
+      "note": "Föy gömülü görsel — magnezyum gövde arka"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-hava-cikislari.webp",
-      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/manufacturer/crops/rental-960-hava-cikislari.png",
       "origin": "manufacturer-datasheet",
-      "note": "Föy detay — hava çıkış portları"
+      "note": "Föy gömülü görsel — kablo geçiş / üst profil"
     },
     {
       "publicPath": "/assets/images/products/gallery/rental-960-ip65-yapi.webp",
-      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "sourceFile": "assets/manufacturer/crops/rental-960-ip65-yapi.png",
       "origin": "manufacturer-datasheet",
-      "note": "Föy detay — IP65 dış mekân yapı"
+      "note": "Föy gömülü görsel — dış mekân IP65"
     }
   ]
 }
