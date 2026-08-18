@@ -1,6 +1,10 @@
-/** Ürün grubu anahtarları — CNC içinde alt profiller. */
+/** Ürün grubu anahtarları — CNC ve rental alt profilleri. */
 
-export type ManufacturerGroupKey = '960-mg' | '640-small-pitch-480' | '640-small-pitch-family';
+export type ManufacturerGroupKey =
+  | '960-mg'
+  | '640-small-pitch-480'
+  | '640-small-pitch-family'
+  | 'rental-960-mg';
 
 /** Galeri görseli → ürün eşleşmesi (yalnızca kabinet fotoğrafları). */
 export const manufacturerGalleryManifest = [
@@ -33,5 +37,35 @@ export const manufacturerGalleryManifest = [
     productSlug: 'cnc-led-kasa' as const,
     groupKey: '640-small-pitch-480' as const,
     caption: '640×480-B — önden bakım iç yapı',
+  },
+  {
+    file: 'rental-960-urun-gorunumu.webp',
+    productSlug: 'rental-led-kabinet' as const,
+    groupKey: 'rental-960-mg' as const,
+    caption: '960×960 mm — ön ve arka görünüm',
+  },
+  {
+    file: 'rental-960-olcu-diyagram.webp',
+    productSlug: 'rental-led-kabinet' as const,
+    groupKey: 'rental-960-mg' as const,
+    caption: '960×960 mm — ölçü diyagramı',
+  },
+  {
+    file: 'rental-960-ultra-hafif.webp',
+    productSlug: 'rental-led-kabinet' as const,
+    groupKey: 'rental-960-mg' as const,
+    caption: 'Ultra hafif magnezyum gövde',
+  },
+  {
+    file: 'rental-960-hava-cikislari.webp',
+    productSlug: 'rental-led-kabinet' as const,
+    groupKey: 'rental-960-mg' as const,
+    caption: 'Üst/alt hava çıkış portları',
+  },
+  {
+    file: 'rental-960-ip65-yapi.webp',
+    productSlug: 'rental-led-kabinet' as const,
+    groupKey: 'rental-960-mg' as const,
+    caption: 'Dış mekân IP65 yapı',
   },
 ] as const;

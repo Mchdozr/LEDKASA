@@ -126,6 +126,26 @@ test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups
   }
 });
 
+test('rental product exposes 960 Mg datasheet specs and cabinet gallery', () => {
+  const rental = products.find((product) => product.slug === 'rental-led-kabinet');
+  assert.equal(rental?.specGroups?.length, 2);
+  const mgGroup = rental?.specGroups?.find((g) => g.groupKey === 'rental-960-mg');
+  assert.ok(mgGroup);
+  const joined = mgGroup.specs.map((spec) => spec.value).join(' ');
+  assert.match(joined, /960/);
+  assert.match(joined, /11,8 kg/);
+  assert.match(joined, /P5/);
+  assert.match(joined, /kabinet kapasitesi/);
+  assert.doesNotMatch(joined, /640×480/);
+  assert.equal(rental?.gallery?.filter((item) => item.kind === 'cabinet-photo').length, 5);
+  for (const item of rental?.gallery ?? []) {
+    assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
+  }
+  const sheet = rental?.datasheets?.[0];
+  assert.ok(sheet?.url.includes('mg-alloy-cabinet-960x960'));
+  assert.equal(existsSync(resolve(process.cwd(), 'public', sheet.url.replace(/^\//, ''))), true);
+});
+
 test('poster products expose datasheet-backed sizes', () => {
   const poster = products.find((product) => product.slug === 'poster-led-kasa');
   const foldable = products.find((product) => product.slug === 'katlanabilir-poster-led-kasa');

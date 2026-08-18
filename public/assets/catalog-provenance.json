@@ -168,6 +168,36 @@
       "sourceFile": "assets/manufacturer/crops/cnc-640-ic-yapi.png",
       "origin": "manufacturer-datasheet",
       "sha256": "54c722224fe85a855e5814dfcd556a9f53058d675b5a41c1283a4587c0f4383c"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/rental-960-urun-gorunumu.webp",
+      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "origin": "manufacturer-datasheet",
+      "note": "Föy üst bölüm — ön/arka ürün görünümü kırpımı"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/rental-960-olcu-diyagram.webp",
+      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "origin": "manufacturer-datasheet",
+      "note": "Föy üst bölüm — 960×960 mm ölçü diyagramı kırpımı"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/rental-960-ultra-hafif.webp",
+      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "origin": "manufacturer-datasheet",
+      "note": "Föy detay — ultra hafif gövde"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/rental-960-hava-cikislari.webp",
+      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "origin": "manufacturer-datasheet",
+      "note": "Föy detay — hava çıkış portları"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/rental-960-ip65-yapi.webp",
+      "sourceFile": "public/assets/docs/mg-alloy-cabinet-960x960.pdf",
+      "origin": "manufacturer-datasheet",
+      "note": "Föy detay — IP65 dış mekân yapı"
     }
   ]
 }

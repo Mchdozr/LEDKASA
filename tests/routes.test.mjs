@@ -138,6 +138,10 @@ test('rental and poster pages do not inherit the 640 small-pitch CNC table', () 
   const rental = builtHtml('urunler/led-ekran-kasalari/rental-led-kabinet');
   const poster = builtHtml('urunler/led-ekran-kasalari/poster-led-kasa');
   const foldable = builtHtml('urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa');
+  assert.match(rental, /W960 × H960 × D87 mm/);
+  assert.match(rental, /rental-960-urun-gorunumu\.webp/);
+  assert.match(rental, /mg-alloy-cabinet-960x960\.pdf/);
+  assert.match(rental, /datasheet-card/);
   for (const html of [rental, poster, foldable]) {
     assert.doesNotMatch(html, /640×480-B/);
     assert.doesNotMatch(html, /640 mm küçük pitch aile/);
