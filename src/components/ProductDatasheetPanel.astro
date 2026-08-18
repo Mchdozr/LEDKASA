@@ -1,0 +1,41 @@
+---
+export interface DatasheetItem {
+  url: string;
+  title: string;
+  meta?: string;
+}
+
+interface Props {
+  items: DatasheetItem[];
+  heading?: string;
+  intro?: string;
+}
+
+const { items, heading = 'Teknik föyler', intro } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="product-datasheets" aria-labelledby="datasheets-heading">
+    <div class="product-datasheets-head">
+      <div>
+        <span class="eyebrow">Dokümantasyon</span>
+        <h2 id="datasheets-heading">{heading}</h2>
+      </div>
+      {intro && <p>{intro}</p>}
+    </div>
+    <ul class="datasheet-card-grid">
+      {items.map((item) => (
+        <li>
+          <a class="datasheet-card" href={item.url} download>
+            <span class="datasheet-card-badge" aria-hidden="true">PDF</span>
+            <span class="datasheet-card-body">
+              <strong>{item.title}</strong>
+              {item.meta && <span>{item.meta}</span>}
+            </span>
+            <span class="datasheet-card-cta">İndir</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

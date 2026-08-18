@@ -3,9 +3,9 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ProductCard from '../../../components/ProductCard.astro';
+import ProductDatasheetPanel from '../../../components/ProductDatasheetPanel.astro';
 import QuoteCta from '../../../components/QuoteCta.astro';
-import { featuresForProductGroup } from '../../../data/manufacturer-sheets';
-import { productCategories, products, siteUrl, type Product, type ProductCategory } from '../../../data/site';
+import { productCategories, products, siteUrl, type Product, type ProductCategory, type ProductDatasheet } from '../../../data/site';
 
 export const getStaticPaths = (() =>
   products.map((product) => {
@@ -37,8 +37,21 @@ const specGroups = product.specGroups?.length
   : product.specs?.length
     ? [{ heading: 'Özellik özeti', note: product.specsNote, specs: product.specs }]
     : [];
-const productSheetFeatures = featuresForProductGroup(product.slug);
 const schemaSpecs = specGroups.flatMap((group) => group.specs);
+const datasheetItems = (() => {
+  const seen = new Set<string>();
+  const items: ProductDatasheet[] = [];
+  const add = (entry?: ProductDatasheet) => {
+    if (!entry?.url || seen.has(entry.url)) return;
+    seen.add(entry.url);
+    items.push(entry);
+  };
+  for (const sheet of product.datasheets ?? []) add(sheet);
+  if (!product.datasheets?.length && product.datasheetUrl) {
+    add({ url: product.datasheetUrl, title: product.datasheetLabel ?? 'Teknik föy', meta: 'PDF' });
+  }
+  return items;
+})();
 const hasContext =
   Boolean(product.useCases?.length) ||
   Boolean(product.relatedGuides?.length) ||
@@ -101,22 +114,6 @@ const schema = {
         <a class="button" href={`/teklif-al/?urun=${encodeURIComponent(product.slug)}`}>Bu ürün için teklif alın</a>
         <a class="text-link" href={category.url}>Kategoriye dön <span aria-hidden="true">→</span></a>
       </div>
-      {product.datasheets && product.datasheets.length > 0 ? (
-        product.datasheets.map((sheet) => (
-          <p class="product-datasheet">
-            <a class="text-link" href={sheet.url} download>
-              {sheet.label} <span aria-hidden="true">↓</span>
-            </a>
-          </p>
-        ))
-      ) : product.datasheetUrl ? (
-        <p class="product-datasheet">
-          <a class="text-link" href={product.datasheetUrl} download>
-            {product.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
-          </a>
-        </p>
-      ) : null}
-      <p class="product-note">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
     </div>
   </article>
 
@@ -130,41 +127,23 @@ const schema = {
         {product.specsNote && <p>{product.specsNote}</p>}
       </div>
       {specGroups.map((group) => {
-        const sheetFeatures = group.groupKey
-          ? featuresForProductGroup(product.slug, group.groupKey).flatMap((sheet) => sheet.features)
-          : featuresForProductGroup(product.slug).flatMap((sheet) => sheet.features);
-        const groupImages = (product.gallery ?? []).filter((item) => item.groupKey === group.groupKey);
+        const cabinetPhotos = (product.gallery ?? []).filter(
+          (item) => item.groupKey === group.groupKey && item.kind === 'cabinet-photo',
+        );
         return (
         <div class="spec-group">
           <div class="spec-group-heading">
             <h3>{group.heading}</h3>
             {group.note && <p>{group.note}</p>}
-            {group.datasheetUrl && (
-              <p>
-                <a class="text-link" href={group.datasheetUrl} download>
-                  {group.datasheetLabel ?? 'Teknik föy (PDF)'} <span aria-hidden="true">↓</span>
-                </a>
-              </p>
-            )}
           </div>
-          {groupImages.length > 0 && (
-            <ul class="spec-group-gallery product-gallery-grid" aria-label={`${group.heading} föy görselleri`}>
-              {groupImages.map((item) => (
+          {cabinetPhotos.length > 0 && (
+            <ul class="cabinet-photo-grid" aria-label={`${group.heading} ürün görselleri`}>
+              {cabinetPhotos.map((item) => (
                 <li>
                   <figure>
-                    <img src={item.src} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" />
+                    <img src={item.src} alt={item.alt} width="800" height="800" loading="lazy" decoding="async" />
                     <figcaption>{item.caption}</figcaption>
                   </figure>
-                </li>
-              ))}
-            </ul>
-          )}
-          {sheetFeatures.length > 0 && (
-            <ul class="manufacturer-feature-grid" aria-label={`${group.heading} föy özellikleri`}>
-              {sheetFeatures.map((feature) => (
-                <li>
-                  <strong>{feature.title}</strong>
-                  <p>{feature.description}</p>
                 </li>
               ))}
             </ul>
@@ -180,26 +159,15 @@ const schema = {
         </div>
         );
       })}
+      <p class="product-specs-footnote">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
     </section>
   )}
 
-  {productSheetFeatures.length > 0 && specGroups.every((group) => !group.groupKey) && (
-    <section class="product-specs shell" aria-labelledby="foy-features-heading">
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">Üretici föyü</span>
-          <h2 id="foy-features-heading">Föyden öne çıkanlar</h2>
-        </div>
-      </div>
-      <ul class="manufacturer-feature-grid">
-        {productSheetFeatures.flatMap((sheet) => sheet.features).map((feature) => (
-          <li>
-            <strong>{feature.title}</strong>
-            <p>{feature.description}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
+  {datasheetItems.length > 0 && (
+    <ProductDatasheetPanel
+      items={datasheetItems}
+      intro="Detaylı ölçü, pitch ve aksesuar bilgileri için teknik föyleri indirebilirsiniz."
+    />
   )}
 
   {hasContext && (

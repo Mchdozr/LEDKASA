@@ -125,8 +125,11 @@ test('product pages include breadcrumbs and related products', () => {
   assert.match(html, /mg-alloy-cabinet-960x960\.pdf/);
   assert.match(html, /640×480-B|640×480/);
   assert.match(html, /640 mm küçük pitch aile/);
-  assert.match(html, /Ultra hafif/);
+  assert.match(html, /datasheet-card/);
   assert.match(html, /cnc-960-arka-gorunum\.webp/);
+  assert.match(html, /cnc-640-on-gorunum\.webp/);
+  assert.doesNotMatch(html, /cnc-640-ozellik-seridi\.webp/);
+  assert.doesNotMatch(html, /Ultra hafif/);
   assert.doesNotMatch(html, /640×1920 mm Mg/);
   assert.match(html, /İlgili rehberler/);
 });

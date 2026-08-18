@@ -185,6 +185,22 @@ p, h1, h2, h3 { margin-top: 0; }
 .product-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; }
 .product-note { margin: 1.1rem 0 0; color: var(--muted); font-size: .76rem; }
 .product-datasheet { margin: .9rem 0 0; }
+.product-datasheets { padding-block: clamp(2rem, 5vw, 4rem); border-top: 1px solid var(--line); }
+.product-datasheets-head { display: grid; gap: .75rem; margin-bottom: 1.25rem; max-width: 42rem; }
+.datasheet-card-grid { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+.datasheet-card { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding: 1rem 1.15rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); color: inherit; text-decoration: none; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+.datasheet-card:hover { border-color: rgba(16,22,19,.22); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(16,22,19,.06); }
+.datasheet-card-badge { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: .75rem; background: var(--ink); color: var(--white); font-size: .68rem; font-weight: 800; letter-spacing: .06em; }
+.datasheet-card-body { display: grid; gap: .2rem; min-width: 0; }
+.datasheet-card-body strong { font-size: .95rem; font-weight: 750; }
+.datasheet-card-body span { color: var(--muted); font-size: .82rem; }
+.datasheet-card-cta { padding: .45rem .85rem; border-radius: 999px; background: rgba(16,22,19,.06); font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.datasheet-card:hover .datasheet-card-cta { background: var(--green); color: var(--ink); }
+.product-specs-footnote { margin: 2rem 0 0; padding: 1rem 1.1rem; border-radius: var(--radius); background: rgba(16,22,19,.04); color: var(--muted); font-size: .86rem; line-height: 1.55; }
+.cabinet-photo-grid { display: grid; gap: .85rem; margin: 0 0 1.5rem; padding: 0; list-style: none; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.cabinet-photo-grid figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #f4f2eb; }
+.cabinet-photo-grid img { width: 100%; height: auto; display: block; object-fit: contain; }
+.cabinet-photo-grid figcaption { padding: .65rem .8rem .8rem; color: var(--muted); font-size: .78rem; font-weight: 650; text-align: center; }
 .product-specs, .product-context, .comparison-section, .product-gallery { padding-block: clamp(2rem, 6vw, 4.5rem); }
 .product-gallery-grid { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
 .product-gallery-grid figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-raised); }

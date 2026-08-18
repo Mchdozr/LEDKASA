@@ -87,11 +87,12 @@ test('every catalog image resolves to a committed local public asset', () => {
 test('CNC product exposes verified datasheet specs without inventing offers', () => {
   const cnc = products.find((product) => product.slug === 'cnc-led-kasa');
   assert.ok(cnc?.specs?.length);
-  assert.ok(cnc.datasheetUrl);
+  const primarySheet = cnc?.datasheets?.[0];
+  assert.ok(primarySheet?.url);
   assert.equal(
-    existsSync(resolve(process.cwd(), 'public', cnc.datasheetUrl.replace(/^\//, ''))),
+    existsSync(resolve(process.cwd(), 'public', primarySheet.url.replace(/^\//, ''))),
     true,
-    `missing datasheet: ${cnc.datasheetUrl}`,
+    `missing datasheet: ${primarySheet.url}`,
   );
   const joined = cnc.specs.map((spec) => `${spec.label} ${spec.value}`).join(' ');
   assert.match(joined, /960/);
@@ -113,31 +114,33 @@ test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups
   assert.match(pitchJoined, /W640 × H480/);
   assert.match(pitchJoined, /4,3 kg/);
   assert.doesNotMatch(pitchJoined, /960 × 960/);
-  assert.ok(mgGroup.datasheetUrl?.includes('960x960'));
-  assert.ok(pitch480.datasheetUrl?.includes('640x480-B'));
-  assert.equal(existsSync(resolve(process.cwd(), 'public', pitch480.datasheetUrl.replace(/^\//, ''))), true);
-  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg').length, 5);
-  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '640-small-pitch-480').length, 5);
+  assert.ok(mgGroup);
+  assert.ok(pitch480);
+  const pitch480Sheet = cnc.datasheets?.find((sheet) => sheet.url.includes('640x480-B'));
+  assert.ok(pitch480Sheet);
+  assert.equal(existsSync(resolve(process.cwd(), 'public', pitch480Sheet.url.replace(/^\//, ''))), true);
+  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg' && item.kind === 'cabinet-photo').length, 2);
+  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '640-small-pitch-480' && item.kind === 'cabinet-photo').length, 3);
   for (const item of cnc.gallery ?? []) {
     assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
   }
 });
 
-test('poster products expose datasheet-backed example sizes', () => {
+test('poster products expose datasheet-backed sizes', () => {
   const poster = products.find((product) => product.slug === 'poster-led-kasa');
   const foldable = products.find((product) => product.slug === 'katlanabilir-poster-led-kasa');
 
-  assert.ok(poster?.datasheetUrl);
-  assert.ok(foldable?.datasheetUrl);
-  assert.equal(existsSync(resolve(process.cwd(), 'public', poster.datasheetUrl.replace(/^\//, ''))), true);
-  assert.equal(existsSync(resolve(process.cwd(), 'public', foldable.datasheetUrl.replace(/^\//, ''))), true);
+  assert.ok(poster?.datasheets?.[0]?.url);
+  assert.ok(foldable?.datasheets?.[0]?.url);
+  assert.equal(existsSync(resolve(process.cwd(), 'public', poster.datasheets[0].url.replace(/^\//, ''))), true);
+  assert.equal(existsSync(resolve(process.cwd(), 'public', foldable.datasheets[0].url.replace(/^\//, ''))), true);
 
-  const posterJoined = poster.specs.map((spec) => spec.value).join(' ');
+  const posterJoined = (poster.specGroups ?? []).flatMap((group) => group.specs).map((spec) => spec.value).join(' ');
   assert.match(posterJoined, /640/);
   assert.match(posterJoined, /1920/);
   assert.match(posterJoined, /2000/);
 
-  const foldableJoined = foldable.specs.map((spec) => spec.value).join(' ');
+  const foldableJoined = (foldable.specs ?? []).map((spec) => spec.value).join(' ');
   assert.match(foldableJoined, /640/);
   assert.match(foldableJoined, /26 kg/);
   assert.match(foldableJoined, /ön/i);
@@ -147,7 +150,8 @@ test('every product carries qualitative specs, guide and application cross-links
   const slugSet = new Set(products.map((product) => product.slug));
 
   for (const product of products) {
-    assert.ok(product.specs?.length, `${product.slug} needs specs`);
+    const hasSpecs = Boolean(product.specs?.length || product.specGroups?.length);
+    assert.ok(hasSpecs, `${product.slug} needs specs or specGroups`);
     assert.ok(product.specsNote, `${product.slug} needs specsNote`);
     assert.ok(product.relatedGuides?.length, `${product.slug} needs relatedGuides`);
     assert.ok(product.applicationLinks?.length, `${product.slug} needs applicationLinks`);

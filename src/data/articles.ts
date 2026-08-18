@@ -436,14 +436,14 @@ export const articles: Article[] = [
         bullets: ['Pitch / görüş mesafesi', 'Modül en × boy ölçüsü', 'Kabinet içi yerleşim adedi'],
       },
       {
-        heading: 'Örnek: 960×960 mm kabinet ailesi',
+        heading: '960×960 mm kabinet ailesi',
         paragraphs: [
           'Doğrulanmış üretici föyündeki 960×960×87 mm Mg alaşım döküm kabinet örneği; P4, P5, P6.67, P8, P10 ve P13.33 modül aileleriyle birlikte değerlendirilebilir.',
           'Bu liste yönlendirme amaçlıdır. Kullandığınız modül markası, PCB ölçüsü (örnek 320×160 mm suite) ve receiving card düzeni teklif aşamasında ayrıca doğrulanır.',
         ],
       },
       {
-        heading: 'Örnek: 640 mm küçük pitch ailesi',
+        heading: '640 mm küçük pitch ailesi',
         paragraphs: [
           'Ayrı bir üretici föyünde 640×480-B (50 mm derinlik, 4,3 kg) ve 640×640 (48 mm) küçük pitch gövdeler; 320×160 mm modül kiti ile P1–P2.5 aralığında değerlendirilir.',
           'Bu aile 960×960 Mg kabinet ile aynı tabloya yazılmaz. 320×480 / 640×480 / 320×640 / 640×640 ölçü seçenekleri küçük pitch föyüne aittir; poster 640×1920 gövdesi değildir.',
@@ -486,7 +486,7 @@ export const articles: Article[] = [
         ],
       },
       {
-        heading: 'Örnek güç aralıklarını doğru okuyun',
+        heading: 'Güç aralıklarını doğru okuyun',
         paragraphs: [
           '960×960 mm örnek föyde 200W-5V 40A veya 400W-5V 80A gibi PSU seçenekleri ve 20A 3×2,5 mm² güç konektörü yer alır. Bunlar örnek konfigürasyonlardır; gerçek tüketim modül tipi ve parlaklık profiline göre teklifte hesaplanır.',
         ],
