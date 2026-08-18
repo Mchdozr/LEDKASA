@@ -1366,6 +1366,39 @@ p, h1, h2, h3 { margin-top: 0; }
   .blog-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+@media (max-width: 63.99rem) {
+  .hero-track {
+    height: auto;
+    min-height: 0;
+  }
+  .hero-slide {
+    min-height: 0;
+    overflow: visible;
+  }
+  .hero-ready .hero-slide {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+  .hero-ready .hero-slide.is-active {
+    position: relative;
+    inset: auto;
+  }
+  .hero-copy {
+    padding: clamp(1.5rem, 5vw, 2.25rem) clamp(1.25rem, 5vw, 2rem) 1rem;
+  }
+  .hero-media {
+    min-height: 0;
+    overflow: visible;
+    padding: 0.35rem 0.75rem 5.25rem;
+  }
+  .hero-media img {
+    width: min(86%, 19rem);
+    max-height: none;
+    height: auto;
+  }
+}
+
 @media (min-width: 64rem) {
   .desktop-nav, .header-quote { display: flex; }
   .mobile-menu-toggle, .mobile-nav { display: none !important; }

@@ -70,6 +70,19 @@ test('desktop hero reserves one stable frame height for every slide image', () =
   assert.match(css, /rotateY\(/);
 });
 
+test('mobile hero lets the product image fully stack below the copy', () => {
+  const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
+
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*63\.99rem\)\s*\{[\s\S]*?\.hero-ready \.hero-slide\.is-active\s*\{[\s\S]*?position:\s*relative/s,
+  );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*63\.99rem\)\s*\{[\s\S]*?\.hero-media img\s*\{[\s\S]*?max-height:\s*none/s,
+  );
+});
+
 test('desktop header centers the primary navigation between the brand and quote action', () => {
   const css = readFileSync(resolve(projectRoot, 'src/styles/global.css'), 'utf8');
 
