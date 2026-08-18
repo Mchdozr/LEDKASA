@@ -32,7 +32,7 @@ if (extract.status !== 0) {
   process.exit(extract.status ?? 1);
 }
 
-const photoW = 450;
+const photoW = 520;
 const regions = {
   rear: { left: 8, top: 72, width: photoW, height: 318 },
   front: { left: 8, top: 402, width: photoW, height: 318 },
@@ -47,23 +47,24 @@ async function publish(name, region) {
   await sharp(tmpJpg).extract(region).png().toFile(pngOut);
   await sharp(pngOut)
     .resize({ width: 1400, height: 1400, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: 86 })
+    .webp({ quality: 88 })
     .toFile(resolve(outDir, `${name}.webp`));
 }
 
+// Ön+arka: dikey kompozit — grid'de tam genişlikte okunaklı
 const rearBuf = await sharp(tmpJpg).extract(regions.rear).toBuffer();
 const frontBuf = await sharp(tmpJpg).extract(regions.front).toBuffer();
 await sharp({
-  create: { width: photoW * 2, height: 318, channels: 3, background: '#ffffff' },
+  create: { width: photoW, height: 636, channels: 3, background: '#ffffff' },
 })
   .composite([
     { input: rearBuf, left: 0, top: 0 },
-    { input: frontBuf, left: photoW, top: 0 },
+    { input: frontBuf, left: 0, top: 318 },
   ])
   .png()
   .toFile(resolve(cropDir, 'rental-960-urun-gorunumu.png'));
 await sharp(resolve(cropDir, 'rental-960-urun-gorunumu.png'))
-  .webp({ quality: 86 })
+  .webp({ quality: 88 })
   .toFile(resolve(outDir, 'rental-960-urun-gorunumu.webp'));
 
 await publish('rental-960-olcu-diyagram', regions.olcu);
