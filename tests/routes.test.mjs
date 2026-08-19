@@ -163,6 +163,10 @@ test('foldable poster page publishes 500×2000 specs and cabinet photos', () => 
   assert.match(html, /foldable-500-yan-195mm\.webp/);
   assert.match(html, /foldable-500-arka-gorunum\.webp/);
   assert.match(html, /data-cabinet-lightbox/);
+  assert.match(html, /data-product-media-slideshow/);
+  assert.match(html, /data-product-media-previous/);
+  assert.match(html, /data-product-media-next/);
+  assert.equal((html.match(/data-product-media-slide(?!show)/g) ?? []).length, 3);
 });
 
 test('cabinet comparison page publishes a decision table', () => {

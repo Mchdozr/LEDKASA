@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import CabinetPhotoGrid from '../../../components/CabinetPhotoGrid.astro';
 import ProductCard from '../../../components/ProductCard.astro';
+import ProductMediaSlideshow from '../../../components/ProductMediaSlideshow.astro';
 import ProductDatasheetPanel from '../../../components/ProductDatasheetPanel.astro';
 import QuoteCta from '../../../components/QuoteCta.astro';
 import { productCategories, products, siteUrl, type Product, type ProductCategory, type ProductDatasheet } from '../../../data/site';
@@ -58,6 +59,7 @@ const hasContext =
   Boolean(product.relatedGuides?.length) ||
   Boolean(product.applicationLinks?.length) ||
   isCabinet;
+const mediaSlides = (product.gallery ?? []).filter((item) => item.kind === 'cabinet-photo');
 
 const schema = {
   '@type': 'Product',
@@ -98,10 +100,12 @@ const schema = {
   ]} />
 
   <article class="product-detail shell">
-    <div class="product-detail-media" data-reveal>
-      <span class="product-detail-category">{category.shortName}</span>
-      <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
-    </div>
+    <ProductMediaSlideshow
+      categoryLabel={category.shortName}
+      coverSrc={product.image}
+      coverAlt={product.imageAlt}
+      slides={mediaSlides}
+    />
     <div class="product-detail-copy">
       <span class="eyebrow">{category.name}</span>
       <h1>{product.name}</h1>
