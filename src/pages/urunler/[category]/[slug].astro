@@ -59,6 +59,15 @@ const hasContext =
   Boolean(product.applicationLinks?.length) ||
   isCabinet;
 
+const isKatlanabilirPosterKasa = product.slug === 'katlanabilir-poster-led-kasa';
+const productGalleryImages = isKatlanabilirPosterKasa
+  ? [
+      '/assets/images/products/pledkasa-1.webp',
+      '/assets/images/products/pledkasa-2.webp',
+      '/assets/images/products/pledkasa-3.webp',
+    ]
+  : [product.image];
+
 const schema = {
   '@type': 'Product',
   '@id': `${product.canonicalUrl}#product`,
@@ -98,10 +107,127 @@ const schema = {
   ]} />
 
   <article class="product-detail shell">
-    <div class="product-detail-media" data-reveal>
-      <span class="product-detail-category">{category.shortName}</span>
-      <img src={product.image} alt={product.imageAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
-    </div>
+    {isKatlanabilirPosterKasa ? (
+      <div class="product-detail-media" data-reveal data-product-carousel="katlanabilir-poster-led-kasa" aria-roledescription="carousel" aria-label="Ürün görselleri">
+        <span class="product-detail-category">{category.shortName}</span>
+
+        <div class="product-carousel-viewport" aria-hidden="false">
+          <div class="product-carousel-track" data-carousel-track>
+            {productGalleryImages.map((src, index) => (
+              <div
+                class="product-carousel-slide"
+                data-carousel-slide
+                aria-roledescription="slide"
+                aria-label={`${index + 1} / ${productGalleryImages.length}`}
+                aria-hidden={index !== 0}
+              >
+                <img
+                  src={src}
+                  alt={product.imageAlt}
+                  width="1000"
+                  height="1000"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="product-carousel-controls" aria-label="Ürün görsel slayt kontrolleri">
+          <button type="button" data-carousel-prev aria-label="Önceki görsel">←</button>
+          <span class="product-carousel-status" data-carousel-status>1 / {productGalleryImages.length}</span>
+          <button type="button" data-carousel-next aria-label="Sonraki görsel">→</button>
+          <button type="button" data-carousel-pause aria-label="Slayt gösterisini duraklat" aria-pressed="false">Duraklat</button>
+        </div>
+      </div>
+    ) : (
+      <div class="product-detail-media" data-reveal>
+        <span class="product-detail-category">{category.shortName}</span>
+        <img
+          src={product.image}
+          alt={product.imageAlt}
+          width="1000"
+          height="1000"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+    )}
+
+    {isKatlanabilirPosterKasa && (
+      <script is:inline>
+        (() => {
+          const root = document.querySelector('[data-product-carousel="katlanabilir-poster-led-kasa"]');
+          if (!root) return;
+
+          const track = root.querySelector('[data-carousel-track]');
+          const slides = Array.from(root.querySelectorAll('[data-carousel-slide]'));
+          const prev = root.querySelector('[data-carousel-prev]');
+          const next = root.querySelector('[data-carousel-next]');
+          const status = root.querySelector('[data-carousel-status]');
+          const pause = root.querySelector('[data-carousel-pause]');
+
+          if (!track || slides.length === 0) return;
+          if (slides.length <= 1) {
+            if (prev) prev.disabled = true;
+            if (next) next.disabled = true;
+            if (pause) {
+              pause.disabled = true;
+              pause.setAttribute('aria-pressed', 'false');
+            }
+            return;
+          }
+
+          let index = 0;
+          let paused = false;
+          let timer;
+
+          const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)') ?? { matches: false };
+
+          const stopAutoplay = () => {
+            if (timer) window.clearInterval(timer);
+            timer = undefined;
+          };
+
+          const startAutoplay = () => {
+            stopAutoplay();
+            if (paused || reducedMotion.matches || document.hidden) return;
+            timer = window.setInterval(() => setIndex(index + 1), 7000);
+          };
+
+          const setIndex = (nextIndex) => {
+            index = (nextIndex + slides.length) % slides.length;
+            track.style.transform = `translateX(-${index * 100}%)`;
+            slides.forEach((slide, i) => slide.setAttribute('aria-hidden', String(i !== index)));
+            if (status) status.textContent = `${index + 1} / ${slides.length}`;
+          };
+
+          prev?.addEventListener('click', () => setIndex(index - 1));
+          next?.addEventListener('click', () => setIndex(index + 1));
+
+          if (pause) {
+            pause.addEventListener('click', () => {
+              paused = !paused;
+              pause.setAttribute('aria-pressed', String(paused));
+              pause.textContent = paused ? 'Devam ettir' : 'Duraklat';
+              startAutoplay();
+            });
+          }
+
+          document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopAutoplay();
+            else startAutoplay();
+          });
+
+          reducedMotion.addEventListener?.('change', () => startAutoplay());
+
+          setIndex(0);
+          startAutoplay();
+        })();
+      </script>
+    )}
     <div class="product-detail-copy">
       <span class="eyebrow">{category.name}</span>
       <h1>{product.name}</h1>

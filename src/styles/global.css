@@ -177,6 +177,71 @@ p, h1, h2, h3 { margin-top: 0; }
 .product-detail-media { aspect-ratio: 1; position: relative; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-lg); background: linear-gradient(145deg, #e2e3da, #fffdf7); }
 .product-detail-media img { width: 100%; height: 100%; object-fit: contain; }
 .product-detail-category { position: absolute; z-index: 1; top: 1.2rem; left: 1.2rem; padding: .45rem .75rem; border-radius: 999px; background: var(--ink); color: var(--white); font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.product-carousel-viewport { position: absolute; inset: 0; overflow: hidden; }
+.product-carousel-track { display: flex; width: 100%; height: 100%; transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
+.product-carousel-slide { position: relative; flex: 0 0 100%; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; }
+.product-carousel-slide img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; object-position: center !important; display: block; }
+.product-carousel-controls { position: absolute; z-index: 5; right: clamp(1rem, 2.5vw, 2rem); bottom: clamp(1rem, 2.5vw, 2rem); display: flex; align-items: center; gap: .6rem; padding: .45rem; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; background: rgba(12, 18, 15, 0.55); backdrop-filter: blur(16px); box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28); }
+.product-carousel-controls button { min-width: 2.55rem; min-height: 2.55rem; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: rgba(255, 255, 255, 0.06); color: var(--white); cursor: pointer; font-weight: 750; transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
+.product-carousel-controls button:hover { border-color: rgba(184, 242, 54, 0.55); background: rgba(184, 242, 54, 0.16); transform: translateY(-1px); }
+.product-carousel-status { min-width: 3rem; color: rgba(223, 229, 225, 0.78); text-align: center; font-size: .78rem; font-weight: 750; }
+.product-carousel-controls [data-carousel-pause] { min-width: 6.4rem; padding-inline: .9rem; font-size: .78rem; }
+.product-gallery-track { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+.product-detail-media [data-hero-slide] img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: none;
+  display: block;
+}
+.product-gallery-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0) scale(0.985);
+  transition: opacity 420ms ease, transform 980ms cubic-bezier(0.16, 1, 0.3, 1), filter 420ms ease;
+}
+.product-gallery-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.product-gallery-slide.is-exit-left {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transform: translate3d(-6%, 0, 0) scale(0.985);
+}
+.product-gallery-slide.is-exit-right {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transform: translate3d(6%, 0, 0) scale(0.985);
+}
+.product-gallery-slide.is-enter-from-left {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transform: translate3d(-6%, 0, 0) scale(0.985);
+  transition: none;
+}
+.product-gallery-slide.is-enter-from-right {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transform: translate3d(6%, 0, 0) scale(0.985);
+  transition: none;
+}
 .product-detail h1 { max-width: 10ch; font-size: clamp(2.7rem, 6vw, 5.4rem); }
 .product-lead { max-width: 38rem; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
 .feature-list { display: grid; gap: .7rem; margin: 1.8rem 0; padding: 0; list-style: none; }
