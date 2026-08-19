@@ -31,7 +31,11 @@ Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalo
 
 - Kaynak: 640×1920 Al Alloy Die Casting Cabinet (front maintenance, foldable) üretici föyü
 - Yerel dosya: `/assets/docs/foldable-poster-cabinet-640x1920.pdf`
-- Kullanım: Katlanabilir Poster LED Kasa ürün sayfasında örnek teknik özellik
+- Kullanım: Katlanabilir Poster LED Kasa sayfasında 640×1920 mm profil
+
+- Kaynak: 500×2000 mm katlanabilir poster LED kasa ürün fotoğrafları (ön, katlanmış 195 mm yan, arka)
+- Yerel dosya: `/assets/images/products/gallery/foldable-500-on-gorunum.webp`
+- Kullanım: Katlanabilir Poster LED Kasa sayfasında 500×2000 mm galeri ve kapak görseli
 
 ## Etkinlik sahnesi
 

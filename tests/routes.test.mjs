@@ -151,6 +151,20 @@ test('rental and poster pages do not inherit the 640 small-pitch CNC table', () 
   }
 });
 
+test('foldable poster page publishes 500×2000 specs and cabinet photos', () => {
+  const html = builtHtml('urunler/led-ekran-kasalari/katlanabilir-poster-led-kasa');
+  assert.match(html, /500 × 2000 mm/);
+  assert.match(html, /W500 × H2077 × D490 mm/);
+  assert.match(html, /195 mm/);
+  assert.match(html, /24,66 kg/);
+  assert.match(html, /Alüminyum döküm/);
+  assert.match(html, /Vidalı modül — arkadan bakım/);
+  assert.match(html, /foldable-500-on-gorunum\.webp/);
+  assert.match(html, /foldable-500-yan-195mm\.webp/);
+  assert.match(html, /foldable-500-arka-gorunum\.webp/);
+  assert.match(html, /data-cabinet-lightbox/);
+});
+
 test('cabinet comparison page publishes a decision table', () => {
   const html = builtHtml('urunler/kasa-karsilastirma');
   assert.match(html, /LED kasa karşılaştırma tablosu/);
