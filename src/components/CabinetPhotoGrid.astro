@@ -1,0 +1,43 @@
+---
+import type { ProductGalleryItem } from '../data/site';
+
+interface Props {
+  items: ProductGalleryItem[];
+  label: string;
+  id: string;
+}
+
+const { items, label, id } = Astro.props;
+const captionId = `${id}-lightbox-caption`;
+---
+
+<div class="cabinet-photo-gallery" data-cabinet-photo-gallery>
+  <ul class="cabinet-photo-strip" aria-label={label}>
+    {items.map((item) => (
+      <li>
+        <button
+          type="button"
+          class="cabinet-photo-thumb"
+          data-lightbox-src={item.src}
+          data-lightbox-alt={item.alt}
+          data-lightbox-caption={item.caption}
+          aria-label={`${item.caption} — büyüt`}
+        >
+          <img src={item.src} alt="" width="120" height="120" loading="lazy" decoding="async" />
+          <span class="cabinet-photo-thumb-label">{item.caption}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <dialog class="cabinet-lightbox" data-cabinet-lightbox aria-labelledby={captionId}>
+    <div class="cabinet-lightbox-panel">
+      <button type="button" class="cabinet-lightbox-close" data-lightbox-close aria-label="Kapat">
+        <span aria-hidden="true">×</span>
+      </button>
+      <figure class="cabinet-lightbox-figure">
+        <img data-lightbox-image src={items[0]?.src ?? ''} alt={items[0]?.alt ?? ''} width="1200" height="1200" decoding="async" />
+        <figcaption id={captionId} data-lightbox-caption>{items[0]?.caption ?? ''}</figcaption>
+      </figure>
+    </div>
+  </dialog>
+</div>

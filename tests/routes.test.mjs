@@ -126,7 +126,8 @@ test('product pages include breadcrumbs and related products', () => {
   assert.match(html, /640×480-B|640×480/);
   assert.match(html, /640 mm küçük pitch aile/);
   assert.match(html, /datasheet-card/);
-  assert.match(html, /cnc-960-arka-gorunum\.webp/);
+  assert.match(html, /data-cabinet-lightbox/);
+  assert.match(html, /cabinet-photo-strip/);
   assert.match(html, /cnc-640-on-gorunum\.webp/);
   assert.doesNotMatch(html, /cnc-640-ozellik-seridi\.webp/);
   assert.doesNotMatch(html, /Ultra hafif/);

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import CabinetPhotoGrid from '../../../components/CabinetPhotoGrid.astro';
 import ProductCard from '../../../components/ProductCard.astro';
 import ProductDatasheetPanel from '../../../components/ProductDatasheetPanel.astro';
 import QuoteCta from '../../../components/QuoteCta.astro';
@@ -137,16 +138,11 @@ const schema = {
             {group.note && <p>{group.note}</p>}
           </div>
           {cabinetPhotos.length > 0 && (
-            <ul class="cabinet-photo-grid" aria-label={`${group.heading} ürün görselleri`}>
-              {cabinetPhotos.map((item) => (
-                <li>
-                  <figure>
-                    <img src={item.src} alt={item.alt} width="800" height="800" loading="lazy" decoding="async" />
-                    <figcaption>{item.caption}</figcaption>
-                  </figure>
-                </li>
-              ))}
-            </ul>
+            <CabinetPhotoGrid
+              items={cabinetPhotos}
+              label={`${group.heading} ürün görselleri`}
+              id={group.groupKey ?? group.heading.replace(/\s+/g, '-').toLowerCase()}
+            />
           )}
           <dl class="spec-table">
             {group.specs.map((spec) => (

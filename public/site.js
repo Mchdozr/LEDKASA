@@ -290,4 +290,30 @@
     }
   }
 
+  document.querySelectorAll('[data-cabinet-photo-gallery]').forEach((gallery) => {
+    const dialog = gallery.querySelector('[data-cabinet-lightbox]');
+    const image = dialog?.querySelector('[data-lightbox-image]');
+    const caption = dialog?.querySelector('[data-lightbox-caption]');
+    const closeButton = dialog?.querySelector('[data-lightbox-close]');
+    if (!dialog || !image || !caption) return;
+
+    gallery.querySelectorAll('.cabinet-photo-thumb').forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        image.src = thumb.dataset.lightboxSrc ?? '';
+        image.alt = thumb.dataset.lightboxAlt ?? '';
+        caption.textContent = thumb.dataset.lightboxCaption ?? '';
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+      });
+    });
+
+    closeButton?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      dialog.close();
+    });
+  });
+
 })();
