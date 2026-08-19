@@ -28,9 +28,8 @@
     {
       "publicPath": "/assets/images/products/katlanabilir-poster-led-kasa.webp",
       "sourceFile": "assets/katlanabilir-poster-kasa.png",
-      "origin": "manufacturer-product-photo",
-      "sha256": "0006dcbbfaf9fe30541c2870dcc7de0457148c95b73bc3f53b7316a7494c9abf",
-      "note": "500×2000 mm katlanabilir poster — kapak görseli"
+      "origin": "original-project-render",
+      "sha256": "c0e50e2c8200a3f43b31a03fbdaf22802b7515b12153ed85ec5bddd636c4aa16"
     },
     {
       "publicPath": "/assets/images/products/cat6-kablo.webp",
