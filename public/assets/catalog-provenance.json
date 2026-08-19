@@ -29,7 +29,7 @@
       "publicPath": "/assets/images/products/katlanabilir-poster-led-kasa.webp",
       "sourceFile": "assets/katlanabilir-poster-kasa.png",
       "origin": "original-project-render",
-      "sha256": "156f53eda935b8c1b7966c2d451b130fbb972c963de4d4af28fbde45b5e7fa03"
+      "sha256": "c0e50e2c8200a3f43b31a03fbdaf22802b7515b12153ed85ec5bddd636c4aa16"
     },
     {
       "publicPath": "/assets/images/products/cat6-kablo.webp",
@@ -192,6 +192,27 @@
       "sourceFile": "assets/manufacturer/crops/rental-960-hava-cikislari.png",
       "origin": "manufacturer-product-photo",
       "note": "U-Motion 960×960-B — hava çıkış portları"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/foldable-500-on-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/foldable-500-on-gorunum.png",
+      "origin": "manufacturer-product-photo",
+      "sha256": "0006dcbbfaf9fe30541c2870dcc7de0457148c95b73bc3f53b7316a7494c9abf",
+      "note": "500×2000 mm katlanabilir poster — ön görünüm"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/foldable-500-yan-195mm.webp",
+      "sourceFile": "assets/manufacturer/crops/foldable-500-yan-195mm.png",
+      "origin": "manufacturer-product-photo",
+      "sha256": "402a2de4add5cd8e8a07a5e2c8e6b5eb13de5e94b23142e2f7e21c3e430a2e4b",
+      "note": "500×2000 mm katlanabilir poster — katlanmış gövde derinliği 195 mm"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/foldable-500-arka-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/foldable-500-arka-gorunum.png",
+      "origin": "manufacturer-product-photo",
+      "sha256": "c1721058ffe2c9a8a062d28c63a5a69a715b40a91d1cea757cfd089be24ef11b",
+      "note": "500×2000 mm katlanabilir poster — arka görünüm (500 mm)"
     },
     {
       "publicPath": "/assets/images/products/gallery/poster-500-on-gorunum.webp",

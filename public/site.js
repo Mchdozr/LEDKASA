@@ -270,6 +270,68 @@
     startAutoplay();
   }
 
+  document.querySelectorAll('[data-product-media-slideshow]').forEach((root) => {
+    const slides = [...root.querySelectorAll('[data-product-media-slide]')];
+    const previousButton = root.querySelector('[data-product-media-previous]');
+    const nextButton = root.querySelector('[data-product-media-next]');
+    const status = root.querySelector('[data-product-media-status]');
+    const announcement = root.querySelector('[data-product-media-announcement]');
+    const dots = [...root.querySelectorAll('[data-product-media-dot]')];
+    if (slides.length < 2) return;
+
+    let activeIndex = 0;
+    let timer;
+
+    const sync = (nextIndex, shouldAnnounce = false) => {
+      activeIndex = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, index) => {
+        const isActive = index === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+      dots.forEach((dot, index) => {
+        if (index === activeIndex) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+      if (shouldAnnounce && announcement) announcement.textContent = `${activeIndex + 1} / ${slides.length}. görsel gösteriliyor.`;
+    };
+
+    const stopAutoplay = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (prefersReducedMotion.matches || document.hidden) return;
+      timer = window.setInterval(() => sync(activeIndex + 1), 5000);
+    };
+
+    const select = (nextIndex) => {
+      sync(nextIndex, true);
+      startAutoplay();
+    };
+
+    previousButton?.addEventListener('click', () => select(activeIndex - 1));
+    nextButton?.addEventListener('click', () => select(activeIndex + 1));
+    dots.forEach((dot, index) => dot.addEventListener('click', () => select(index)));
+    root.addEventListener('mouseenter', stopAutoplay);
+    root.addEventListener('mouseleave', startAutoplay);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
+    prefersReducedMotion.addEventListener?.('change', () => {
+      sync(activeIndex);
+      startAutoplay();
+    });
+
+    root.classList.add('is-ready');
+    sync(0);
+    startAutoplay();
+  });
+
   const revealItems = document.querySelectorAll('[data-reveal]');
   if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));

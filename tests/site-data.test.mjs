@@ -159,11 +159,21 @@ test('poster products expose datasheet-backed sizes', () => {
   assert.match(posterJoined, /640/);
   assert.match(posterJoined, /1920/);
   assert.match(posterJoined, /2000/);
+  assert.doesNotMatch(posterJoined, /24,66 kg/);
 
-  const foldableJoined = (foldable.specs ?? []).map((spec) => spec.value).join(' ');
+  const foldableJoined = (foldable.specGroups ?? foldable.specs ?? [])
+    .flatMap((entry) => ('specs' in entry ? entry.specs : [entry]))
+    .map((spec) => spec.value)
+    .join(' ');
+  assert.match(foldableJoined, /500 × 2000/);
+  assert.match(foldableJoined, /195 mm/);
+  assert.match(foldableJoined, /24,66 kg/);
   assert.match(foldableJoined, /640/);
   assert.match(foldableJoined, /26 kg/);
-  assert.match(foldableJoined, /ön/i);
+  assert.equal(foldable?.gallery?.filter((item) => item.groupKey === 'foldable-500' && item.kind === 'cabinet-photo').length, 3);
+  for (const item of foldable?.gallery ?? []) {
+    assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
+  }
 });
 
 test('every product carries qualitative specs, guide and application cross-links', () => {

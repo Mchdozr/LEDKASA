@@ -1,0 +1,71 @@
+---
+import type { ProductGalleryItem } from '../data/site';
+
+interface Props {
+  categoryLabel: string;
+  coverSrc: string;
+  coverAlt: string;
+  slides: ProductGalleryItem[];
+}
+
+const { categoryLabel, coverSrc, coverAlt, slides } = Astro.props;
+const isSlideshow = slides.length > 1;
+---
+
+<div
+  class="product-detail-media"
+  data-reveal
+  {...(isSlideshow
+    ? {
+        'data-product-media-slideshow': true,
+        'aria-roledescription': 'carousel',
+        'aria-label': 'Ürün görselleri',
+      }
+    : {})}
+>
+  <span class="product-detail-category">{categoryLabel}</span>
+  {isSlideshow ? (
+    <>
+      <div class="product-media-track" data-product-media-track aria-live="off">
+        {slides.map((slide, index) => (
+          <figure
+            class:list={['product-media-slide', { 'is-active': index === 0 }]}
+            data-product-media-slide
+            aria-hidden={index === 0 ? 'false' : 'true'}
+            aria-roledescription="slide"
+            aria-label={`${index + 1} / ${slides.length}${slide.caption ? ` — ${slide.caption}` : ''}`}
+          >
+            <img
+              src={slide.src}
+              alt={slide.alt}
+              width="1000"
+              height="1000"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchpriority={index === 0 ? 'high' : 'auto'}
+              decoding="async"
+            />
+            {slide.caption && <figcaption>{slide.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+      <div class="product-media-controls" aria-label="Slayt kontrolleri">
+        <button type="button" class="product-media-nav" data-product-media-previous aria-label="Önceki görsel">←</button>
+        <button type="button" class="product-media-nav" data-product-media-next aria-label="Sonraki görsel">→</button>
+        <span data-product-media-status>1 / {slides.length}</span>
+        <span class="visually-hidden" data-product-media-announcement aria-live="polite" aria-atomic="true"></span>
+      </div>
+      <div class="product-media-dots" aria-label="Görsel seç">
+        {slides.map((slide, index) => (
+          <button
+            type="button"
+            data-product-media-dot
+            aria-label={slide.caption || `Görsel ${index + 1}`}
+            aria-current={index === 0 ? 'true' : undefined}
+          />
+        ))}
+      </div>
+    </>
+  ) : (
+    <img src={coverSrc} alt={coverAlt} width="1000" height="1000" decoding="async" fetchpriority="high" />
+  )}
+</div>
