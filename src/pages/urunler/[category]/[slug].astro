@@ -100,6 +100,10 @@ const schema = {
   ]} />
 
   <article class="product-detail shell">
+    <header class="product-detail-heading">
+      <span class="eyebrow">{category.name}</span>
+      <h1>{product.name}</h1>
+    </header>
     <ProductMediaSlideshow
       categoryLabel={category.shortName}
       coverSrc={product.image}
@@ -107,8 +111,6 @@ const schema = {
       slides={mediaSlides}
     />
     <div class="product-detail-copy">
-      <span class="eyebrow">{category.name}</span>
-      <h1>{product.name}</h1>
       <p class="product-lead">{product.description}</p>
       <ul class="feature-list" aria-label="Ürün öne çıkanları">
         {product.highlights.map((highlight) => (

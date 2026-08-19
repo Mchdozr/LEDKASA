@@ -172,7 +172,7 @@ test('representative light and dark surface text plus focus indicators meet WCAG
   const routes = [
     ['/', ['.home-section .eyebrow', '.process-intro p', '.section-heading .text-link']],
     ['/urunler/', ['.catalog-hero .eyebrow', '.catalog-hero p', '.quote-cta .eyebrow']],
-    ['/urunler/led-ekran-kasalari/cnc-led-kasa/', ['.product-detail-copy .eyebrow', '.product-lead', '.product-actions .text-link']],
+    ['/urunler/led-ekran-kasalari/cnc-led-kasa/', ['.product-detail-heading .eyebrow', '.product-lead', '.product-actions .text-link']],
     ['/bilgi-merkezi/led-ekran-kasasi-nasil-secilir/', ['.article-hero .eyebrow', '.prose-content p', '.article-aside .eyebrow']],
     ['/teklif-al/', ['.quote-intro .eyebrow', '.quote-intro > p', '.quote-form-heading p']],
     ['/gizlilik-politikasi/', ['.content-hero .eyebrow', '.prose-content p']],
