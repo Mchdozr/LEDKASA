@@ -419,6 +419,23 @@ export const products: Product[] = [
     ],
     specGroups: [
       {
+        heading: 'Dış mekân poster (500×2000 mm)',
+        groupKey: 'poster-500-outdoor',
+        note: 'Dış mekân kullanımına uygun, alüminyum döküm poster kasa profili.',
+        specs: [
+          { label: 'Ekran ölçüsü', value: '500 × 2000 mm' },
+          { label: 'Gövde ölçüsü (standlı)', value: 'W500 × H2077 × D490 mm' },
+          { label: 'Gövde derinliği', value: '195 mm' },
+          { label: 'Ağırlık', value: '24,66 kg' },
+          { label: 'Malzeme', value: 'Alüminyum döküm' },
+          { label: 'Modül adedi', value: '16 adet / set' },
+          { label: 'Modül kurulumu', value: 'Vidali modül — arkadan bakım' },
+          { label: 'Ortam', value: 'İç mekân ve dış mekân' },
+          { label: 'Renk', value: 'Siyah' },
+          { label: 'Aksesuar', value: 'Yan tutamak, hızlı kilit, frenli döner tekerlek' },
+        ],
+      },
+      {
         heading: 'İnce dikey poster (640×1920 mm)',
         specs: [
           { label: 'Kabinet ölçüsü', value: 'W640 × H1920 × D420 mm' },
@@ -449,6 +466,29 @@ export const products: Product[] = [
           { label: 'Dahil aksesuarlar', value: 'Kilit, tutamak, sistem/güç plakası, birleştirme, sac taban, tekerlek' },
           { label: 'Kurulum tipi', value: 'Dikey poster / reklam ekranı' },
         ],
+      },
+    ],
+    gallery: [
+      {
+        src: '/assets/images/products/gallery/poster-500-on-gorunum.webp',
+        alt: '500×2000 mm dış mekân LED poster ekran ön görünümü',
+        caption: 'Ön görünüm',
+        groupKey: 'poster-500-outdoor',
+        kind: 'cabinet-photo',
+      },
+      {
+        src: '/assets/images/products/gallery/poster-500-arka-gorunum.webp',
+        alt: '500×2000 mm dış mekân LED poster kasa arka görünümü ve tekerlekli stand',
+        caption: 'Arka görünüm',
+        groupKey: 'poster-500-outdoor',
+        kind: 'cabinet-photo',
+      },
+      {
+        src: '/assets/images/products/gallery/poster-500-olcu-detay.webp',
+        alt: '500×2000 mm LED poster ölçüleri ve teknik detay şeması',
+        caption: 'Ölçü detayları',
+        groupKey: 'poster-500-outdoor',
+        kind: 'cabinet-photo',
       },
     ],
     specsNote:

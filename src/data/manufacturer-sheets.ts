@@ -4,7 +4,8 @@ export type ManufacturerGroupKey =
   | '960-mg'
   | '640-small-pitch-480'
   | '640-small-pitch-family'
-  | 'rental-960-mg';
+  | 'rental-960-mg'
+  | 'poster-500-outdoor';
 
 /** Galeri görseli → ürün eşleşmesi (yalnızca kabinet fotoğrafları). */
 export const manufacturerGalleryManifest = [
@@ -61,5 +62,23 @@ export const manufacturerGalleryManifest = [
     productSlug: 'rental-led-kabinet' as const,
     groupKey: 'rental-960-mg' as const,
     caption: 'Üst/alt hava çıkış portları',
+  },
+  {
+    file: 'poster-500-on-gorunum.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-500-outdoor' as const,
+    caption: 'Dış mekân LED poster — ön görünüm',
+  },
+  {
+    file: 'poster-500-arka-gorunum.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-500-outdoor' as const,
+    caption: 'Dış mekân LED poster — arka görünüm',
+  },
+  {
+    file: 'poster-500-olcu-detay.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-500-outdoor' as const,
+    caption: '500 × 2000 mm teknik detay şeması (TR)',
   },
 ] as const;

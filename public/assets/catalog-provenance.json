@@ -192,6 +192,24 @@
       "sourceFile": "assets/manufacturer/crops/rental-960-hava-cikislari.png",
       "origin": "manufacturer-product-photo",
       "note": "U-Motion 960×960-B — hava çıkış portları"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-500-on-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-500-on-view.png",
+      "origin": "generated-product-render",
+      "note": "500×2000 mm dış mekân poster — ön görünüm (TR içerik)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-500-arka-gorunum.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-500-arka-view.png",
+      "origin": "generated-product-render",
+      "note": "500×2000 mm dış mekân poster — arka görünüm (stand)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-500-olcu-detay.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-500-datasheet-tr.png",
+      "origin": "generated-technical-datasheet",
+      "note": "500×2000 mm teknik detay şeması ve tablo (Türkçe)"
     }
   ]
 }
