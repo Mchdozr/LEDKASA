@@ -40,6 +40,18 @@ export const manufacturerGalleryManifest = [
     caption: '640×480-B — önden bakım iç yapı',
   },
   {
+    file: 'cnc-640-elektronik-arka.webp',
+    productSlug: 'cnc-led-kasa' as const,
+    groupKey: '640-small-pitch-480' as const,
+    caption: '640×480-B — açık arka elektronik yerleşim',
+  },
+  {
+    file: 'cnc-640-kapak-arka.webp',
+    productSlug: 'cnc-led-kasa' as const,
+    groupKey: '640-small-pitch-480' as const,
+    caption: '640×480-B — kapalı arka kapak',
+  },
+  {
     file: 'rental-960-on-gorunum.webp',
     productSlug: 'rental-led-kabinet' as const,
     groupKey: 'rental-960-mg' as const,

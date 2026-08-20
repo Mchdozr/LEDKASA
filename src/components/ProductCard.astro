@@ -12,7 +12,7 @@ const Heading = `h${headingLevel}`;
 ---
 
 <article class="product-card" data-reveal>
-  <a class="product-card-media" href={product.url} tabindex="-1" aria-hidden="true">
+  <a class="product-card-media" href={product.url} tabindex="-1" aria-hidden="true" data-product-slug={product.slug}>
     <img
       src={product.image}
       alt=""

@@ -8,6 +8,36 @@
       "sha256": "462822c8dbb0479f5a805a1626130d20238f07418f50267aad1fcf15a4f32bb6"
     },
     {
+      "publicPath": "/assets/images/products/cnc-hero-on.webp",
+      "sourceFile": "assets/cnc-hero-on.png",
+      "origin": "original-project-render",
+      "sha256": "3dd66b8754bb71caa35b40a54ad241b1a134c39083c071c6482e2ddb6cdf8a89"
+    },
+    {
+      "publicPath": "/assets/images/products/cnc-hero-elektronik.webp",
+      "sourceFile": "assets/cnc-hero-elektronik.png",
+      "origin": "original-project-render",
+      "sha256": "ee438e4e04ce6f43a7ff2f481fc773588de194dd2e26ff212d9f4129f40395ba"
+    },
+    {
+      "publicPath": "/assets/images/products/cnc-hero-kapak.webp",
+      "sourceFile": "assets/cnc-hero-kapak.png",
+      "origin": "original-project-render",
+      "sha256": "d5aa4d1cd962e1fbfc8118387f02f7c4645f46f2fd91b2f65b0a2d6f83305e52"
+    },
+    {
+      "publicPath": "/assets/images/products/cnc-hero-modul-cerceve.webp",
+      "sourceFile": "assets/cnc-hero-modul-cerceve.png",
+      "origin": "original-project-render",
+      "sha256": "373ae1ae8790fe38da51854773e2e61c8d1c4a50af6137317a36ac5c4b7400df"
+    },
+    {
+      "publicPath": "/assets/images/products/cnc-hero-ekran-duvari.webp",
+      "sourceFile": "assets/cnc-hero-ekran-duvari.png",
+      "origin": "original-project-render",
+      "sha256": "e473447cced760e4bf1ba99ce4d4c72f65e227232c046e2e4816d46ed31c4eac"
+    },
+    {
       "publicPath": "/assets/images/products/kapaksiz-led-kabinet.webp",
       "sourceFile": "assets/kapaksiz-kabinet.png",
       "origin": "original-project-render",
@@ -27,9 +57,9 @@
     },
     {
       "publicPath": "/assets/images/products/katlanabilir-poster-led-kasa.webp",
-      "sourceFile": "assets/katlanabilir-poster-kasa.png",
+      "sourceFile": "assets/pledkasa-1.png",
       "origin": "original-project-render",
-      "sha256": "156f53eda935b8c1b7966c2d451b130fbb972c963de4d4af28fbde45b5e7fa03"
+      "sha256": "2c8ab893d98293633811c69f030b561537c1cc839199225fbc3d9c309b50de0f"
     },
     {
       "publicPath": "/assets/images/products/cat6-kablo.webp",

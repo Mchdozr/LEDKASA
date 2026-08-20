@@ -132,11 +132,11 @@ export const products: Product[] = [
     name: 'CNC LED Kasa',
     shortDescription: 'Sabit LED ekran projeleri için hassas üretimli, düzenli kabinet çözümü.',
     description:
-      'CNC LED Kasa, sabit LED ekran kurulumlarında düzenli kabin mimarisi, modül uyumu ve profesyonel görünüm aranan projeler için değerlendirilir. 960×960 mm magnezyum alaşım döküm ve 640 mm küçük pitch gövde aileleri ayrı teknik profillerde sunulur; ekran ölçüsü, pitch ve montaj yüzeyi teklif aşamasında netleşir.',
+      'CNC LED Kasa, sabit LED ekran kurulumlarında düzenli kabin mimarisi, modül uyumu ve profesyonel görünüm aranan projeler için değerlendirilir. 960×960 mm magnezyum alaşım döküm ile 640×480-B alüminyum alaşım küçük pitch gövdeler ayrı teknik profillerde sunulur; ekran ölçüsü, pitch ve montaj yüzeyi teklif aşamasında netleşir.',
     highlights: [
       'Sabit kurulum ve kalıcı ekran yüzeyleri',
       '960×960 mm magnezyum alaşım döküm gövde',
-      '640 mm küçük pitch gövde ailesi (320×160 modül kiti)',
+      '640×480-B alüminyum alaşım küçük pitch (önden bakım, 4,3 kg)',
       'Modül pitch ve proje ölçüsüne göre planlama',
     ],
     specs: [
@@ -176,18 +176,23 @@ export const products: Product[] = [
       {
         heading: '640×480-B küçük pitch',
         groupKey: '640-small-pitch-480',
-        note: 'Alüminyum alaşım döküm, önden bakım. Poster 640×1920 ve 960×960 Mg gövde ile karıştırılmaz.',
+        note: 'Alüminyum alaşım döküm kabinet. Ultra hafif (geleneksel demir kasaya göre yaklaşık %40 daha hafif), ultra ince, önden bakım ve köşe koruyuculu. Poster 640×1920 ve 960×960 Mg gövde ile karıştırılmaz.',
         specs: [
           { label: 'Kabinet ölçüsü', value: 'W640 × H480 × D50 mm' },
           { label: 'Ağırlık', value: '4,3 kg' },
           { label: 'Modül uyumu', value: 'P2.5 / P2 / P1.83 / P1.86 / P1.667 / P1.538 / P1.37 / P1.25' },
           { label: 'Suite / modül', value: '320 × 160 mm' },
           { label: 'Malzeme', value: 'Alüminyum alaşım' },
-          { label: 'Bakım', value: 'Önden bakım' },
-          { label: 'Kurulum', value: 'Askı veya sabit' },
+          { label: 'Bakım', value: 'Önden bakım — vakum aletiyle modül sökümü (modül arkasında sac plaka)' },
+          { label: 'Köşe koruma', value: 'Dört köşede modül ve gövde koruyucusu' },
+          { label: 'Kurulum', value: 'Askı veya sabit montaj' },
           { label: 'Ortam', value: 'İç mekân IP30' },
           { label: 'Renk', value: 'Siyah, gümüş' },
           { label: 'Aksesuar', value: 'Hızlı kilit, tutamak, sistem/güç kartı, birleştirme parçası' },
+          { label: 'Güç kaynağı', value: '200W-5V 40A / 400W-5V 80A' },
+          { label: 'Güç konektörü', value: '20A 3×2,5 mm²' },
+          { label: 'Askı kirişi', value: '1 = 1' },
+          { label: 'Flight case', value: '5 veya 6 kabinet' },
         ],
       },
       {
@@ -229,7 +234,7 @@ export const products: Product[] = [
       },
       {
         src: '/assets/images/products/gallery/cnc-640-arka-gorunum.webp',
-        alt: '640×480-B alüminyum döküm LED kabinet arka görünümü',
+        alt: '640×480-B alüminyum alaşım LED kabinet arka görünümü',
         caption: 'Arka görünüm',
         groupKey: '640-small-pitch-480',
         kind: 'cabinet-photo',
@@ -241,9 +246,23 @@ export const products: Product[] = [
         groupKey: '640-small-pitch-480',
         kind: 'cabinet-photo',
       },
+      {
+        src: '/assets/images/products/gallery/cnc-640-elektronik-arka.webp',
+        alt: '640×480-B LED kabinet açık arka görünüm — güç kaynağı ve alıcı kartlar',
+        caption: 'Açık arka — elektronik yerleşim',
+        groupKey: '640-small-pitch-480',
+        kind: 'cabinet-photo',
+      },
+      {
+        src: '/assets/images/products/gallery/cnc-640-kapak-arka.webp',
+        alt: '640×480-B LED kabinet kapalı arka kapak ve köşe kilitleri',
+        caption: 'Kapalı arka kapak — köşe kilitleri',
+        groupKey: '640-small-pitch-480',
+        kind: 'cabinet-photo',
+      },
     ],
     specsNote:
-      'Teknik değerler üretici föylerine dayanır. 960×960 Mg alaşım ile 640 mm küçük pitch profilleri ayrı tutulur. Proje ölçüsü ve pitch teklifte netleşir.',
+      'Teknik değerler üretici föylerine dayanır. 960×960 Mg alaşım ile 640×480-B alüminyum alaşım küçük pitch profilleri ayrı tutulur. Proje ölçüsü ve pitch teklifte netleşir.',
     useCases: [
       'Kurumsal lobi ve kalıcı reklam yüzeyleri',
       'Mağaza / showroom sabit LED duvarları',

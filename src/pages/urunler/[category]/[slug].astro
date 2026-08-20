@@ -59,14 +59,19 @@ const hasContext =
   Boolean(product.applicationLinks?.length) ||
   isCabinet;
 
-const isKatlanabilirPosterKasa = product.slug === 'katlanabilir-poster-led-kasa';
-const productGalleryImages = isKatlanabilirPosterKasa
-  ? [
-      '/assets/images/products/pledkasa-1.webp',
-      '/assets/images/products/pledkasa-2.webp',
-      '/assets/images/products/pledkasa-3.webp',
-    ]
-  : [product.image];
+const productCarouselImagesBySlug: Record<string, string[]> = {
+  'katlanabilir-poster-led-kasa': [
+    '/assets/images/products/pledkasa-1.webp',
+    '/assets/images/products/pledkasa-2.webp',
+    '/assets/images/products/pledkasa-3.webp',
+  ],
+  'cnc-led-kasa': [
+    '/assets/images/products/cnc-hero-modul-cerceve.webp',
+    '/assets/images/products/cnc-hero-ekran-duvari.webp',
+  ],
+};
+const productGalleryImages = productCarouselImagesBySlug[product.slug] ?? [product.image];
+const hasProductCarousel = productGalleryImages.length > 1;
 
 const schema = {
   '@type': 'Product',
@@ -107,59 +112,58 @@ const schema = {
   ]} />
 
   <article class="product-detail shell">
-    {isKatlanabilirPosterKasa ? (
-      <div class="product-detail-media" data-reveal data-product-carousel="katlanabilir-poster-led-kasa" aria-roledescription="carousel" aria-label="Ürün görselleri">
-        <span class="product-detail-category">{category.shortName}</span>
+    <header class="product-detail-heading" data-reveal>
+      <span class="eyebrow">{category.name}</span>
+      <h1>{product.name}</h1>
+    </header>
 
-        <div class="product-carousel-viewport" aria-hidden="false">
-          <div class="product-carousel-track" data-carousel-track>
-            {productGalleryImages.map((src, index) => (
-              <div
-                class="product-carousel-slide"
-                data-carousel-slide
-                aria-roledescription="slide"
-                aria-label={`${index + 1} / ${productGalleryImages.length}`}
-                aria-hidden={index !== 0}
-              >
-                <img
-                  src={src}
-                  alt={product.imageAlt}
-                  width="1000"
-                  height="1000"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchpriority={index === 0 ? 'high' : 'auto'}
-                  decoding="async"
-                />
-              </div>
-            ))}
-          </div>
+    <div
+      class="product-detail-media"
+      data-reveal
+      data-product-carousel={product.slug}
+      aria-roledescription={hasProductCarousel ? 'carousel' : undefined}
+      aria-label="Ürün görselleri"
+    >
+      <span class="product-detail-category">{category.shortName}</span>
+
+      <div class="product-carousel-viewport" aria-hidden="false">
+        <div class="product-carousel-track" data-carousel-track>
+          {productGalleryImages.map((src, index) => (
+            <div
+              class="product-carousel-slide"
+              data-carousel-slide
+              aria-roledescription="slide"
+              aria-label={`${index + 1} / ${productGalleryImages.length}`}
+              aria-hidden={index !== 0}
+            >
+              <img
+                src={src}
+                alt={product.imageAlt}
+                width="1000"
+                height="1000"
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchpriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
+              />
+            </div>
+          ))}
         </div>
+      </div>
 
+      {hasProductCarousel && (
         <div class="product-carousel-controls" aria-label="Ürün görsel slayt kontrolleri">
           <button type="button" data-carousel-prev aria-label="Önceki görsel">←</button>
           <span class="product-carousel-status" data-carousel-status>1 / {productGalleryImages.length}</span>
           <button type="button" data-carousel-next aria-label="Sonraki görsel">→</button>
           <button type="button" data-carousel-pause aria-label="Slayt gösterisini duraklat" aria-pressed="false">Duraklat</button>
         </div>
-      </div>
-    ) : (
-      <div class="product-detail-media" data-reveal>
-        <span class="product-detail-category">{category.shortName}</span>
-        <img
-          src={product.image}
-          alt={product.imageAlt}
-          width="1000"
-          height="1000"
-          decoding="async"
-          fetchpriority="high"
-        />
-      </div>
-    )}
+      )}
+    </div>
 
-    {isKatlanabilirPosterKasa && (
+    {hasProductCarousel && (
       <script is:inline>
         (() => {
-          const root = document.querySelector('[data-product-carousel="katlanabilir-poster-led-kasa"]');
+          const root = document.querySelector('[data-product-carousel]');
           if (!root) return;
 
           const track = root.querySelector('[data-carousel-track]');
@@ -229,8 +233,6 @@ const schema = {
       </script>
     )}
     <div class="product-detail-copy">
-      <span class="eyebrow">{category.name}</span>
-      <h1>{product.name}</h1>
       <p class="product-lead">{product.description}</p>
       <ul class="feature-list" aria-label="Ürün öne çıkanları">
         {product.highlights.map((highlight) => (
@@ -246,41 +248,45 @@ const schema = {
 
   {specGroups.length > 0 && (
     <section class="product-specs shell" aria-labelledby="specs-heading">
-      <div class="section-heading">
+      <div class="section-heading product-specs-heading">
         <div>
           <span class="eyebrow">Teknik bilgiler</span>
           <h2 id="specs-heading">Özellik özeti</h2>
         </div>
         {product.specsNote && <p>{product.specsNote}</p>}
       </div>
-      {specGroups.map((group) => {
-        const cabinetPhotos = (product.gallery ?? []).filter(
-          (item) => item.groupKey === group.groupKey && item.kind === 'cabinet-photo',
-        );
-        return (
-        <div class="spec-group">
-          <div class="spec-group-heading">
-            <h3>{group.heading}</h3>
-            {group.note && <p>{group.note}</p>}
-          </div>
-          {cabinetPhotos.length > 0 && (
-            <CabinetPhotoGrid
-              items={cabinetPhotos}
-              label={`${group.heading} ürün görselleri`}
-              id={group.groupKey ?? group.heading.replace(/\s+/g, '-').toLowerCase()}
-            />
-          )}
-          <dl class="spec-table">
-            {group.specs.map((spec) => (
-              <div class="spec-row">
-                <dt>{spec.label}</dt>
-                <dd>{spec.value}</dd>
+      <div class="spec-groups">
+        {specGroups.map((group) => {
+          const cabinetPhotos = (product.gallery ?? []).filter(
+            (item) => item.groupKey === group.groupKey && item.kind === 'cabinet-photo',
+          );
+          return (
+          <article class="spec-group">
+            <header class="spec-group-header">
+              <div class="spec-group-heading">
+                <h3>{group.heading}</h3>
+                {group.note && <p>{group.note}</p>}
               </div>
-            ))}
-          </dl>
-        </div>
-        );
-      })}
+              {cabinetPhotos.length > 0 && (
+                <CabinetPhotoGrid
+                  items={cabinetPhotos}
+                  label={`${group.heading} ürün görselleri`}
+                  id={group.groupKey ?? group.heading.replace(/\s+/g, '-').toLowerCase()}
+                />
+              )}
+            </header>
+            <dl class="spec-table">
+              {group.specs.map((spec) => (
+                <div class="spec-row">
+                  <dt>{spec.label}</dt>
+                  <dd>{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+          );
+        })}
+      </div>
       <p class="product-specs-footnote">Teknik uyumluluk, adet ve teslim kapsamı proje ayrıntılarına göre değerlendirilir. Fiyat ve stok yayınlanmaz; teklif aşamasında netleştirilir.</p>
     </section>
   )}
