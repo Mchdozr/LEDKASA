@@ -110,6 +110,8 @@ test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups
   const mgJoined = mgGroup.specs.map((spec) => spec.value).join(' ');
   const pitchJoined = [pitch480, pitchFamily].flatMap((g) => g.specs).map((s) => s.value).join(' ');
   assert.match(mgJoined, /960/);
+  assert.match(mgJoined, /11,8 kg/);
+  assert.doesNotMatch(mgJoined, /15,8 kg/);
   assert.doesNotMatch(mgJoined, /4,3 kg/);
   assert.match(pitchJoined, /W640 × H480/);
   assert.match(pitchJoined, /4,3 kg/);
@@ -119,7 +121,7 @@ test('CNC keeps 960 Mg and 640 small-pitch datasheets in separate labeled groups
   const pitch480Sheet = cnc.datasheets?.find((sheet) => sheet.url.includes('640x480-B'));
   assert.ok(pitch480Sheet);
   assert.equal(existsSync(resolve(process.cwd(), 'public', pitch480Sheet.url.replace(/^\//, ''))), true);
-  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg' && item.kind === 'cabinet-photo').length, 2);
+  assert.equal(cnc.gallery?.filter((item) => item.groupKey === '960-mg' && item.kind === 'cabinet-photo').length, 3);
   assert.equal(cnc.gallery?.filter((item) => item.groupKey === '640-small-pitch-480' && item.kind === 'cabinet-photo').length, 5);
   for (const item of cnc.gallery ?? []) {
     assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
@@ -159,11 +161,18 @@ test('poster products expose datasheet-backed sizes', () => {
   assert.match(posterJoined, /640/);
   assert.match(posterJoined, /1920/);
   assert.match(posterJoined, /2000/);
+  assert.match(poster.datasheets[0].url, /poster-advertising-machine\.pdf/);
+  assert.equal(poster.gallery?.filter((item) => item.groupKey === 'poster-640-slim' && item.kind === 'cabinet-photo').length, 1);
+  assert.equal(poster.gallery?.filter((item) => item.groupKey === 'poster-500-1000-modular' && item.kind === 'cabinet-photo').length, 1);
+  assert.equal(poster.gallery?.filter((item) => item.groupKey === 'poster-960-wide' && item.kind === 'cabinet-photo').length, 1);
+  for (const item of poster.gallery ?? []) {
+    assert.equal(existsSync(resolve(process.cwd(), 'public', item.src.replace(/^\//, ''))), true, item.src);
+  }
 
   const foldableJoined = (foldable.specs ?? []).map((spec) => spec.value).join(' ');
-  assert.match(foldableJoined, /640/);
-  assert.match(foldableJoined, /26 kg/);
-  assert.match(foldableJoined, /ön/i);
+  assert.match(foldableJoined, /500/);
+  assert.match(foldableJoined, /24,66 kg/);
+  assert.match(foldableJoined, /arka/i);
 });
 
 test('every product carries qualitative specs, guide and application cross-links', () => {

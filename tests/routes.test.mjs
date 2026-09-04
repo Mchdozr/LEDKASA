@@ -128,6 +128,9 @@ test('product pages include breadcrumbs and related products', () => {
   assert.match(html, /datasheet-card/);
   assert.match(html, /data-cabinet-lightbox/);
   assert.match(html, /cabinet-photo-strip/);
+  assert.match(html, /cnc-960-arka-gorunum\.webp/);
+  assert.match(html, /cnc-960-arka-kapak\.webp/);
+  assert.match(html, /cnc-960-ic-cerceve\.webp/);
   assert.match(html, /cnc-640-on-gorunum\.webp/);
   assert.doesNotMatch(html, /cnc-640-ozellik-seridi\.webp/);
   assert.doesNotMatch(html, /Ultra hafif/);
@@ -144,6 +147,25 @@ test('rental and poster pages do not inherit the 640 small-pitch CNC table', () 
   assert.match(rental, /rental-960-arka-gorunum\.webp/);
   assert.match(rental, /mg-alloy-cabinet-960x960\.pdf/);
   assert.match(rental, /datasheet-card/);
+  assert.match(poster, /poster-640-ince\.webp/);
+  assert.match(poster, /poster-500-1000-moduler\.webp/);
+  assert.match(poster, /poster-960-genis\.webp/);
+  assert.match(poster, /poster-advertising-machine\.pdf/);
+  assert.match(poster, /W640 × H1920 × D420 mm/);
+  assert.match(poster, /W960 × H1920 × D450 mm/);
+  const posterTrack = poster.match(/<div class="product-carousel-track" data-carousel-track>([\s\S]*?)<\/div>\s*<\/div>/)?.[1] ?? '';
+  const posterSlides = [...posterTrack.matchAll(/data-carousel-slide[\s\S]*?<img\s+src="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(posterSlides, [
+    '/assets/images/products/gallery/poster-640-ince.webp',
+    '/assets/images/products/gallery/poster-500-1000-moduler.webp',
+    '/assets/images/products/gallery/poster-960-genis.webp',
+  ]);
+  assert.match(poster, /data-product-carousel="poster-led-kasa"/);
+  assert.match(poster, />1 \/ 3</);
+  const cnc = builtHtml('urunler/led-ekran-kasalari/cnc-led-kasa');
+  assert.doesNotMatch(cnc, /poster-640-ince\.webp/);
+  assert.doesNotMatch(cnc, /poster-500-1000-moduler\.webp/);
+  assert.doesNotMatch(cnc, /poster-960-genis\.webp/);
   for (const html of [rental, poster, foldable]) {
     assert.doesNotMatch(html, /640×480-B/);
     assert.doesNotMatch(html, /640 mm küçük pitch aile/);

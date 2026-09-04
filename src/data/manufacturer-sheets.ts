@@ -5,7 +5,10 @@ export type ManufacturerGroupKey =
   | '640-small-pitch-480'
   | '640-small-pitch-family'
   | 'rental-960-mg'
-  | 'poster-500-outdoor';
+  | 'poster-500-outdoor'
+  | 'poster-640-slim'
+  | 'poster-500-1000-modular'
+  | 'poster-960-wide';
 
 /** Galeri görseli → ürün eşleşmesi (yalnızca kabinet fotoğrafları). */
 export const manufacturerGalleryManifest = [
@@ -16,10 +19,16 @@ export const manufacturerGalleryManifest = [
     caption: '960×960 mm — arka görünüm',
   },
   {
-    file: 'cnc-960-ip65-arka.webp',
+    file: 'cnc-960-arka-kapak.webp',
     productSlug: 'cnc-led-kasa' as const,
     groupKey: '960-mg' as const,
-    caption: '960×960 mm — dış mekân arka görünüm',
+    caption: '960×960 mm — arka kapak',
+  },
+  {
+    file: 'cnc-960-ic-cerceve.webp',
+    productSlug: 'cnc-led-kasa' as const,
+    groupKey: '960-mg' as const,
+    caption: '960×960 mm — iç çerçeve',
   },
   {
     file: 'cnc-640-on-gorunum.webp',
@@ -92,5 +101,23 @@ export const manufacturerGalleryManifest = [
     productSlug: 'poster-led-kasa' as const,
     groupKey: 'poster-500-outdoor' as const,
     caption: '500 × 2000 mm teknik detay şeması (TR)',
+  },
+  {
+    file: 'poster-640-ince.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-640-slim' as const,
+    caption: '640×1920 mm — ince dikey poster',
+  },
+  {
+    file: 'poster-500-1000-moduler.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-500-1000-modular' as const,
+    caption: '500 / 1000×2000 mm — modüler poster',
+  },
+  {
+    file: 'poster-960-genis.webp',
+    productSlug: 'poster-led-kasa' as const,
+    groupKey: 'poster-960-wide' as const,
+    caption: '960×1920 mm — geniş dikey poster',
   },
 ] as const;

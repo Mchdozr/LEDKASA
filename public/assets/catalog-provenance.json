@@ -149,13 +149,28 @@
       "publicPath": "/assets/images/products/gallery/cnc-960x960-foy.webp",
       "sourceFile": "assets/manufacturer/mg-alloy-960x960-datasheet.jpg",
       "origin": "manufacturer-datasheet",
-      "sha256": "045e93c6249d87ee59a876cc7922adec56b00ec8fd03ac6f2a44cc325e11a9c6"
+      "sha256": "3a2fddc93cb5da1d6c9bad1ea0167d4b6fbad640e80643f380623e8daea7d323"
     },
     {
       "publicPath": "/assets/images/products/gallery/cnc-960-arka-gorunum.webp",
-      "sourceFile": "assets/manufacturer/crops/cnc-960-foy-ust-gorsel.png",
-      "origin": "manufacturer-datasheet",
-      "sha256": "651f704bba662a9f7cd4f9410b36dd0624718df54f8aa72c841e1022592522c4"
+      "sourceFile": "assets/manufacturer/crops/cnc-960-mg/01-arka-gorunum.png",
+      "origin": "manufacturer-product-photo",
+      "sha256": "5f8841cbeaf17c0e48509db2cb4b2eecb0fccbf2606d5acb6d706d72af3ad7ac",
+      "note": "960×960 Mg — arka görünüm (orijinal kırpım)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-arka-kapak.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-mg/02-arka-kapak.jpg",
+      "origin": "manufacturer-product-photo",
+      "sha256": "8ab708442bcd83d57a73a197e76d3fa1ca731efdfa146e8a4bb5d57d4025b790",
+      "note": "960×960 Mg — arka kapak (orijinal kırpım)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/cnc-960-ic-cerceve.webp",
+      "sourceFile": "assets/manufacturer/crops/cnc-960-mg/03-ic-cerceve.jpg",
+      "origin": "manufacturer-product-photo",
+      "sha256": "d8bbdf4f4832630188d0c2c0b0832eb49f355bd93472228dddbe1e335298769b",
+      "note": "960×960 Mg — iç çerçeve (orijinal kırpım)"
     },
     {
       "publicPath": "/assets/images/products/gallery/cnc-960-olcu-diyagram.webp",
@@ -240,6 +255,34 @@
       "sourceFile": "assets/manufacturer/crops/poster-500-datasheet-tr.png",
       "origin": "generated-technical-datasheet",
       "note": "500×2000 mm teknik detay şeması ve tablo (Türkçe)"
+    },
+    {
+      "publicPath": "/assets/docs/poster-advertising-machine.pdf",
+      "sourceFile": "assets/manufacturer/poster-advertising-machine.pdf",
+      "origin": "manufacturer-datasheet",
+      "sha256": "81efaa2e304e1fa420ba04a10dc39b0f5a5022b0a08a5a076c176d536926f0d2",
+      "note": "U-MOTION katalog s.50 — Advertising machine / poster screen"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-640-ince.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-advertising/01-ince-640.png",
+      "origin": "manufacturer-product-photo",
+      "sha256": "0130adcb586a5692834591ffbca671b82b50dc0e624707d0c3336783c37b2c82",
+      "note": "640×1920 mm ince dikey poster (orijinal kırpım)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-500-1000-moduler.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-advertising/02-moduler-500-1000.jpg",
+      "origin": "manufacturer-product-photo",
+      "sha256": "3cfcc34883b4980d11b33a322077ae6553263c3d3ea56a2ca94ef55f128c8ed3",
+      "note": "500 / 1000×2000 mm modüler poster (orijinal kırpım)"
+    },
+    {
+      "publicPath": "/assets/images/products/gallery/poster-960-genis.webp",
+      "sourceFile": "assets/manufacturer/crops/poster-advertising/03-genis-960.jpg",
+      "origin": "manufacturer-product-photo",
+      "sha256": "1f6e0e01361d5638e00a280fb9332e9ed42de7cec8dd46adf25e987034a7efa2",
+      "note": "960×1920 mm geniş dikey poster (orijinal kırpım)"
     }
   ]
 }

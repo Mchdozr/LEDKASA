@@ -19,15 +19,18 @@ Makine tarafından okunabilen kaynak dosya ve SHA-256 envanteri: `/assets/catalo
 - Ürün: Mg Alloy Die Casting Cabinet (W960 × H960 × D87 mm)
 - Yerel dosya: `/assets/docs/mg-alloy-cabinet-960x960.pdf`
 - Föy görseli: `/assets/images/products/gallery/cnc-960x960-foy.webp`
-- Kullanım: CNC LED Kasa sayfasında yalnızca 960×960 mm örnek teknik özellik, galeri ve indirme
+- Kabinet fotoğrafları (orijinal kırpım): `/assets/images/products/gallery/cnc-960-arka-gorunum.webp`, `cnc-960-arka-kapak.webp`, `cnc-960-ic-cerceve.webp`
+- Kullanım: CNC LED Kasa slaytı ve 960×960 mm galeri; teknik tablo üretici föyünden
 
 - Kaynak: Küçük pitch kabinet föyü (640×480-B / 640×640, 320×160 mm modül)
 - Yerel dosya: `/assets/docs/small-pitch-cabinet-640.pdf`
 - Kullanım: CNC LED Kasa sayfasında ayrı başlık; 960×960 Mg föyü ve poster 640×1920 ile karıştırılmaz
 
-- Kaynak: Advertising machine / poster screen üretici föyü (ince / modüler / geniş dikey)
-- Yerel dosya: `/assets/docs/poster-led-cabinet-overview.pdf`
-- Kullanım: Poster LED Kasa ürün sayfasında örnek ölçü ve pitch özeti
+- Kaynak: Advertising machine / poster screen üretici föyü (U-MOTION katalog s.50; ince / modüler / geniş dikey)
+- Yerel dosya: `/assets/docs/poster-advertising-machine.pdf`
+- Özet föy: `/assets/docs/poster-led-cabinet-overview.pdf`
+- Kabinet fotoğrafları (orijinal kırpım): `/assets/images/products/gallery/poster-640-ince.webp`, `poster-500-1000-moduler.webp`, `poster-960-genis.webp`
+- Kullanım: Poster LED Kasa slaytı, grup galerisi ve teknik tablo üretici föyünden
 
 - Kaynak: 640×1920 Al Alloy Die Casting Cabinet (front maintenance, foldable) üretici föyü
 - Yerel dosya: `/assets/docs/foldable-poster-cabinet-640x1920.pdf`
