@@ -30,17 +30,19 @@ jobs:
           path: dist/
           if-no-files-found: error
 
-      - name: Deploy dist via SCP
-        uses: appleboy/scp-action@v1
+      - name: Check FTP port on live host
+        run: |
+          timeout 8 bash -c 'echo >/dev/tcp/ledkasa.com.tr/21' && echo 'ledkasa.com.tr:21 open' || echo 'ledkasa.com.tr:21 closed'
+
+      - name: Deploy dist via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_SERVER }}
+          server: ledkasa.com.tr
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          protocol: tcp4
-          source: dist/
-          target: .
-          strip_components: 1
-          overwrite: true
-          timeout: 60s
-          command_timeout: 10m
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          server-dir: ./
+          dangerous-clean-slate: false
+          timeout: 60000
