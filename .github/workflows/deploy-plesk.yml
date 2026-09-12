@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -23,13 +23,24 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy dist via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          name: ledkasa-dist
+          path: dist/
+          if-no-files-found: error
+
+      - name: Deploy dist via SCP
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: ./
-          dangerous-clean-slate: false
+          port: 22
+          protocol: tcp4
+          source: dist/
+          target: .
+          strip_components: 1
+          overwrite: true
+          timeout: 60s
+          command_timeout: 10m
